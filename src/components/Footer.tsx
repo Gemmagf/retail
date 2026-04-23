@@ -48,7 +48,7 @@ export function Footer() {
             GitHub
           </a>
           <a
-            href="https://www.linkedin.com/feed/"
+            href="https://www.linkedin.com/in/gemma-garcia-de-la-fuente-062079109/"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted"
