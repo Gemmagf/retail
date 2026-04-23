@@ -675,3 +675,235 @@ export function regionColor(region: Region): string {
 export function getProduct(id: string): Product | undefined {
   return productById.get(id);
 }
+
+export type MissedSale = {
+  productId: string;
+  locationId: string;
+  missedUnits: number;
+  missedRevenue: number;
+  missedMargin: number;
+  reason: "fullStockout" | "sizeGap";
+  sizeGaps?: Size[];
+};
+
+function stockoutWeeksCount(productId: string, locationId: string): number {
+  const sales = getSales().filter(
+    (s) =>
+      s.productId === productId &&
+      s.locationId === locationId &&
+      s.week >= CURRENT_WEEK_INDEX - 3 &&
+      s.week <= CURRENT_WEEK_INDEX,
+  );
+  const velocity = recentVelocity(productId, locationId, 8);
+  if (velocity === 0) return 0;
+  return sales.filter((s) => s.units === 0 && velocity > 0.5).length;
+}
+
+let _missed: MissedSale[] | null = null;
+
+export function getMissedSales(): MissedSale[] {
+  if (_missed) return _missed;
+  const out: MissedSale[] = [];
+  const sellingInv = getInventory().filter(
+    (r) => locationById.get(r.locationId)!.channel !== "warehouse",
+  );
+  const sizeInv = getInventoryBySize();
+
+  for (const row of sellingInv) {
+    const product = productById.get(row.productId)!;
+    const velocity = recentVelocity(row.productId, row.locationId, 4);
+    if (velocity < 0.3) continue;
+
+    if (row.units === 0) {
+      const weeksOut = Math.max(1, stockoutWeeksCount(row.productId, row.locationId));
+      const missedUnits = Math.round(velocity * weeksOut);
+      out.push({
+        productId: row.productId,
+        locationId: row.locationId,
+        missedUnits,
+        missedRevenue: missedUnits * product.price,
+        missedMargin: missedUnits * (product.price - product.cogs),
+        reason: "fullStockout",
+      });
+    } else {
+      const outSizes = sizeInv.filter(
+        (s) => s.productId === row.productId && s.locationId === row.locationId && s.units === 0,
+      );
+      if (outSizes.length === 0) continue;
+      const curve = sizeCurves[product.gender];
+      const lostShare = outSizes.reduce((a, s) => a + curve[s.size], 0);
+      if (lostShare < 0.05) continue;
+      const missedUnits = Math.round(velocity * lostShare * 1);
+      if (missedUnits === 0) continue;
+      out.push({
+        productId: row.productId,
+        locationId: row.locationId,
+        missedUnits,
+        missedRevenue: missedUnits * product.price,
+        missedMargin: missedUnits * (product.price - product.cogs),
+        reason: "sizeGap",
+        sizeGaps: outSizes.map((s) => s.size),
+      });
+    }
+  }
+
+  out.sort((a, b) => b.missedRevenue - a.missedRevenue);
+  _missed = out;
+  return out;
+}
+
+export type MissedSalesTotals = {
+  totalUnits: number;
+  totalRevenue: number;
+  totalMargin: number;
+  stockoutCount: number;
+  sizeGapCount: number;
+};
+
+export function getMissedSalesTotals(): MissedSalesTotals {
+  const missed = getMissedSales();
+  return {
+    totalUnits: missed.reduce((a, b) => a + b.missedUnits, 0),
+    totalRevenue: missed.reduce((a, b) => a + b.missedRevenue, 0),
+    totalMargin: missed.reduce((a, b) => a + b.missedMargin, 0),
+    stockoutCount: missed.filter((m) => m.reason === "fullStockout").length,
+    sizeGapCount: missed.filter((m) => m.reason === "sizeGap").length,
+  };
+}
+
+export type StoreSummary = {
+  locationId: string;
+  totalUnits: number;
+  avgCover: number;
+  stockOutSkus: number;
+  atRiskSkus: number;
+  skusInRange: number;
+  weeklyRevenue: number;
+  missedRevenue: number;
+  incomingUnits: number;
+};
+
+export function getStoreSummaries(): StoreSummary[] {
+  const inv = getInventory();
+  const sales = getSales().filter((s) => s.week === CURRENT_WEEK_INDEX);
+  const missed = getMissedSales();
+  const pos = getPurchaseOrders();
+  const sellingLocations = locations.filter((l) => l.channel !== "warehouse");
+
+  return sellingLocations.map((loc) => {
+    const rows = inv.filter((r) => r.locationId === loc.id);
+    const totalUnits = rows.reduce((a, b) => a + b.units, 0);
+    const withDemand = rows.filter((r) => recentVelocity(r.productId, loc.id) > 0.3);
+    const avgCover =
+      withDemand.length > 0
+        ? withDemand.reduce((a, b) => a + Math.min(b.weeksCover, 20), 0) / withDemand.length
+        : 0;
+    const stockOutSkus = rows.filter(
+      (r) => r.units === 0 && recentVelocity(r.productId, loc.id) > 0.3,
+    ).length;
+    const atRiskSkus = rows.filter((r) => r.units > 0 && r.weeksCover < 2).length;
+    const skusInRange = rows.filter((r) => r.weeksCover >= 2 && r.weeksCover <= 8).length;
+
+    const storeSales = sales.filter((s) => s.locationId === loc.id);
+    const weeklyRevenue = storeSales.reduce(
+      (a, b) => a + b.units * (productById.get(b.productId)?.price ?? 0),
+      0,
+    );
+    const missedRevenue = missed
+      .filter((m) => m.locationId === loc.id)
+      .reduce((a, b) => a + b.missedRevenue, 0);
+    const incomingUnits = pos
+      .filter((p) => p.toLocationId === loc.id)
+      .reduce((a, b) => a + b.units, 0);
+
+    return {
+      locationId: loc.id,
+      totalUnits,
+      avgCover,
+      stockOutSkus,
+      atRiskSkus,
+      skusInRange,
+      weeklyRevenue,
+      missedRevenue,
+      incomingUnits,
+    };
+  });
+}
+
+export type StoreDetail = {
+  locationId: string;
+  summary: StoreSummary;
+  rows: Array<
+    InventoryRow & {
+      productName: string;
+      productColor: string;
+      price: number;
+      velocity: number;
+      incomingUnits: number;
+      outSizes: Size[];
+    }
+  >;
+};
+
+export function getStoreDetail(locationId: string): StoreDetail | null {
+  const loc = locationById.get(locationId);
+  if (!loc || loc.channel === "warehouse") return null;
+  const summary = getStoreSummaries().find((s) => s.locationId === locationId)!;
+  const inv = getInventory().filter((r) => r.locationId === locationId);
+  const sizeInv = getInventoryBySize();
+  const pos = getPurchaseOrders();
+
+  const rows = inv
+    .map((r) => {
+      const product = productById.get(r.productId)!;
+      const outSizes = sizeInv
+        .filter((s) => s.productId === r.productId && s.locationId === locationId && s.units === 0)
+        .map((s) => s.size);
+      const incomingUnits = pos
+        .filter((p) => p.productId === r.productId && p.toLocationId === locationId)
+        .reduce((a, b) => a + b.units, 0);
+      return {
+        ...r,
+        productName: product.name,
+        productColor: product.color,
+        price: product.price,
+        velocity: recentVelocity(r.productId, locationId, 4),
+        incomingUnits,
+        outSizes,
+      };
+    })
+    .sort((a, b) => a.weeksCover - b.weeksCover);
+
+  return { locationId, summary, rows };
+}
+
+export type SizeMatrixCell = {
+  locationId: string;
+  size: Size;
+  units: number;
+  velocityShare: number;
+  isStockout: boolean;
+  isLow: boolean;
+};
+
+export function getProductSizeMatrix(productId: string): SizeMatrixCell[] {
+  const sizeInv = getInventoryBySize().filter(
+    (r) => r.productId === productId && locationById.get(r.locationId)!.channel !== "warehouse",
+  );
+  const product = productById.get(productId)!;
+  const curve = sizeCurves[product.gender];
+
+  return sizeInv.map((r) => {
+    const expectedShare = curve[r.size];
+    const velAtLoc = recentVelocity(productId, r.locationId, 4);
+    const expectedWeekly = velAtLoc * expectedShare;
+    return {
+      locationId: r.locationId,
+      size: r.size,
+      units: r.units,
+      velocityShare: expectedShare,
+      isStockout: r.units === 0 && expectedWeekly > 0.3,
+      isLow: r.units > 0 && expectedWeekly > 0 && r.units / expectedWeekly < 2,
+    };
+  });
+}

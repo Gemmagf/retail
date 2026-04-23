@@ -7,6 +7,8 @@
   "nav": {
     "dashboard": "Painel",
     "products": "Produtos",
+    "stores": "Lojas",
+    "sizes": "Tamanhos",
     "allocation": "Allocation",
     "forecast": "Previsão",
     "simulator": "Simulador"
@@ -56,8 +58,38 @@
     "forecastMape": "MAPE previsão (S-1)",
     "forecastMapeHelp": "Erro percentual absoluto médio, últimas 8 semanas",
     "newIn": "Novidades",
-    "newInHelp": "Produtos lançados nas últimas 26 semanas"
+    "newInHelp": "Produtos lançados nas últimas 26 semanas",
+    "missedRevenue": "Receita perdida",
+    "missedRevenueHelp": "Vendas perdidas por rupturas e gaps de tamanho (últimas 4 semanas)"
   },
+  "stores": {
+    "title": "Lojas",
+    "subtitle": "Saúde da rede por loja — clique numa linha para detalhe SKU",
+    "name": "Loja",
+    "skuHealth": "Saúde SKU",
+    "atRisk": "Em risco",
+    "stockouts": "Rupturas",
+    "weeklyRevenue": "Receita sem.",
+    "missedRevenue": "Receita perdida",
+    "incoming": "A caminho",
+    "avgCover": "Cobert. média",
+    "back": "Voltar às lojas",
+    "skusAtStore": "SKU nesta loja",
+    "sizeGaps": "Gaps de tamanho"
+  },
+  "sizes": {
+    "title": "Performance de tamanhos",
+    "subtitle": "Heatmap loja × tamanho — padrões de ruptura que visões agregadas escondem",
+    "selectProduct": "Produto",
+    "legend": {
+      "stockout": "Ruptura (demanda > 0)",
+      "low": "< 2s de cobertura no tamanho",
+      "healthy": "Saudável"
+    },
+    "expectedShare": "Quota de demanda esperada",
+    "storesOut": "{n} loja(s) sem estoque neste tamanho"
+  },
+  "dashboard.missedOpportunities": "Oportunidades de venda perdidas",
   "channelsLabel": "Canal",
   "size": {
     "title": "Grade de tamanhos",
@@ -96,8 +128,9 @@
     }
   },
   "allocation": {
-    "title": "Recomendador de allocation",
-    "subtitle": "Movimentos de estoque sugeridos com base em previsão e cobertura",
+    "title": "Allocation demand-led",
+    "subtitle": "Recomendações de reposição guiadas pelo sell-through observado e sinais de loja — não por uma previsão sazonal monolítica",
+    "methodology": "Cada recomendação é acionada por um sinal de demanda em tempo real (velocidade, campanha próxima, gap de tamanho) em vez do plano pré-temporada.",
     "current": "Atual",
     "recommended": "Recomendado",
     "delta": "Δ",

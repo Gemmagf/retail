@@ -7,6 +7,8 @@
   "nav": {
     "dashboard": "ダッシュボード",
     "products": "製品",
+    "stores": "店舗",
+    "sizes": "サイズ",
     "allocation": "アロケーション",
     "forecast": "需要予測",
     "simulator": "シミュレーター"
@@ -56,8 +58,38 @@
     "forecastMape": "予測MAPE (W-1)",
     "forecastMapeHelp": "直近8週の平均絶対誤差率",
     "newIn": "新商品",
-    "newInHelp": "直近26週に発売された製品"
+    "newInHelp": "直近26週に発売された製品",
+    "missedRevenue": "機会損失売上",
+    "missedRevenueHelp": "在庫切れとサイズ欠品による失注(直近4週)"
   },
+  "stores": {
+    "title": "店舗",
+    "subtitle": "店舗別ネットワーク健全性 — 行をクリックでSKU詳細へ",
+    "name": "店舗",
+    "skuHealth": "SKU健全性",
+    "atRisk": "リスク",
+    "stockouts": "在庫切れ",
+    "weeklyRevenue": "週間売上",
+    "missedRevenue": "機会損失",
+    "incoming": "入荷予定",
+    "avgCover": "平均在庫週数",
+    "back": "店舗一覧へ戻る",
+    "skusAtStore": "この店舗のSKU",
+    "sizeGaps": "サイズ欠品"
+  },
+  "sizes": {
+    "title": "サイズ別パフォーマンス",
+    "subtitle": "店舗 × サイズのヒートマップ — 集計では見えないサイズ欠品を可視化",
+    "selectProduct": "製品",
+    "legend": {
+      "stockout": "在庫切れ(需要あり)",
+      "low": "サイズ在庫2週未満",
+      "healthy": "健全"
+    },
+    "expectedShare": "想定需要シェア",
+    "storesOut": "このサイズで在庫切れの店舗:{n}"
+  },
+  "dashboard.missedOpportunities": "失注機会",
   "channelsLabel": "チャネル",
   "size": {
     "title": "サイズグリッド",
@@ -96,8 +128,9 @@
     }
   },
   "allocation": {
-    "title": "アロケーション推奨",
-    "subtitle": "需要予測と在庫週数に基づく推奨在庫移動",
+    "title": "需要主導型アロケーション",
+    "subtitle": "画一的なシーズン予測ではなく、実績セルスルーと店舗需要シグナルに基づく補充推奨",
+    "methodology": "各推奨はシーズン前計画ではなく、リアルタイムの需要シグナル(販売速度、予定キャンペーン、サイズ欠品)で発動します。",
     "current": "現在",
     "recommended": "推奨",
     "delta": "Δ",

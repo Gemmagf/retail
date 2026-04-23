@@ -13,6 +13,8 @@ import {
   getTopMovers,
   getAtRisk,
   getPurchaseOrders,
+  getMissedSales,
+  getMissedSalesTotals,
   regionColor,
 } from "@/data/series";
 import { productById } from "@/data/products";
@@ -61,6 +63,8 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
     .filter((po) => po.etaWeeks <= 3)
     .sort((a, b) => a.etaWeeks - b.etaWeeks)
     .slice(0, 6);
+  const missed = getMissedSales().slice(0, 8);
+  const missedTotals = getMissedSalesTotals();
 
   return (
     <>
@@ -107,9 +111,10 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
           accent={kpis.forecastMape < 12 ? "success" : kpis.forecastMape < 20 ? "warning" : "danger"}
         />
         <KPICard
-          label={t("kpi.newIn")}
-          value={String(kpis.newInProducts)}
-          help={t("kpi.newInHelp")}
+          label={t("kpi.missedRevenue")}
+          value={formatCurrency(missedTotals.totalRevenue, locale)}
+          help={t("kpi.missedRevenueHelp")}
+          accent={missedTotals.totalRevenue > 5000 ? "danger" : "default"}
         />
       </div>
 
@@ -182,6 +187,58 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
                     </div>
                     <div className="text-xs text-muted-foreground tabular-nums">
                       {formatNumber(r.units, locale)} {t("common.units")}
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </Card>
+      </div>
+
+      <div className="mt-4">
+        <Card title={t("dashboard.missedOpportunities")} subtitle={t("kpi.missedRevenueHelp")}>
+          <ul className="divide-y divide-border">
+            {missed.map((m) => {
+              const p = productById.get(m.productId)!;
+              const loc = locationById.get(m.locationId)!;
+              return (
+                <li
+                  key={`${m.productId}-${m.locationId}`}
+                  className="flex items-center gap-4 py-3 first:pt-0 last:pb-0"
+                >
+                  <div className="h-9 w-14 shrink-0 rounded bg-muted p-1">
+                    <ShoeMark color={p.color} className="h-full w-full" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="truncate text-sm font-medium">{p.name}</span>
+                      {m.reason === "fullStockout" ? (
+                        <span className="rounded-full bg-rose-100 px-1.5 py-0.5 text-[10px] font-medium uppercase text-rose-800">
+                          stock-out
+                        </span>
+                      ) : (
+                        <span className="rounded-full bg-amber-100 px-1.5 py-0.5 text-[10px] font-medium uppercase text-amber-800">
+                          size gap
+                        </span>
+                      )}
+                    </div>
+                    <div className="mt-0.5 text-xs text-muted-foreground">
+                      {loc.city}
+                      {loc.partner ? ` · ${loc.partner}` : ""} · {loc.countryCode}
+                      {m.sizeGaps && m.sizeGaps.length > 0 ? (
+                        <span className="ml-2">
+                          [{m.sizeGaps.slice(0, 4).join(", ")}{m.sizeGaps.length > 4 ? "…" : ""}]
+                        </span>
+                      ) : null}
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm font-semibold tabular-nums text-rose-600">
+                      {formatCurrency(m.missedRevenue, locale)}
+                    </div>
+                    <div className="text-xs text-muted-foreground tabular-nums">
+                      ~{formatNumber(m.missedUnits, locale)} {t("common.units")}
                     </div>
                   </div>
                 </li>

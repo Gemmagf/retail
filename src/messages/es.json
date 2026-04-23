@@ -7,6 +7,8 @@
   "nav": {
     "dashboard": "Dashboard",
     "products": "Productos",
+    "stores": "Tiendas",
+    "sizes": "Tallas",
     "allocation": "Allocation",
     "forecast": "Previsión",
     "simulator": "Simulador"
@@ -56,8 +58,38 @@
     "forecastMape": "MAPE previsión (S-1)",
     "forecastMapeHelp": "Error porcentual absoluto medio, últimas 8 semanas",
     "newIn": "Novedades",
-    "newInHelp": "Productos lanzados en las últimas 26 semanas"
+    "newInHelp": "Productos lanzados en las últimas 26 semanas",
+    "missedRevenue": "Ingreso perdido",
+    "missedRevenueHelp": "Ventas perdidas por roturas y gaps de talla (últimas 4 semanas)"
   },
+  "stores": {
+    "title": "Tiendas",
+    "subtitle": "Salud de la red por tienda — clic en una fila para detalle de SKU",
+    "name": "Tienda",
+    "skuHealth": "Salud SKU",
+    "atRisk": "En riesgo",
+    "stockouts": "Roturas",
+    "weeklyRevenue": "Ingreso sem.",
+    "missedRevenue": "Ingreso perdido",
+    "incoming": "En llegada",
+    "avgCover": "Cobert. med.",
+    "back": "Volver a tiendas",
+    "skusAtStore": "SKU en esta tienda",
+    "sizeGaps": "Gaps de talla"
+  },
+  "sizes": {
+    "title": "Rendimiento por tallas",
+    "subtitle": "Heatmap tienda × talla — patrones de rotura que las vistas agregadas ocultan",
+    "selectProduct": "Producto",
+    "legend": {
+      "stockout": "Rotura (demanda > 0)",
+      "low": "< 2s de cobertura en talla",
+      "healthy": "Sano"
+    },
+    "expectedShare": "Cuota de demanda esperada",
+    "storesOut": "{n} tienda(s) sin stock en esta talla"
+  },
+  "dashboard.missedOpportunities": "Oportunidades de venta perdidas",
   "channelsLabel": "Canal",
   "size": {
     "title": "Cuadro de tallas",
@@ -96,8 +128,9 @@
     }
   },
   "allocation": {
-    "title": "Recomendador de allocation",
-    "subtitle": "Movimientos de stock sugeridos según previsión de demanda y cobertura",
+    "title": "Allocation demand-led",
+    "subtitle": "Recomendaciones de reposición guiadas por el sell-through observado y las señales de demanda de tienda — no por una previsión de temporada monolítica",
+    "methodology": "Cada recomendación se activa por una señal de demanda en vivo (velocidad, campaña próxima, gap de talla) en lugar del plan pre-temporada.",
     "current": "Actual",
     "recommended": "Recomendado",
     "delta": "Δ",

@@ -7,6 +7,8 @@
   "nav": {
     "dashboard": "Tableau de bord",
     "products": "Produits",
+    "stores": "Magasins",
+    "sizes": "Tailles",
     "allocation": "Allocation",
     "forecast": "Prévision",
     "simulator": "Simulateur"
@@ -56,8 +58,38 @@
     "forecastMape": "MAPE prévision (S-1)",
     "forecastMapeHelp": "Erreur absolue moyenne en %, 8 dernières semaines",
     "newIn": "Nouveautés",
-    "newInHelp": "Produits lancés dans les 26 dernières semaines"
+    "newInHelp": "Produits lancés dans les 26 dernières semaines",
+    "missedRevenue": "Revenu manqué",
+    "missedRevenueHelp": "Ventes perdues sur rupture et gaps de taille (4 dernières semaines)"
   },
+  "stores": {
+    "title": "Magasins",
+    "subtitle": "Santé réseau par magasin — clic sur une ligne pour le détail SKU",
+    "name": "Magasin",
+    "skuHealth": "Santé SKU",
+    "atRisk": "À risque",
+    "stockouts": "Ruptures",
+    "weeklyRevenue": "Revenu hebdo",
+    "missedRevenue": "Revenu manqué",
+    "incoming": "En arrivée",
+    "avgCover": "Couv. moy.",
+    "back": "Retour aux magasins",
+    "skusAtStore": "SKU dans ce magasin",
+    "sizeGaps": "Gaps de taille"
+  },
+  "sizes": {
+    "title": "Performance des tailles",
+    "subtitle": "Heatmap magasin × taille — révéler les ruptures que les vues agrégées cachent",
+    "selectProduct": "Produit",
+    "legend": {
+      "stockout": "Rupture (demande > 0)",
+      "low": "< 2s de couverture sur la taille",
+      "healthy": "Sain"
+    },
+    "expectedShare": "Part de demande attendue",
+    "storesOut": "{n} magasin(s) en rupture sur cette taille"
+  },
+  "dashboard.missedOpportunities": "Opportunités de vente manquées",
   "channelsLabel": "Canal",
   "size": {
     "title": "Grille des tailles",
@@ -96,8 +128,9 @@
     }
   },
   "allocation": {
-    "title": "Recommandeur d'allocation",
-    "subtitle": "Mouvements de stock suggérés selon prévision de demande et couverture",
+    "title": "Allocation pilotée par la demande",
+    "subtitle": "Recommandations de réassort tirées du sell-through observé et des signaux magasin — non d'une prévision de saison monolithique",
+    "methodology": "Chaque recommandation est déclenchée par un signal de demande en temps réel (vélocité, campagne à venir, gap de taille) plutôt que par le plan de saison.",
     "current": "Actuel",
     "recommended": "Recommandé",
     "delta": "Δ",

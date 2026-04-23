@@ -7,6 +7,8 @@
   "nav": {
     "dashboard": "Übersicht",
     "products": "Produkte",
+    "stores": "Stores",
+    "sizes": "Grössen",
     "allocation": "Allocation",
     "forecast": "Prognose",
     "simulator": "Simulator"
@@ -56,8 +58,38 @@
     "forecastMape": "Prognose MAPE (W-1)",
     "forecastMapeHelp": "Mittlerer absoluter prozentualer Fehler, letzte 8 Wochen",
     "newIn": "Neue SKUs",
-    "newInHelp": "In den letzten 26 Wochen lancierte Produkte"
+    "newInHelp": "In den letzten 26 Wochen lancierte Produkte",
+    "missedRevenue": "Entgangener Umsatz",
+    "missedRevenueHelp": "Verlorene Verkäufe durch Fehlbestände und Grössenlücken (letzte 4 Wochen)"
   },
+  "stores": {
+    "title": "Stores",
+    "subtitle": "Netzwerk-Status pro Store — Zeile anklicken für SKU-Details",
+    "name": "Store",
+    "skuHealth": "SKU-Gesundheit",
+    "atRisk": "Gefährdet",
+    "stockouts": "Fehlbestände",
+    "weeklyRevenue": "Wochenumsatz",
+    "missedRevenue": "Entgangener Umsatz",
+    "incoming": "Zulauf",
+    "avgCover": "Ø Reichweite",
+    "back": "Zurück zu Stores",
+    "skusAtStore": "SKUs in diesem Store",
+    "sizeGaps": "Grössenlücken"
+  },
+  "sizes": {
+    "title": "Grössenperformance",
+    "subtitle": "Store × Grösse Heatmap — Fehlbestandsmuster sichtbar machen, die Aggregate verbergen",
+    "selectProduct": "Produkt",
+    "legend": {
+      "stockout": "Fehlbestand (Nachfrage > 0)",
+      "low": "< 2W Grössenreichweite",
+      "healthy": "Gesund"
+    },
+    "expectedShare": "Erwarteter Nachfrageanteil",
+    "storesOut": "{n} Store(s) ohne Bestand in dieser Grösse"
+  },
+  "dashboard.missedOpportunities": "Verlorene Verkaufschancen",
   "channelsLabel": "Kanal",
   "size": {
     "title": "Größenraster",
@@ -96,8 +128,9 @@
     }
   },
   "allocation": {
-    "title": "Allocation-Empfehler",
-    "subtitle": "Vorgeschlagene Bestandsbewegungen basierend auf Prognose und Reichweite",
+    "title": "Demand-led Allocation",
+    "subtitle": "Nachschub-Empfehlungen aus beobachtetem Sell-through und Store-Nachfragesignalen — nicht aus einer monolithischen Saisonprognose",
+    "methodology": "Jede Empfehlung wird durch ein Live-Nachfragesignal (Velocity, bevorstehende Kampagne, Grössenlücke) ausgelöst, nicht durch den Vor-Saison-Plan.",
     "current": "Aktuell",
     "recommended": "Empfohlen",
     "delta": "Δ",

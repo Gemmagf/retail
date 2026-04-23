@@ -7,6 +7,8 @@
   "nav": {
     "dashboard": "Dashboard",
     "products": "Prodotti",
+    "stores": "Negozi",
+    "sizes": "Taglie",
     "allocation": "Allocation",
     "forecast": "Previsione",
     "simulator": "Simulatore"
@@ -56,8 +58,38 @@
     "forecastMape": "MAPE previsione (S-1)",
     "forecastMapeHelp": "Errore percentuale assoluto medio, ultime 8 settimane",
     "newIn": "Novità",
-    "newInHelp": "Prodotti lanciati nelle ultime 26 settimane"
+    "newInHelp": "Prodotti lanciati nelle ultime 26 settimane",
+    "missedRevenue": "Ricavo perso",
+    "missedRevenueHelp": "Vendite perse da stock-out e gap di taglia (ultime 4 settimane)"
   },
+  "stores": {
+    "title": "Negozi",
+    "subtitle": "Salute della rete per negozio — clicca una riga per il dettaglio SKU",
+    "name": "Negozio",
+    "skuHealth": "Salute SKU",
+    "atRisk": "A rischio",
+    "stockouts": "Stock-out",
+    "weeklyRevenue": "Ricavo settim.",
+    "missedRevenue": "Ricavo perso",
+    "incoming": "In arrivo",
+    "avgCover": "Copert. media",
+    "back": "Torna ai negozi",
+    "skusAtStore": "SKU in questo negozio",
+    "sizeGaps": "Gap di taglia"
+  },
+  "sizes": {
+    "title": "Performance taglie",
+    "subtitle": "Heatmap negozio × taglia — individua pattern di stock-out che le viste aggregate nascondono",
+    "selectProduct": "Prodotto",
+    "legend": {
+      "stockout": "Stock-out (domanda > 0)",
+      "low": "< 2s di copertura taglia",
+      "healthy": "Sano"
+    },
+    "expectedShare": "Quota di domanda attesa",
+    "storesOut": "{n} negozio/i senza stock in questa taglia"
+  },
+  "dashboard.missedOpportunities": "Opportunità di vendita perse",
   "channelsLabel": "Canale",
   "size": {
     "title": "Griglia taglie",
@@ -96,8 +128,9 @@
     }
   },
   "allocation": {
-    "title": "Suggeritore di allocation",
-    "subtitle": "Movimenti di stock suggeriti basati su previsione di domanda e copertura",
+    "title": "Allocation demand-led",
+    "subtitle": "Raccomandazioni di rifornimento guidate dal sell-through osservato e dai segnali di domanda dei negozi — non da una previsione stagionale monolitica",
+    "methodology": "Ogni raccomandazione è attivata da un segnale di domanda in tempo reale (velocità, campagna imminente, gap di taglia) anziché dal piano pre-stagionale.",
     "current": "Attuale",
     "recommended": "Raccomandato",
     "delta": "Δ",

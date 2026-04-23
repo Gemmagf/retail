@@ -7,6 +7,8 @@
   "nav": {
     "dashboard": "Dashboard",
     "products": "Products",
+    "stores": "Stores",
+    "sizes": "Sizes",
     "allocation": "Allocation",
     "forecast": "Forecast",
     "simulator": "Simulator"
@@ -56,8 +58,38 @@
     "forecastMape": "Forecast MAPE (W-1)",
     "forecastMapeHelp": "Mean absolute percent error, last 8 weeks",
     "newIn": "New-in SKUs",
-    "newInHelp": "Products launched in the last 26 weeks"
+    "newInHelp": "Products launched in the last 26 weeks",
+    "missedRevenue": "Missed revenue",
+    "missedRevenueHelp": "Lost sales from stock-outs and size gaps (last 4 weeks)"
   },
+  "stores": {
+    "title": "Stores",
+    "subtitle": "Network health per store — click a row to drill into SKU-level detail",
+    "name": "Store",
+    "skuHealth": "SKU health",
+    "atRisk": "At risk",
+    "stockouts": "Stock-outs",
+    "weeklyRevenue": "Weekly revenue",
+    "missedRevenue": "Missed revenue",
+    "incoming": "Incoming",
+    "avgCover": "Avg cover",
+    "back": "Back to stores",
+    "skusAtStore": "SKUs at this store",
+    "sizeGaps": "Size gaps"
+  },
+  "sizes": {
+    "title": "Size performance",
+    "subtitle": "Store × size heatmap — spot stock-out patterns that aggregate views hide",
+    "selectProduct": "Product",
+    "legend": {
+      "stockout": "Stock-out (demand > 0)",
+      "low": "< 2w of size cover",
+      "healthy": "Healthy"
+    },
+    "expectedShare": "Expected demand share",
+    "storesOut": "{n} store(s) out of stock at this size"
+  },
+  "dashboard.missedOpportunities": "Missed sales opportunities",
   "channelsLabel": "Channel",
   "size": {
     "title": "Size grid",
@@ -96,8 +128,9 @@
     }
   },
   "allocation": {
-    "title": "Allocation recommender",
-    "subtitle": "Suggested stock movements based on demand forecast and current cover",
+    "title": "Demand-led allocation",
+    "subtitle": "Replenishment recommendations driven by observed sell-through and store-level demand signals — not a monolithic season forecast",
+    "methodology": "Each recommendation is triggered by a live demand signal (velocity, upcoming campaign, size gap) rather than the pre-season plan.",
     "current": "Current",
     "recommended": "Recommended",
     "delta": "Δ",
