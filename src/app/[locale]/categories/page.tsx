@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PageHeader } from "@/components/PageHeader";
 import { Card } from "@/components/Card";
+import { SectionTabs } from "@/components/SectionTabs";
 import { getCategorySummaries } from "@/data/series";
 import { formatCurrency, formatNumber, cn } from "@/lib/utils";
 
@@ -30,6 +31,13 @@ export default async function CategoriesPage({ params }: PageProps<"/[locale]">)
   return (
     <>
       <PageHeader title={t("categories.title")} subtitle={t("categories.subtitle")} />
+      <SectionTabs
+        tabs={[
+          { href: "/products", label: t("nav.products") },
+          { href: "/categories", label: t("nav.categories") },
+          { href: "/sizes", label: t("nav.sizes") },
+        ]}
+      />
 
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 xl:grid-cols-3">
         {summaries.map((s) => {

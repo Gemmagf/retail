@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PageHeader } from "@/components/PageHeader";
 import { ShoeMark } from "@/components/ShoeMark";
 import { SizeGrid } from "@/components/SizeGrid";
+import { SectionTabs } from "@/components/SectionTabs";
 import { Sparkles } from "lucide-react";
 import { products, SIZE_GRID } from "@/data/products";
 import { getInventory, getProductSizeBreakdown } from "@/data/series";
@@ -27,6 +28,13 @@ export default async function ProductsPage({ params }: PageProps<"/[locale]">) {
   return (
     <>
       <PageHeader title={t("products.title")} subtitle={t("products.subtitle")} />
+      <SectionTabs
+        tabs={[
+          { href: "/products", label: t("nav.products") },
+          { href: "/categories", label: t("nav.categories") },
+          { href: "/sizes", label: t("nav.sizes") },
+        ]}
+      />
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {products.map((p) => {

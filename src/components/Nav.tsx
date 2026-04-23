@@ -4,20 +4,22 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { cn } from "@/lib/utils";
-import { LayoutGrid, Package, Store, Ruler, Layers, Boxes, AlertTriangle, LineChart, FlaskConical, User } from "lucide-react";
+import { LayoutGrid, Package, Store, Boxes, LineChart, User } from "lucide-react";
 
 const items = [
-  { href: "/", key: "dashboard", Icon: LayoutGrid },
-  { href: "/categories", key: "categories", Icon: Layers },
-  { href: "/products", key: "products", Icon: Package },
-  { href: "/stores", key: "stores", Icon: Store },
-  { href: "/sizes", key: "sizes", Icon: Ruler },
-  { href: "/allocation", key: "allocation", Icon: Boxes },
-  { href: "/risks", key: "risks", Icon: AlertTriangle },
-  { href: "/forecast", key: "forecast", Icon: LineChart },
-  { href: "/simulator", key: "simulator", Icon: FlaskConical },
-  { href: "/about", key: "about", Icon: User },
+  { href: "/", key: "dashboard", Icon: LayoutGrid, alsoActiveOn: [] as string[] },
+  { href: "/products", key: "products", Icon: Package, alsoActiveOn: ["/categories", "/sizes"] },
+  { href: "/stores", key: "stores", Icon: Store, alsoActiveOn: [] as string[] },
+  { href: "/allocation", key: "allocation", Icon: Boxes, alsoActiveOn: ["/risks"] },
+  { href: "/forecast", key: "forecast", Icon: LineChart, alsoActiveOn: ["/simulator"] },
+  { href: "/about", key: "about", Icon: User, alsoActiveOn: [] as string[] },
 ] as const;
+
+function isActive(pathname: string, href: string, alsoActiveOn: readonly string[]): boolean {
+  if (href === "/") return pathname === "/";
+  if (pathname.startsWith(href)) return true;
+  return alsoActiveOn.some((p) => pathname.startsWith(p));
+}
 
 export function Nav() {
   const t = useTranslations();
@@ -37,8 +39,8 @@ export function Nav() {
         </Link>
 
         <nav className="hidden md:flex items-center gap-1">
-          {items.map(({ href, key, Icon }) => {
-            const active = href === "/" ? pathname === "/" : pathname.startsWith(href);
+          {items.map(({ href, key, Icon, alsoActiveOn }) => {
+            const active = isActive(pathname, href, alsoActiveOn);
             return (
               <Link
                 key={href}
@@ -61,8 +63,8 @@ export function Nav() {
       </div>
 
       <nav className="mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto px-4 pb-2 md:hidden">
-        {items.map(({ href, key, Icon }) => {
-          const active = href === "/" ? pathname === "/" : pathname.startsWith(href);
+        {items.map(({ href, key, Icon, alsoActiveOn }) => {
+          const active = isActive(pathname, href, alsoActiveOn);
           return (
             <Link
               key={href}

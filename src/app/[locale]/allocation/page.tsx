@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Zap } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
+import { SectionTabs } from "@/components/SectionTabs";
 import { products } from "@/data/products";
 import { locations } from "@/data/locations";
 import { getAllocationRecommendations } from "@/data/series";
@@ -18,6 +19,12 @@ export default async function AllocationPage({ params }: PageProps<"/[locale]">)
   return (
     <>
       <PageHeader title={t("allocation.title")} subtitle={t("allocation.subtitle")} />
+      <SectionTabs
+        tabs={[
+          { href: "/allocation", label: t("nav.allocation") },
+          { href: "/risks", label: t("nav.risks") },
+        ]}
+      />
 
       <div className="mb-4 flex items-start gap-3 rounded-lg border border-border bg-foreground/[0.03] p-4 text-sm">
         <Zap className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden />

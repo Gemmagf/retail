@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PageHeader } from "@/components/PageHeader";
+import { SectionTabs } from "@/components/SectionTabs";
 import { products } from "@/data/products";
 import { getSales, getMarketingSpend, CURRENT_WEEK_INDEX } from "@/data/series";
 import type { Region } from "@/data/locations";
@@ -33,6 +34,12 @@ export default async function SimulatorPage({ params }: PageProps<"/[locale]">) 
   return (
     <>
       <PageHeader title={t("simulator.title")} subtitle={t("simulator.subtitle")} />
+      <SectionTabs
+        tabs={[
+          { href: "/forecast", label: t("nav.forecast") },
+          { href: "/simulator", label: t("nav.simulator") },
+        ]}
+      />
       <SimulatorClient products={products} baseDemand={baseDemand} baseSpend={baseSpend} />
     </>
   );

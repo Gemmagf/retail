@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PageHeader } from "@/components/PageHeader";
+import { SectionTabs } from "@/components/SectionTabs";
 import { products } from "@/data/products";
 import { getForecastWithLY, getMarketingSpend } from "@/data/series";
 import type { Region } from "@/data/locations";
@@ -30,6 +31,12 @@ export default async function ForecastPage({ params }: PageProps<"/[locale]">) {
   return (
     <>
       <PageHeader title={t("forecast.title")} subtitle={t("forecast.subtitle")} />
+      <SectionTabs
+        tabs={[
+          { href: "/forecast", label: t("nav.forecast") },
+          { href: "/simulator", label: t("nav.simulator") },
+        ]}
+      />
       <ForecastClient
         products={products}
         forecastByKey={forecastByKey}
