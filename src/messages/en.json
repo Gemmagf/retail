@@ -48,7 +48,26 @@
     "weeklyRevenue": "Weekly revenue",
     "weeklyRevenueHelp": "Last completed week, all regions",
     "openOrders": "Open replen orders",
-    "openOrdersHelp": "Pending warehouse → store transfers"
+    "openOrdersHelp": "Pending warehouse → store transfers",
+    "weeklyMargin": "Weekly margin",
+    "weeklyMarginHelp": "Last completed week, gross margin",
+    "inTransit": "In-transit units",
+    "inTransitHelp": "All open POs across the network",
+    "forecastMape": "Forecast MAPE (W-1)",
+    "forecastMapeHelp": "Mean absolute percent error, last 8 weeks",
+    "newIn": "New-in SKUs",
+    "newInHelp": "Products launched in the last 26 weeks"
+  },
+  "channelsLabel": "Channel",
+  "size": {
+    "title": "Size grid",
+    "stockout": "Stock-out at {n} location(s)"
+  },
+  "po": {
+    "title": "In-transit purchase orders",
+    "subtitle": "Stock arriving from suppliers and inter-DC transfers",
+    "supplier": "Supplier (VN)",
+    "eta": "ETA"
   },
   "dashboard": {
     "title": "Global allocation overview",

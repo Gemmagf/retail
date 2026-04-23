@@ -48,7 +48,26 @@
     "weeklyRevenue": "Wochenumsatz",
     "weeklyRevenueHelp": "Letzte abgeschlossene Woche, alle Regionen",
     "openOrders": "Offene Nachorders",
-    "openOrdersHelp": "Ausstehende Lager → Store-Transfers"
+    "openOrdersHelp": "Ausstehende Lager → Store-Transfers",
+    "weeklyMargin": "Wochen-Marge",
+    "weeklyMarginHelp": "Letzte abgeschlossene Woche, Bruttomarge",
+    "inTransit": "Einheiten unterwegs",
+    "inTransitHelp": "Alle offenen POs im Netzwerk",
+    "forecastMape": "Prognose MAPE (W-1)",
+    "forecastMapeHelp": "Mittlerer absoluter prozentualer Fehler, letzte 8 Wochen",
+    "newIn": "Neue SKUs",
+    "newInHelp": "In den letzten 26 Wochen lancierte Produkte"
+  },
+  "channelsLabel": "Kanal",
+  "size": {
+    "title": "Größenraster",
+    "stockout": "Fehlbestand an {n} Standort(en)"
+  },
+  "po": {
+    "title": "POs unterwegs",
+    "subtitle": "Lieferantenzulauf und Inter-DC-Transfers",
+    "supplier": "Lieferant (VN)",
+    "eta": "ETA"
   },
   "dashboard": {
     "title": "Globale Allocation-Übersicht",

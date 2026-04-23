@@ -1,4 +1,4 @@
-import { products, productById, type Product } from "./products";
+import { products, productById, SIZE_GRID, sizeCurves, type Size, type Product } from "./products";
 import { locations, locationById, type Region, regionMeta } from "./locations";
 import { hashSeed, mulberry32 } from "@/lib/utils";
 
@@ -7,23 +7,47 @@ export const FORECAST_WEEKS = 8;
 export const TOTAL_WEEKS = HISTORY_WEEKS + FORECAST_WEEKS;
 export const CURRENT_WEEK_INDEX = HISTORY_WEEKS - 1;
 
-const CAMPAIGNS: { region: Region; centerWeek: number; lift: number; label: string }[] = [
-  { region: "EMEA", centerWeek: 14, lift: 1.6, label: "Berlin Marathon" },
-  { region: "AMER", centerWeek: 38, lift: 1.5, label: "NYC Marathon" },
-  { region: "APAC", centerWeek: 6, lift: 1.4, label: "Tokyo Marathon" },
-  { region: "EMEA", centerWeek: 46, lift: 1.3, label: "Holiday lifestyle push" },
-  { region: "AMER", centerWeek: 22, lift: 1.25, label: "Summer trail launch" },
+type Campaign = {
+  region: Region | "ALL";
+  centerWeek: number;
+  lift: number;
+  label: string;
+  category?: "road" | "trail" | "training" | "lifestyle" | "hike";
+  productId?: string;
+};
+
+const CAMPAIGNS: Campaign[] = [
+  { region: "EMEA", centerWeek: 14, lift: 1.6, label: "Berlin Marathon", category: "road" },
+  { region: "EMEA", centerWeek: 16, lift: 1.45, label: "London Marathon", category: "road" },
+  { region: "AMER", centerWeek: 14, lift: 1.4, label: "Boston Marathon", category: "road" },
+  { region: "AMER", centerWeek: 38, lift: 1.55, label: "NYC Marathon", category: "road" },
+  { region: "APAC", centerWeek: 6, lift: 1.4, label: "Tokyo Marathon", category: "road" },
+  { region: "APAC", centerWeek: 4, lift: 1.3, label: "Lunar New Year", category: "lifestyle" },
+  { region: "EMEA", centerWeek: 46, lift: 1.3, label: "Holiday lifestyle push", category: "lifestyle" },
+  { region: "AMER", centerWeek: 22, lift: 1.25, label: "Summer trail launch", category: "trail" },
+  { region: "ALL", centerWeek: 47, lift: 1.5, label: "Black Friday" },
+  { region: "EMEA", centerWeek: 51, lift: 1.35, label: "Boxing Day" },
+  { region: "AMER", centerWeek: 35, lift: 1.2, label: "Back to school", category: "training" },
+  { region: "EMEA", centerWeek: 18, lift: 1.5, label: "Cloudtilt launch", productId: "cloudtilt" },
+  { region: "ALL", centerWeek: 30, lift: 1.4, label: "Cloudboom Echo 3 launch", productId: "cloudboom-echo-3" },
+  { region: "EMEA", centerWeek: 38, lift: 1.35, label: "Cloudsurfer Trail launch", productId: "cloudsurfer-trail" },
+  { region: "EMEA", centerWeek: 40, lift: 1.2, label: "Hike season EMEA", category: "hike" },
 ];
 
-function seasonality(weekIdx: number): number {
+function seasonality(weekIdx: number, category: string): number {
   const phase = (weekIdx / 52) * Math.PI * 2;
+  if (category === "lifestyle") return 1 + 0.18 * Math.sin(phase + Math.PI / 4);
+  if (category === "hike") return 1 + 0.4 * Math.sin(phase - Math.PI / 3);
+  if (category === "trail") return 1 + 0.35 * Math.sin(phase - Math.PI / 4);
   return 1 + 0.25 * Math.sin(phase - Math.PI / 2);
 }
 
-function campaignLift(region: Region, weekIdx: number): number {
+function campaignLift(region: Region, weekIdx: number, product: Product): number {
   let mult = 1;
   for (const c of CAMPAIGNS) {
-    if (c.region !== region) continue;
+    if (c.region !== "ALL" && c.region !== region) continue;
+    if (c.category && c.category !== product.category) continue;
+    if (c.productId && c.productId !== product.id) continue;
     const dist = Math.abs(weekIdx - c.centerWeek);
     if (dist <= 3) {
       mult *= 1 + (c.lift - 1) * Math.exp(-(dist * dist) / 2.5);
@@ -32,10 +56,26 @@ function campaignLift(region: Region, weekIdx: number): number {
   return mult;
 }
 
-function trendLift(productId: string, weekIdx: number): number {
+function regionMarketingLift(region: Region, weekIdx: number): number {
+  let mult = 1;
+  for (const c of CAMPAIGNS) {
+    if (c.region !== "ALL" && c.region !== region) continue;
+    const dist = Math.abs(weekIdx - c.centerWeek);
+    if (dist <= 3) mult *= 1 + (c.lift - 1) * Math.exp(-(dist * dist) / 3);
+  }
+  return mult;
+}
+
+function trendLift(productId: string, weekIdx: number, isNewIn: boolean, launchWeek?: number): number {
+  if (isNewIn && launchWeek !== undefined) {
+    if (weekIdx < launchWeek) return 0;
+    const sinceLaunch = weekIdx - launchWeek;
+    return 0.3 + Math.min(0.7, sinceLaunch * 0.12);
+  }
   if (productId === "cloudboom-strike") return 1 + weekIdx * 0.005;
   if (productId === "cloud-5") return 1 + weekIdx * 0.004;
   if (productId === "cloudgo") return 1 - weekIdx * 0.002;
+  if (productId === "cloudvista-2") return 1 - weekIdx * 0.001;
   return 1;
 }
 
@@ -54,6 +94,7 @@ export function getSales(): SaleRow[] {
   const out: SaleRow[] = [];
   for (const product of products) {
     for (const location of locations) {
+      if (location.channel === "warehouse") continue;
       const baseDemand =
         product.basePopularity *
         product.regionBias[location.region] *
@@ -66,9 +107,9 @@ export function getSales(): SaleRow[] {
           0,
           Math.round(
             baseDemand *
-              seasonality(week) *
-              campaignLift(location.region, week) *
-              trendLift(product.id, week) *
+              seasonality(week, product.category) *
+              campaignLift(location.region, week, product) *
+              trendLift(product.id, week, !!product.isNewIn, product.launchWeek) *
               noise,
           ),
         );
@@ -111,12 +152,16 @@ export function getInventory(): InventoryRow[] {
   const out: InventoryRow[] = [];
   for (const product of products) {
     for (const location of locations) {
-      const v = recentVelocity(product.id, location.id);
+      const isWarehouse = location.channel === "warehouse";
+      const v = isWarehouse
+        ? aggregatedRegionVelocity(product.id, location.region)
+        : recentVelocity(product.id, location.id);
       const rand = mulberry32(hashSeed("inv", product.id, location.id));
-      const targetCover = 4 + rand() * 8;
-      const noise = 0.6 + rand() * 0.9;
+      const targetCover = isWarehouse ? 8 + rand() * 12 : 4 + rand() * 8;
+      const noise = isWarehouse ? 0.8 + rand() * 0.5 : 0.6 + rand() * 0.9;
       const units = Math.max(0, Math.round(v * targetCover * noise));
-      const weeksCover = v > 0 ? units / v : 99;
+      const refVel = isWarehouse ? Math.max(1, v / 3) : v;
+      const weeksCover = refVel > 0 ? units / refVel : 99;
       out.push({
         productId: product.id,
         locationId: location.id,
@@ -126,6 +171,72 @@ export function getInventory(): InventoryRow[] {
     }
   }
   _inventory = out;
+  return out;
+}
+
+function aggregatedRegionVelocity(productId: string, region: Region): number {
+  return locations
+    .filter((l) => l.region === region && l.channel !== "warehouse")
+    .reduce((a, l) => a + recentVelocity(productId, l.id), 0);
+}
+
+export type InventoryBySizeRow = InventoryRow & { size: Size };
+
+let _inventoryBySize: InventoryBySizeRow[] | null = null;
+
+export function getInventoryBySize(): InventoryBySizeRow[] {
+  if (_inventoryBySize) return _inventoryBySize;
+  const out: InventoryBySizeRow[] = [];
+  const inv = getInventory();
+  for (const row of inv) {
+    const product = productById.get(row.productId)!;
+    const curve = sizeCurves[product.gender];
+    const rand = mulberry32(hashSeed("size", row.productId, row.locationId));
+    for (const size of SIZE_GRID) {
+      const sizeShare = curve[size];
+      const noise = 0.7 + rand() * 0.6;
+      const units = Math.max(0, Math.round(row.units * sizeShare * noise));
+      const expected = row.weeksCover * sizeShare;
+      out.push({
+        productId: row.productId,
+        locationId: row.locationId,
+        size,
+        units,
+        weeksCover: expected > 0 && units > 0 ? row.weeksCover * (units / Math.max(1, row.units * sizeShare)) : units === 0 ? 0 : row.weeksCover,
+      });
+    }
+  }
+  _inventoryBySize = out;
+  return out;
+}
+
+export type SizeBreakdown = {
+  productId: string;
+  size: Size;
+  units: number;
+  pctOfDemand: number;
+  stockoutLocations: number;
+};
+
+export function getProductSizeBreakdown(productId: string): SizeBreakdown[] {
+  const product = productById.get(productId)!;
+  const curve = sizeCurves[product.gender];
+  const rows = getInventoryBySize().filter(
+    (r) => r.productId === productId && locationById.get(r.locationId)!.channel !== "warehouse",
+  );
+  const out: SizeBreakdown[] = [];
+  for (const size of SIZE_GRID) {
+    const sized = rows.filter((r) => r.size === size);
+    const units = sized.reduce((a, b) => a + b.units, 0);
+    const stockoutLocations = sized.filter((r) => r.units === 0).length;
+    out.push({
+      productId,
+      size,
+      units,
+      pctOfDemand: curve[size],
+      stockoutLocations,
+    });
+  }
   return out;
 }
 
@@ -145,7 +256,7 @@ export function getMarketingSpend(): MarketingSpendRow[] {
     const rand = mulberry32(hashSeed("mkt", region));
     for (let week = 0; week < TOTAL_WEEKS; week++) {
       const noise = 0.85 + rand() * 0.3;
-      const camp = campaignLift(region, week);
+      const camp = regionMarketingLift(region, week);
       const trend = 1 + week * 0.003;
       out.push({
         region,
@@ -187,8 +298,10 @@ export function getForecast(productId?: string, region?: Region | "ALL"): Foreca
   }
   for (let i = 1; i <= FORECAST_WEEKS; i++) {
     const w = CURRENT_WEEK_INDEX + i;
-    const seasonal = seasonality(w % 52);
-    const campaign = region && region !== "ALL" ? campaignLift(region, w) : 1.05;
+    const product = productId ? productById.get(productId) : null;
+    const seasonal = product ? seasonality(w % 52, product.category) : seasonality(w % 52, "road");
+    const campaign =
+      region && region !== "ALL" && product ? campaignLift(region, w, product) : 1.05;
     const center = recentAvg * seasonal * campaign;
     const band = center * (0.12 + i * 0.02);
     out.push({
@@ -199,6 +312,46 @@ export function getForecast(productId?: string, region?: Region | "ALL"): Foreca
     });
   }
   return out;
+}
+
+export type ForecastAccuracy = {
+  week: number;
+  actual: number;
+  forecast: number;
+  errorPct: number;
+};
+
+export function getForecastAccuracy(productId?: string, region?: Region | "ALL", weeks = 8): ForecastAccuracy[] {
+  const sales = getSales().filter(
+    (s) =>
+      (!productId || s.productId === productId) &&
+      (!region || region === "ALL" || s.region === region),
+  );
+  const byWeek = new Map<number, number>();
+  for (const s of sales) byWeek.set(s.week, (byWeek.get(s.week) ?? 0) + s.units);
+
+  const out: ForecastAccuracy[] = [];
+  for (let i = weeks - 1; i >= 0; i--) {
+    const w = CURRENT_WEEK_INDEX - i;
+    const actual = byWeek.get(w) ?? 0;
+    const lookback = Array.from({ length: 4 }, (_, k) => byWeek.get(w - k - 1) ?? 0).reduce(
+      (a, b) => a + b,
+      0,
+    ) / 4;
+    const product = productId ? productById.get(productId) : null;
+    const seasonal = product ? seasonality(w % 52, product.category) : seasonality(w % 52, "road");
+    const forecast = Math.round(lookback * seasonal);
+    const errorPct = actual > 0 ? Math.abs(forecast - actual) / actual : 0;
+    out.push({ week: w, actual, forecast, errorPct });
+  }
+  return out;
+}
+
+export function getMAPE(productId?: string, region?: Region | "ALL"): number {
+  const acc = getForecastAccuracy(productId, region, 8);
+  const valid = acc.filter((a) => a.actual > 0);
+  if (valid.length === 0) return 0;
+  return (valid.reduce((a, b) => a + b.errorPct, 0) / valid.length) * 100;
 }
 
 export type AllocationRecommendation = {
@@ -227,26 +380,44 @@ export function getAllocationRecommendations(): AllocationRecommendation[] {
   }
 
   for (const [productId, rows] of byProduct) {
-    const lows = rows.filter((r) => r.weeksCover < 2.5).sort((a, b) => a.weeksCover - b.weeksCover);
-    const highs = rows.filter((r) => r.weeksCover > 10).sort((a, b) => b.weeksCover - a.weeksCover);
+    const sellingRows = rows.filter((r) => locationById.get(r.locationId)!.channel !== "warehouse");
+    const lows = sellingRows
+      .filter((r) => r.weeksCover < 2.5)
+      .sort((a, b) => a.weeksCover - b.weeksCover);
+    const highs = rows
+      .filter((r) => r.weeksCover > 8 && r.units > 30)
+      .sort((a, b) => {
+        const ach = locationById.get(a.locationId)!.channel === "warehouse" ? -1 : 0;
+        const bch = locationById.get(b.locationId)!.channel === "warehouse" ? -1 : 0;
+        if (ach !== bch) return ach - bch;
+        return b.weeksCover - a.weeksCover;
+      });
 
     for (let i = 0; i < Math.min(lows.length, highs.length); i++) {
       const low = lows[i];
       const high = highs[i];
+      if (low.locationId === high.locationId) continue;
       const lowVel = recentVelocity(productId, low.locationId);
-      const highVel = recentVelocity(productId, high.locationId);
+      const highChannel = locationById.get(high.locationId)!.channel;
+      const highVel =
+        highChannel === "warehouse"
+          ? aggregatedRegionVelocity(productId, locationById.get(high.locationId)!.region)
+          : recentVelocity(productId, high.locationId);
       if (lowVel === 0) continue;
       const targetCover = 6;
       const need = Math.max(0, Math.round(lowVel * targetCover - low.units));
-      const surplus = Math.max(0, Math.round(high.units - highVel * targetCover));
+      const surplus = Math.max(0, Math.round(high.units - highVel * targetCover * 0.8));
       const transfer = Math.min(need, surplus);
       if (transfer < 5) continue;
 
       const lowRegion = locationById.get(low.locationId)!.region;
       const highRegion = locationById.get(high.locationId)!.region;
-      const isCampaign = CAMPAIGNS.some(
+      const product = productById.get(productId)!;
+      const upcomingCampaign = CAMPAIGNS.some(
         (c) =>
-          c.region === lowRegion &&
+          (c.region === "ALL" || c.region === lowRegion) &&
+          (!c.category || c.category === product.category) &&
+          (!c.productId || c.productId === productId) &&
           Math.abs(c.centerWeek - ((CURRENT_WEEK_INDEX + 2) % 52)) <= 4,
       );
 
@@ -257,11 +428,12 @@ export function getAllocationRecommendations(): AllocationRecommendation[] {
         current: low.units,
         recommended: low.units + transfer,
         delta: transfer,
-        reasonKey: isCampaign ? "campaign" : low.weeksCover < 1.5 ? "stockOut" : "seasonality",
+        reasonKey: upcomingCampaign ? "campaign" : low.weeksCover < 1.5 ? "stockOut" : "seasonality",
         reasonWeeks: Math.max(1, Math.round(low.weeksCover)),
         priority:
           (2.5 - low.weeksCover) * 100 +
-          (highRegion === lowRegion ? 20 : 0) +
+          (highRegion === lowRegion ? 25 : 0) +
+          (highChannel === "warehouse" ? 15 : 0) +
           (productById.get(productId)?.basePopularity ?? 1) * 10,
       });
     }
@@ -272,11 +444,66 @@ export function getAllocationRecommendations(): AllocationRecommendation[] {
   return out;
 }
 
+export type PurchaseOrder = {
+  id: string;
+  productId: string;
+  fromLocationId: string;
+  toLocationId: string;
+  units: number;
+  etaWeeks: number;
+  createdWeeksAgo: number;
+};
+
+let _pos: PurchaseOrder[] | null = null;
+
+export function getPurchaseOrders(): PurchaseOrder[] {
+  if (_pos) return _pos;
+  const out: PurchaseOrder[] = [];
+  const warehouses = locations.filter((l) => l.channel === "warehouse");
+  const stores = locations.filter((l) => l.channel !== "warehouse");
+
+  let counter = 1;
+  for (const product of products) {
+    const rand = mulberry32(hashSeed("po", product.id));
+    for (const wh of warehouses) {
+      if (rand() < 0.55) {
+        const eta = 1 + Math.floor(rand() * Math.min(6, product.leadTimeWeeks));
+        out.push({
+          id: `PO-${String(counter++).padStart(5, "0")}`,
+          productId: product.id,
+          fromLocationId: "supplier-vn",
+          toLocationId: wh.id,
+          units: Math.round(200 + rand() * 800),
+          etaWeeks: eta,
+          createdWeeksAgo: product.leadTimeWeeks - eta,
+        });
+      }
+    }
+    for (const store of stores) {
+      if (rand() < 0.18) {
+        const wh = warehouses.find((w) => w.region === store.region) ?? warehouses[0];
+        out.push({
+          id: `PO-${String(counter++).padStart(5, "0")}`,
+          productId: product.id,
+          fromLocationId: wh.id,
+          toLocationId: store.id,
+          units: Math.round(20 + rand() * 80),
+          etaWeeks: 1 + Math.floor(rand() * 3),
+          createdWeeksAgo: Math.floor(rand() * 2),
+        });
+      }
+    }
+  }
+  _pos = out;
+  return out;
+}
+
 export type RegionWeekly = {
   region: Region;
   week: number;
   units: number;
   revenue: number;
+  margin: number;
 };
 
 export function getWeeklyByRegion(weeks = 26): RegionWeekly[] {
@@ -286,16 +513,14 @@ export function getWeeklyByRegion(weeks = 26): RegionWeekly[] {
     const product = productById.get(s.productId)!;
     const key = `${s.region}|${s.week}`;
     const existing = byKey.get(key);
+    const rev = s.units * product.price;
+    const mgn = s.units * (product.price - product.cogs);
     if (existing) {
       existing.units += s.units;
-      existing.revenue += s.units * product.price;
+      existing.revenue += rev;
+      existing.margin += mgn;
     } else {
-      byKey.set(key, {
-        region: s.region,
-        week: s.week,
-        units: s.units,
-        revenue: s.units * product.price,
-      });
+      byKey.set(key, { region: s.region, week: s.week, units: s.units, revenue: rev, margin: mgn });
     }
   }
   return Array.from(byKey.values()).sort((a, b) => a.week - b.week);
@@ -307,11 +532,16 @@ export type DashboardKPIs = {
   stockOutCount: number;
   overstockCount: number;
   weeklyRevenue: number;
+  weeklyMargin: number;
   openOrders: number;
+  inTransitUnits: number;
+  forecastMape: number;
+  newInProducts: number;
 };
 
 export function getKPIs(): DashboardKPIs {
   const inv = getInventory();
+  const sellingInv = inv.filter((r) => locationById.get(r.locationId)!.channel !== "warehouse");
   const sales = getSales();
   const lastWeek = sales.filter((s) => s.week === CURRENT_WEEK_INDEX);
   const recent = sales.filter((s) => s.week >= CURRENT_WEEK_INDEX - 3);
@@ -322,31 +552,40 @@ export function getKPIs(): DashboardKPIs {
     recentByPair.set(k, (recentByPair.get(k) ?? 0) + s.units);
   }
 
-  const healthy = inv.filter((r) => r.weeksCover >= 2 && r.weeksCover <= 8).length;
-  const stockOuts = inv.filter(
+  const healthy = sellingInv.filter((r) => r.weeksCover >= 2 && r.weeksCover <= 8).length;
+  const stockOuts = sellingInv.filter(
     (r) => r.units === 0 && (recentByPair.get(`${r.productId}|${r.locationId}`) ?? 0) > 0,
   ).length;
-  const overstock = inv.filter((r) => r.weeksCover > 12).length;
+  const overstock = sellingInv.filter((r) => r.weeksCover > 12).length;
 
   const totalUnits = lastWeek.reduce((a, b) => a + b.units, 0);
-  const totalStockBefore = inv.reduce((a, b) => a + b.units, 0) + totalUnits;
+  const totalStockBefore = sellingInv.reduce((a, b) => a + b.units, 0) + totalUnits;
   const sellThrough = totalStockBefore > 0 ? (totalUnits / totalStockBefore) * 100 : 0;
-  const weeklyRevenue = lastWeek.reduce(
-    (a, b) => a + b.units * (productById.get(b.productId)?.price ?? 0),
-    0,
-  );
+  let weeklyRevenue = 0;
+  let weeklyMargin = 0;
+  for (const r of lastWeek) {
+    const p = productById.get(r.productId)!;
+    weeklyRevenue += r.units * p.price;
+    weeklyMargin += r.units * (p.price - p.cogs);
+  }
+
+  const inTransitUnits = getPurchaseOrders().reduce((a, b) => a + b.units, 0);
 
   return {
-    stockHealthPct: (healthy / inv.length) * 100,
+    stockHealthPct: (healthy / Math.max(1, sellingInv.length)) * 100,
     sellThroughPct: sellThrough,
     stockOutCount: stockOuts,
     overstockCount: overstock,
     weeklyRevenue,
+    weeklyMargin,
     openOrders: getAllocationRecommendations().length,
+    inTransitUnits,
+    forecastMape: getMAPE(),
+    newInProducts: products.filter((p) => p.isNewIn).length,
   };
 }
 
-export type TopMover = { productId: string; units: number; revenue: number };
+export type TopMover = { productId: string; units: number; revenue: number; margin: number };
 
 export function getTopMovers(limit = 5): TopMover[] {
   const lastWeek = getSales().filter((s) => s.week === CURRENT_WEEK_INDEX);
@@ -354,15 +593,14 @@ export function getTopMovers(limit = 5): TopMover[] {
   for (const s of lastWeek) {
     const p = productById.get(s.productId)!;
     const existing = byProduct.get(s.productId);
+    const rev = s.units * p.price;
+    const mgn = s.units * (p.price - p.cogs);
     if (existing) {
       existing.units += s.units;
-      existing.revenue += s.units * p.price;
+      existing.revenue += rev;
+      existing.margin += mgn;
     } else {
-      byProduct.set(s.productId, {
-        productId: s.productId,
-        units: s.units,
-        revenue: s.units * p.price,
-      });
+      byProduct.set(s.productId, { productId: s.productId, units: s.units, revenue: rev, margin: mgn });
     }
   }
   return Array.from(byProduct.values())
@@ -379,7 +617,7 @@ export type AtRisk = {
 
 export function getAtRisk(limit = 8): AtRisk[] {
   return getInventory()
-    .filter((r) => r.weeksCover < 2 && r.units > 0)
+    .filter((r) => locationById.get(r.locationId)!.channel !== "warehouse" && r.weeksCover < 2 && r.units > 0)
     .sort((a, b) => a.weeksCover - b.weeksCover)
     .slice(0, limit)
     .map(({ productId, locationId, units, weeksCover }) => ({

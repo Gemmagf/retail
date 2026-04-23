@@ -5,15 +5,17 @@ import { Card } from "@/components/Card";
 import { SalesByRegionChart } from "@/components/charts/SalesByRegionChart";
 import { StockByRegionChart } from "@/components/charts/StockByRegionChart";
 import { ShoeMark } from "@/components/ShoeMark";
+import { Truck } from "lucide-react";
 import {
   getKPIs,
   getWeeklyByRegion,
   getInventory,
   getTopMovers,
   getAtRisk,
+  getPurchaseOrders,
   regionColor,
 } from "@/data/series";
-import { products, productById } from "@/data/products";
+import { productById } from "@/data/products";
 import { locationById, type Region } from "@/data/locations";
 import { formatCurrency, formatNumber } from "@/lib/utils";
 
@@ -38,7 +40,11 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
 
   const inv = getInventory();
   const stockByRegion = REGIONS.map((r) => {
-    const rows = inv.filter((row) => locationById.get(row.locationId)!.region === r);
+    const rows = inv.filter(
+      (row) =>
+        locationById.get(row.locationId)!.region === r &&
+        locationById.get(row.locationId)!.channel !== "warehouse",
+    );
     const cover = rows.reduce((a, b) => a + b.weeksCover, 0) / Math.max(1, rows.length);
     return { region: t(`regions.${r}`), weeksCover: cover, color: regionColor(r) };
   });
@@ -51,6 +57,10 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
 
   const topMovers = getTopMovers(5);
   const atRisk = getAtRisk(8);
+  const upcomingPOs = getPurchaseOrders()
+    .filter((po) => po.etaWeeks <= 3)
+    .sort((a, b) => a.etaWeeks - b.etaWeeks)
+    .slice(0, 6);
 
   return (
     <>
@@ -78,6 +88,28 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
           label={t("kpi.weeklyRevenue")}
           value={formatCurrency(kpis.weeklyRevenue, locale)}
           help={t("kpi.weeklyRevenueHelp")}
+        />
+        <KPICard
+          label={t("kpi.weeklyMargin")}
+          value={formatCurrency(kpis.weeklyMargin, locale)}
+          help={t("kpi.weeklyMarginHelp")}
+          accent="success"
+        />
+        <KPICard
+          label={t("kpi.inTransit")}
+          value={formatNumber(kpis.inTransitUnits, locale)}
+          help={t("kpi.inTransitHelp")}
+        />
+        <KPICard
+          label={t("kpi.forecastMape")}
+          value={`${kpis.forecastMape.toFixed(1)}%`}
+          help={t("kpi.forecastMapeHelp")}
+          accent={kpis.forecastMape < 12 ? "success" : kpis.forecastMape < 20 ? "warning" : "danger"}
+        />
+        <KPICard
+          label={t("kpi.newIn")}
+          value={String(kpis.newInProducts)}
+          help={t("kpi.newInHelp")}
         />
       </div>
 
@@ -141,6 +173,7 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
                     <div className="truncate text-sm font-medium">{p.name}</div>
                     <div className="text-xs text-muted-foreground">
                       {loc.city}, {loc.countryCode}
+                      {loc.partner ? ` · ${loc.partner}` : ""}
                     </div>
                   </div>
                   <div className="text-right">
@@ -149,6 +182,48 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
                     </div>
                     <div className="text-xs text-muted-foreground tabular-nums">
                       {formatNumber(r.units, locale)} {t("common.units")}
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </Card>
+      </div>
+
+      <div className="mt-4">
+        <Card title={t("po.title")} subtitle={t("po.subtitle")}>
+          <ul className="divide-y divide-border">
+            {upcomingPOs.map((po) => {
+              const p = productById.get(po.productId)!;
+              const from =
+                po.fromLocationId === "supplier-vn"
+                  ? { city: t("po.supplier"), countryCode: "VN", partner: undefined }
+                  : locationById.get(po.fromLocationId)!;
+              const to = locationById.get(po.toLocationId)!;
+              return (
+                <li
+                  key={po.id}
+                  className="flex items-center gap-4 py-3 first:pt-0 last:pb-0"
+                >
+                  <Truck className="h-5 w-5 shrink-0 text-muted-foreground" aria-hidden />
+                  <div className="min-w-0 flex-1">
+                    <div className="truncate text-sm font-medium">
+                      {p.name}{" "}
+                      <span className="ml-1 text-xs font-normal text-muted-foreground">{po.id}</span>
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {from.city}
+                      {"partner" in from && from.partner ? ` (${from.partner})` : ""} → {to.city}
+                      {to.partner ? ` (${to.partner})` : ""}
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm font-semibold tabular-nums">
+                      {formatNumber(po.units, locale)} {t("common.units")}
+                    </div>
+                    <div className="text-xs text-muted-foreground tabular-nums">
+                      {t("po.eta")}: {po.etaWeeks}w
                     </div>
                   </div>
                 </li>

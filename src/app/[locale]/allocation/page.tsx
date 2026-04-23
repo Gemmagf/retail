@@ -5,15 +5,15 @@ import { ShoeMark } from "@/components/ShoeMark";
 import { ArrowRight } from "lucide-react";
 import { getAllocationRecommendations } from "@/data/series";
 import { productById } from "@/data/products";
-import { locationById } from "@/data/locations";
-import { formatNumber } from "@/lib/utils";
+import { locationById, channelMeta } from "@/data/locations";
+import { cn, formatNumber } from "@/lib/utils";
 
 export default async function AllocationPage({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations();
 
-  const recs = getAllocationRecommendations().slice(0, 30);
+  const recs = getAllocationRecommendations().slice(0, 40);
 
   return (
     <>
@@ -26,6 +26,7 @@ export default async function AllocationPage({ params }: PageProps<"/[locale]">)
               <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground">
                 <th className="px-2 py-2 font-medium">{t("common.product")}</th>
                 <th className="px-2 py-2 font-medium">{t("common.location")}</th>
+                <th className="px-2 py-2 font-medium">{t("channelsLabel")}</th>
                 <th className="px-2 py-2 font-medium text-right">{t("allocation.current")}</th>
                 <th className="px-2 py-2 font-medium text-right">{t("allocation.delta")}</th>
                 <th className="px-2 py-2 font-medium text-right">{t("allocation.recommended")}</th>
@@ -60,12 +61,31 @@ export default async function AllocationPage({ params }: PageProps<"/[locale]">)
                       <div className="flex items-center gap-2 text-xs">
                         <span className="rounded border border-border px-1.5 py-0.5">
                           {from.city}
+                          {from.partner ? ` · ${from.partner}` : ""}
                         </span>
                         <ArrowRight className="h-3 w-3 text-muted-foreground" />
                         <span className="rounded bg-foreground px-1.5 py-0.5 text-background">
                           {to.city}
+                          {to.partner ? ` · ${to.partner}` : ""}
                         </span>
                       </div>
+                    </td>
+                    <td className="px-2 py-3">
+                      <span
+                        className={cn(
+                          "inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide",
+                        )}
+                        style={{
+                          background: `${channelMeta[to.channel].color}1a`,
+                          color: channelMeta[to.channel].color,
+                        }}
+                      >
+                        <span
+                          className="h-1.5 w-1.5 rounded-full"
+                          style={{ background: channelMeta[to.channel].color }}
+                        />
+                        {t(`channels.${to.channel}`)}
+                      </span>
                     </td>
                     <td className="px-2 py-3 text-right tabular-nums text-muted-foreground">
                       {formatNumber(r.current, locale)}

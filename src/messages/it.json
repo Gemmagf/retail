@@ -48,7 +48,26 @@
     "weeklyRevenue": "Ricavo settimanale",
     "weeklyRevenueHelp": "Ultima settimana completa, tutte le regioni",
     "openOrders": "Ordini di rifornimento aperti",
-    "openOrdersHelp": "Trasferimenti magazzino → store in attesa"
+    "openOrdersHelp": "Trasferimenti magazzino → store in attesa",
+    "weeklyMargin": "Margine settimanale",
+    "weeklyMarginHelp": "Ultima settimana completa, margine lordo",
+    "inTransit": "Unità in transito",
+    "inTransitHelp": "Tutti gli ordini di acquisto aperti nella rete",
+    "forecastMape": "MAPE previsione (S-1)",
+    "forecastMapeHelp": "Errore percentuale assoluto medio, ultime 8 settimane",
+    "newIn": "Novità",
+    "newInHelp": "Prodotti lanciati nelle ultime 26 settimane"
+  },
+  "channelsLabel": "Canale",
+  "size": {
+    "title": "Griglia taglie",
+    "stockout": "Stock-out in {n} punto/i vendita"
+  },
+  "po": {
+    "title": "Ordini in transito",
+    "subtitle": "Stock in arrivo dai fornitori e trasferimenti inter-DC",
+    "supplier": "Fornitore (VN)",
+    "eta": "ETA"
   },
   "dashboard": {
     "title": "Panoramica allocation globale",

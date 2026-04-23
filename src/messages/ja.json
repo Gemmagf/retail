@@ -48,7 +48,26 @@
     "weeklyRevenue": "週間売上",
     "weeklyRevenueHelp": "直近完了週、全地域",
     "openOrders": "未処理補充オーダー",
-    "openOrdersHelp": "倉庫 → 店舗の未処理転送"
+    "openOrdersHelp": "倉庫 → 店舗の未処理転送",
+    "weeklyMargin": "週間粗利",
+    "weeklyMarginHelp": "直近完了週、粗利",
+    "inTransit": "輸送中数量",
+    "inTransitHelp": "ネットワーク内の全未処理PO",
+    "forecastMape": "予測MAPE (W-1)",
+    "forecastMapeHelp": "直近8週の平均絶対誤差率",
+    "newIn": "新商品",
+    "newInHelp": "直近26週に発売された製品"
+  },
+  "channelsLabel": "チャネル",
+  "size": {
+    "title": "サイズグリッド",
+    "stockout": "{n}拠点で在庫切れ"
+  },
+  "po": {
+    "title": "輸送中PO",
+    "subtitle": "サプライヤーからの入荷とDC間転送",
+    "supplier": "サプライヤー(VN)",
+    "eta": "ETA"
   },
   "dashboard": {
     "title": "グローバルアロケーション概要",

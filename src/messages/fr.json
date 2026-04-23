@@ -48,7 +48,26 @@
     "weeklyRevenue": "Revenu hebdomadaire",
     "weeklyRevenueHelp": "Dernière semaine complète, toutes régions",
     "openOrders": "Commandes de réassort ouvertes",
-    "openOrdersHelp": "Transferts entrepôt → magasin en attente"
+    "openOrdersHelp": "Transferts entrepôt → magasin en attente",
+    "weeklyMargin": "Marge hebdomadaire",
+    "weeklyMarginHelp": "Dernière semaine complète, marge brute",
+    "inTransit": "Unités en transit",
+    "inTransitHelp": "Tous les POs ouverts du réseau",
+    "forecastMape": "MAPE prévision (S-1)",
+    "forecastMapeHelp": "Erreur absolue moyenne en %, 8 dernières semaines",
+    "newIn": "Nouveautés",
+    "newInHelp": "Produits lancés dans les 26 dernières semaines"
+  },
+  "channelsLabel": "Canal",
+  "size": {
+    "title": "Grille des tailles",
+    "stockout": "Rupture sur {n} emplacement(s)"
+  },
+  "po": {
+    "title": "Commandes en transit",
+    "subtitle": "Stock arrivant des fournisseurs et transferts inter-DC",
+    "supplier": "Fournisseur (VN)",
+    "eta": "ETA"
   },
   "dashboard": {
     "title": "Vue d'ensemble allocation globale",
