@@ -1,5 +1,32 @@
 import { useTranslations } from "next-intl";
-import { Github, Linkedin } from "lucide-react";
+
+function GithubIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      aria-hidden
+    >
+      <path d="M12 .5C5.648.5.5 5.648.5 12a11.5 11.5 0 0 0 7.86 10.94c.576.108.785-.25.785-.555 0-.274-.01-1.003-.015-1.969-3.2.696-3.874-1.543-3.874-1.543-.523-1.327-1.277-1.68-1.277-1.68-1.044-.714.08-.699.08-.699 1.154.082 1.76 1.186 1.76 1.186 1.026 1.757 2.693 1.249 3.35.955.104-.743.401-1.25.73-1.538-2.553-.29-5.238-1.277-5.238-5.686 0-1.255.448-2.282 1.183-3.087-.118-.291-.513-1.463.113-3.05 0 0 .964-.309 3.16 1.179a10.97 10.97 0 0 1 2.876-.386c.976.004 1.96.132 2.876.386 2.195-1.488 3.158-1.179 3.158-1.179.627 1.587.232 2.759.114 3.05.737.805 1.182 1.832 1.182 3.087 0 4.42-2.69 5.393-5.252 5.676.413.356.78 1.06.78 2.14 0 1.545-.014 2.791-.014 3.17 0 .308.207.669.79.555A11.5 11.5 0 0 0 23.5 12C23.5 5.648 18.352.5 12 .5Z" />
+    </svg>
+  );
+}
+
+function LinkedinIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      aria-hidden
+    >
+      <path d="M20.447 20.452H16.89V14.88c0-1.33-.025-3.04-1.853-3.04-1.855 0-2.14 1.45-2.14 2.95v5.662H9.34V9h3.414v1.561h.05c.476-.9 1.636-1.85 3.367-1.85 3.6 0 4.266 2.368 4.266 5.452v6.289ZM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125ZM7.116 20.452H3.558V9h3.558v11.452ZM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003Z" />
+    </svg>
+  );
+}
 
 export function Footer() {
   const t = useTranslations();
@@ -10,14 +37,14 @@ export function Footer() {
           <p>{t("footer.disclaimer")}</p>
           <p>{t("footer.stack")}</p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <a
             href="https://github.com/Gemmagf/retail"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted"
           >
-            <Github className="h-3.5 w-3.5" />
+            <GithubIcon className="h-3.5 w-3.5" />
             GitHub
           </a>
           <a
@@ -26,7 +53,7 @@ export function Footer() {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted"
           >
-            <Linkedin className="h-3.5 w-3.5" />
+            <LinkedinIcon className="h-3.5 w-3.5" />
             LinkedIn
           </a>
         </div>
