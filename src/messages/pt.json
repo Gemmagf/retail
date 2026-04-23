@@ -107,7 +107,32 @@
     "reasonStockOut": "Ruptura prevista em {weeks} semanas",
     "reasonOverstock": "Cobertura excessiva ({weeks}s) — redistribuir",
     "reasonCampaign": "Aumento previsto por campanha de marketing",
-    "reasonSeasonality": "Padrão sazonal de demanda"
+    "reasonSeasonality": "Padrão sazonal de demanda",
+    "summary": {
+      "totalRecs": "recomendações abertas",
+      "totalUnits": "unidades a mover",
+      "revenueImpact": "Aumento de receita esperado",
+      "marginImpact": "Aumento de margem esperado",
+      "approved": "aprovadas",
+      "rejected": "rejeitadas"
+    },
+    "filters": {
+      "search": "Buscar produto…",
+      "allRegions": "Todas as regiões",
+      "allChannels": "Todos os canais",
+      "reset": "Redefinir"
+    },
+    "empty": "Nenhuma recomendação corresponde a estes filtros",
+    "expand": {
+      "recentSales": "Últimas 8 semanas no destino",
+      "origin": "Origem",
+      "destination": "Destino",
+      "cover": "Semanas de cobertura",
+      "velocity": "Velocidade de venda (méd. S-4)",
+      "afterTransfer": "após transferência",
+      "campaign": "Próximo",
+      "expectedImpact": "Impacto esperado"
+    }
   },
   "forecast": {
     "title": "Previsão de demanda",

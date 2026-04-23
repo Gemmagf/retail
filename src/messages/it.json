@@ -107,7 +107,32 @@
     "reasonStockOut": "Stock-out previsto entro {weeks} settimane",
     "reasonOverstock": "Copertura in eccesso ({weeks}s) — ridistribuire",
     "reasonCampaign": "Aumento previsto da campagna marketing",
-    "reasonSeasonality": "Pattern di domanda stagionale"
+    "reasonSeasonality": "Pattern di domanda stagionale",
+    "summary": {
+      "totalRecs": "raccomandazioni aperte",
+      "totalUnits": "unità da spostare",
+      "revenueImpact": "Aumento ricavo atteso",
+      "marginImpact": "Aumento margine atteso",
+      "approved": "approvate",
+      "rejected": "rifiutate"
+    },
+    "filters": {
+      "search": "Cerca prodotto…",
+      "allRegions": "Tutte le regioni",
+      "allChannels": "Tutti i canali",
+      "reset": "Reimposta"
+    },
+    "empty": "Nessuna raccomandazione corrisponde a questi filtri",
+    "expand": {
+      "recentSales": "Ultime 8 settimane a destinazione",
+      "origin": "Origine",
+      "destination": "Destinazione",
+      "cover": "Settimane di copertura",
+      "velocity": "Velocità di vendita (S-4 med)",
+      "afterTransfer": "dopo trasferimento",
+      "campaign": "In arrivo",
+      "expectedImpact": "Impatto atteso"
+    }
   },
   "forecast": {
     "title": "Previsione di domanda",

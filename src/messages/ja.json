@@ -107,7 +107,32 @@
     "reasonStockOut": "{weeks}週以内に在庫切れ予測",
     "reasonOverstock": "在庫過多({weeks}週) — 再分配",
     "reasonCampaign": "マーケティングキャンペーンによる需要増予測",
-    "reasonSeasonality": "季節需要パターン"
+    "reasonSeasonality": "季節需要パターン",
+    "summary": {
+      "totalRecs": "未対応推奨",
+      "totalUnits": "移動数量",
+      "revenueImpact": "売上増の見込み",
+      "marginImpact": "粗利増の見込み",
+      "approved": "承認済",
+      "rejected": "却下済"
+    },
+    "filters": {
+      "search": "製品を検索…",
+      "allRegions": "全地域",
+      "allChannels": "全チャネル",
+      "reset": "リセット"
+    },
+    "empty": "条件に一致する推奨はありません",
+    "expand": {
+      "recentSales": "宛先直近8週",
+      "origin": "出発地",
+      "destination": "宛先",
+      "cover": "在庫週数",
+      "velocity": "販売速度(W-4平均)",
+      "afterTransfer": "転送後",
+      "campaign": "予定",
+      "expectedImpact": "期待効果"
+    }
   },
   "forecast": {
     "title": "需要予測",

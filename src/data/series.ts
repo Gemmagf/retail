@@ -355,6 +355,7 @@ export function getMAPE(productId?: string, region?: Region | "ALL"): number {
 }
 
 export type AllocationRecommendation = {
+  id: string;
   productId: string;
   fromLocationId: string;
   toLocationId: string;
@@ -364,6 +365,15 @@ export type AllocationRecommendation = {
   reasonKey: "stockOut" | "overstock" | "campaign" | "seasonality";
   reasonWeeks: number;
   priority: number;
+  originUnits: number;
+  originCover: number;
+  destVelocity: number;
+  destCoverNow: number;
+  destCoverAfter: number;
+  campaignLabel?: string;
+  expectedRevenueImpact: number;
+  expectedMarginImpact: number;
+  recentSales: number[];
 };
 
 let _recs: AllocationRecommendation[] | null = null;
@@ -413,7 +423,7 @@ export function getAllocationRecommendations(): AllocationRecommendation[] {
       const lowRegion = locationById.get(low.locationId)!.region;
       const highRegion = locationById.get(high.locationId)!.region;
       const product = productById.get(productId)!;
-      const upcomingCampaign = CAMPAIGNS.some(
+      const upcomingCampaign = CAMPAIGNS.find(
         (c) =>
           (c.region === "ALL" || c.region === lowRegion) &&
           (!c.category || c.category === product.category) &&
@@ -421,20 +431,50 @@ export function getAllocationRecommendations(): AllocationRecommendation[] {
           Math.abs(c.centerWeek - ((CURRENT_WEEK_INDEX + 2) % 52)) <= 4,
       );
 
+      const recent = getSales().filter(
+        (s) =>
+          s.productId === productId &&
+          s.locationId === low.locationId &&
+          s.week >= CURRENT_WEEK_INDEX - 7 &&
+          s.week <= CURRENT_WEEK_INDEX,
+      );
+      const recentSales = Array.from({ length: 8 }, (_, i) => {
+        const w = CURRENT_WEEK_INDEX - 7 + i;
+        return recent.find((s) => s.week === w)?.units ?? 0;
+      });
+
+      const sellThroughProb = upcomingCampaign ? 0.92 : low.weeksCover < 1.5 ? 0.95 : 0.78;
+      const expectedRevenueImpact = transfer * product.price * sellThroughProb;
+      const expectedMarginImpact = transfer * (product.price - product.cogs) * sellThroughProb;
+
       out.push({
+        id: `R-${productId}-${low.locationId}`,
         productId,
         fromLocationId: high.locationId,
         toLocationId: low.locationId,
         current: low.units,
         recommended: low.units + transfer,
         delta: transfer,
-        reasonKey: upcomingCampaign ? "campaign" : low.weeksCover < 1.5 ? "stockOut" : "seasonality",
+        reasonKey: upcomingCampaign
+          ? "campaign"
+          : low.weeksCover < 1.5
+            ? "stockOut"
+            : "seasonality",
         reasonWeeks: Math.max(1, Math.round(low.weeksCover)),
         priority:
           (2.5 - low.weeksCover) * 100 +
           (highRegion === lowRegion ? 25 : 0) +
           (highChannel === "warehouse" ? 15 : 0) +
           (productById.get(productId)?.basePopularity ?? 1) * 10,
+        originUnits: high.units,
+        originCover: high.weeksCover,
+        destVelocity: lowVel,
+        destCoverNow: low.weeksCover,
+        destCoverAfter: lowVel > 0 ? (low.units + transfer) / lowVel : 99,
+        campaignLabel: upcomingCampaign?.label,
+        expectedRevenueImpact,
+        expectedMarginImpact,
+        recentSales,
       });
     }
   }

@@ -107,7 +107,32 @@
     "reasonStockOut": "Stock-out predicted in {weeks} weeks",
     "reasonOverstock": "Excess cover ({weeks}w) — redistribute",
     "reasonCampaign": "Marketing campaign uplift forecast",
-    "reasonSeasonality": "Seasonal demand pattern"
+    "reasonSeasonality": "Seasonal demand pattern",
+    "summary": {
+      "totalRecs": "open recommendations",
+      "totalUnits": "units to move",
+      "revenueImpact": "Expected revenue lift",
+      "marginImpact": "Expected margin lift",
+      "approved": "approved",
+      "rejected": "rejected"
+    },
+    "filters": {
+      "search": "Search product…",
+      "allRegions": "All regions",
+      "allChannels": "All channels",
+      "reset": "Reset"
+    },
+    "empty": "No recommendations match these filters",
+    "expand": {
+      "recentSales": "Recent 8 weeks at destination",
+      "origin": "Origin",
+      "destination": "Destination",
+      "cover": "Weeks of cover",
+      "velocity": "Sell velocity (W-4 avg)",
+      "afterTransfer": "after transfer",
+      "campaign": "Upcoming",
+      "expectedImpact": "Expected impact"
+    }
   },
   "forecast": {
     "title": "Demand forecast",

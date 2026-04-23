@@ -107,7 +107,32 @@
     "reasonStockOut": "Fehlbestand in {weeks} Wochen prognostiziert",
     "reasonOverstock": "Überreichweite ({weeks}W) — umverteilen",
     "reasonCampaign": "Marketingkampagnen-Uplift erwartet",
-    "reasonSeasonality": "Saisonales Nachfragemuster"
+    "reasonSeasonality": "Saisonales Nachfragemuster",
+    "summary": {
+      "totalRecs": "offene Empfehlungen",
+      "totalUnits": "Einheiten zu verschieben",
+      "revenueImpact": "Erwartete Umsatzsteigerung",
+      "marginImpact": "Erwartete Margensteigerung",
+      "approved": "genehmigt",
+      "rejected": "abgelehnt"
+    },
+    "filters": {
+      "search": "Produkt suchen…",
+      "allRegions": "Alle Regionen",
+      "allChannels": "Alle Kanäle",
+      "reset": "Zurücksetzen"
+    },
+    "empty": "Keine Empfehlungen passen zu diesen Filtern",
+    "expand": {
+      "recentSales": "Letzte 8 Wochen am Zielort",
+      "origin": "Herkunft",
+      "destination": "Ziel",
+      "cover": "Wochen Reichweite",
+      "velocity": "Verkaufsgeschwindigkeit (W-4 Ø)",
+      "afterTransfer": "nach Transfer",
+      "campaign": "Bevorstehend",
+      "expectedImpact": "Erwartete Auswirkung"
+    }
   },
   "forecast": {
     "title": "Nachfrageprognose",
