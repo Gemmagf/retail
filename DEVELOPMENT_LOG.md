@@ -89,35 +89,57 @@ All data is **synthetic**, generated deterministically from a seeded RNG (mulber
 
 ### Entities
 
-- **Products** (12): real On SKU names with realistic CHF prices and per-region demand bias.
-- **Locations** (11): real cities mapped to On's actual retail footprint (Zurich, Berlin, London, Paris, Milan, Barcelona, NYC, Portland, São Paulo, Tokyo, Melbourne) with region (EMEA / AMER / APAC) and a `scale` factor.
-- **Sales** (52 weeks × 12 products × 11 locations): generated with seasonality (sine wave peaking in spring/summer for road running), regional marketing campaigns (Berlin Marathon, NYC Marathon, Tokyo Marathon, etc.), product-specific trend lifts, and noise.
-- **Inventory**: derived from recent velocity × randomised target weeks-of-cover → produces realistic mix of healthy / stock-out / overstock SKU-locations.
-- **Marketing spend** (52w + 8w forecast): per region, with campaign spikes that align to the sales lift.
+- **Products** (25): real On SKU names, including women's variants and 3 "new-in" launches mid-year (Cloudtilt, Cloudboom Echo 3, Cloudsurfer Trail). Each carries category, gender, price, **COGS**, regional demand bias, lead-time in weeks and an optional launch-week marker.
+- **Locations** (23): real cities mapped to On's actual footprint plus three operational tiers:
+    - 11 **flagship** stores (Zurich HQ, Berlin, London, Paris, Milan, Barcelona, NYC, Portland, São Paulo, Tokyo, Melbourne)
+    - 3 **distribution centres** (Antwerp / EMEA, Atlanta / AMER, Yokohama / APAC)
+    - 6 **wholesale partners** (Foot Locker DE, JD Sports UK, Intersport FR, Dick's US, REI US, ABC-Mart JP)
+    - 3 **e-commerce** channels, one per region
+- **Sales** (52 weeks × 22 selling locations × 25 products): seasonality (sine wave with category-specific phase shift — hike peaks autumn, lifestyle is flatter, road peaks spring/summer), regional + product-launch + black-friday + boxing-day + lunar-new-year + back-to-school campaigns, product-specific trend lifts (Cloudboom Strike accelerating, Cloudgo declining), and noise. Warehouses do not sell, only ship.
+- **Inventory**: per (product × location), derived from recent velocity × randomised target weeks-of-cover. Wider noise than v1 (cover spans 0.5–19 weeks) so the recommender always finds genuine stock-outs to surface.
+- **Inventory by size**: each row exploded across 10 EU sizes (36–45) using gender-specific demand curves (women's curve peaks at 38–39, unisex at 41).
+- **Marketing spend** (52w + 8w forecast): per region with campaign spikes that align to the sales lift.
 - **Forecast** (8w): naive moving-average × seasonality × campaign factor, plus a widening confidence band.
-- **Allocation recommendations**: derived from inventory rows with `weeksCover < 2.5` paired with rows of the same SKU at `weeksCover > 10`, calculating realistic transfer quantities and tagging a reason.
+- **Forecast accuracy**: rolling 8-week MAPE (mean absolute percent error) computed from a moving-average baseline replayed against actuals.
+- **Allocation recommendations**: derived by pairing low-cover store rows (`weeksCover < 2.5`) with high-cover sources (`weeksCover > 8 & units > 30`), preferring **same-region warehouses → store** over inter-store transfers and computing a realistic transfer quantity. Each rec is enriched with origin/destination velocity, cover before/after, an upcoming-campaign label, **expected revenue lift** and **expected margin lift** (transfer × price × sell-through probability). Reason is one of `stockOut`, `overstock`, `campaign`, `seasonality`.
+- **Purchase orders in transit**: a generated set of POs from supplier (Vietnam) → DC and DC → store, each with units and ETA in weeks. Surfaces on the dashboard so the user knows what's already on the way before approving more transfers.
 
 ### Why this shape
 
 These are the **decisions an allocation team actually makes**:
 
-- "Are we healthy globally?" → Dashboard KPIs.
+- "Are we healthy globally?" → Dashboard KPIs (stock health %, sell-through, revenue, **margin**, in-transit, **MAPE**, new-in count).
 - "Which SKUs are dying / on fire?" → Top movers + at-risk lists.
-- "Where should I move stock right now?" → Allocation recommender.
+- "Where should I move stock right now?" → Allocation recommender (now interactive — see below).
+- "Is the demand prediction we're acting on actually any good?" → Forecast MAPE KPI + the Forecast page chart with confidence band.
 - "What does next quarter look like?" → Forecast.
 - "What if we double the marketing spend in DACH for the Berlin Marathon?" → Simulator.
+- "What stock is already on the way?" → In-transit POs panel.
+
+---
+
+## Campaigns and signals
+
+Marketing spend is the differentiator of this project (vs a pure supply-chain tool). 15 calendar moments are encoded; each has a region, centre week, lift multiplier, and optional category or product filter:
+
+- **Marathons**: Berlin (W14), London (W16), Boston (W14), NYC (W38), Tokyo (W6) — lift `road` SKUs in the host region.
+- **Cultural**: Lunar New Year (W4 APAC, lifestyle), Boxing Day (W51 EMEA, all), Black Friday (W47 ALL).
+- **Retail moments**: Back to school (W35 AMER, training), Holiday lifestyle push (W46 EMEA, lifestyle), Hike season (W40 EMEA, hike), Summer trail launch (W22 AMER, trail).
+- **Product launches**: Cloudtilt (W18 EMEA, lifestyle), Cloudboom Echo 3 (W30 ALL, road), Cloudsurfer Trail (W38 EMEA, trail).
+
+Lifts decay smoothly with a Gaussian centred on the campaign week (±3 weeks of influence). Marketing spend per region is recomputed from these so the spend overlay on the Forecast page lines up with the demand lift — making the marketing-aware story visually obvious.
 
 ---
 
 ## Pages
 
-| Page             | Server / Client | What it demonstrates                                                       |
-| ---------------- | --------------- | -------------------------------------------------------------------------- |
-| Dashboard        | Server (RSC)    | KPI literacy, network-level thinking, ability to design an executive view. |
-| Products         | Server          | Catalog UX, per-SKU summary, traffic-light cover signals.                  |
-| Allocation       | Server          | The core deliverable: actionable recommendations with reasoning.           |
-| Forecast         | Client wrapper  | Time-series visual with overlay of marketing spend (the differentiator).   |
-| Simulator        | Client          | Decision-support thinking: what-if sliders → impact on KPIs.               |
+| Page             | Server / Client     | What it demonstrates                                                                                                                                          |
+| ---------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Dashboard**    | Server (RSC)        | 8 KPI cards (health, sell-through, stock-outs, revenue, **margin**, **in-transit**, **MAPE**, new-in), sales-by-region area chart, cover-by-region bars, top movers, at-risk SKUs, **in-transit POs** panel. |
+| **Products**     | Server              | 25-card catalog grid; each card has category, gender, price, global stock, weeks-of-cover (traffic-light coloured), a "New" badge for launches, and a per-product **size-grid mini chart** (10 sizes, red bars where any location is stocked-out for that size). |
+| **Allocation**   | Server → Client     | Interactive review console (see "Iteration 2" below).                                                                                                          |
+| **Forecast**     | Client wrapper      | 26-week actual + 8-week forecast time-series with marketing-spend bar overlay, product and region selectors, confidence band.                                 |
+| **Simulator**    | Client              | Sliders for marketing-spend multiplier, replenishment lead time, target weeks-of-cover → live KPI cards for expected sales, revenue, stock-out risk and recommended transfer. |
 
 ---
 
@@ -141,15 +163,59 @@ To keep the demo focused and shippable:
 - No auth — public read-only demo.
 - No DB — all data is synthetic and in-memory.
 - No real ML model — forecast is a transparent heuristic (moving avg × seasonality × campaign). A real role would use Prophet / XGBoost / a state-space model; here, transparency > sophistication.
+- No persistence of approvals — Allocation approve/reject is client-side only. Adding a backend would not show more skill on this scope.
 - No mobile-optimised allocation table — desktop-first because that's where the real users work.
-- No write actions (approve/reject buttons in Allocation are read-only) — would add complexity without showing more skill.
+
+---
+
+## Iteration 2 — Data realism + interactive Allocation
+
+The first version (initial commit + DEVELOPMENT_LOG v1) shipped a clean but thin demo. This iteration was driven by the question *"if I were a hiring manager looking at this for two minutes, would I believe this person knows what allocation actually involves?"*. Three additions came from that:
+
+### 2a. Dataset realism
+
+| Before                                   | After                                                                                                              |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| 12 SKUs                                  | **25** SKUs (added women's variants, 3 launches with `isNewIn` + `launchWeek`, two more lifestyle and trail SKUs) |
+| 11 flagship stores                       | **23** locations across 4 channel types: flagship + warehouse (Antwerp/Atlanta/Yokohama) + 6 wholesale partners + 3 e-commerce sites |
+| Single seasonality curve                 | **Per-category** seasonality (hike peaks autumn, lifestyle flatter, road peaks spring/summer)                      |
+| 5 marketing campaigns                    | **15** campaigns + 3 product launches with category/product filters                                                |
+| Price only                               | Price + **COGS** → margin computable per SKU                                                                       |
+| Aggregate inventory                      | Aggregate **and** per-size inventory using gender-specific demand curves                                           |
+| —                                        | **Purchase orders in transit** model (supplier→DC and DC→store, with ETAs)                                         |
+| —                                        | **Forecast MAPE** rolling metric                                                                                   |
+
+### 2b. Interactive Allocation page
+
+The first version was a static table — useful to look at, useless to demo. Rewrote the page as a real review console:
+
+- **Sticky summary cards**: open recs, units to move, **expected revenue lift**, **expected margin lift**. All recompute live from the visible/pending rows when filters or approvals change.
+- **Filter bar**: free-text search by product or city, region selector, channel selector, reset.
+- **Click-to-expand row**: each recommendation opens a 3-column detail view showing
+    1. **Origin** — current units + cover + channel,
+    2. **Destination** — sell velocity, cover before → after, last-8-weeks sparkline,
+    3. **Expected impact** — revenue & margin numbers and the campaign label that triggered the rec.
+- **Approve / Reject** buttons (client-side state). Approved rows turn subtly green; rejected rows fade out. Counters appear in the toolbar. State resets via the Reset button.
+- **Reason badges** at row level — red `STOCK-OUT` or amber `<campaign label>` so the operator sees in one glance why each rec was raised.
+
+### 2c. Why this matters for the demo
+
+This is how an Allocation Analyst would describe their day in an interview: *"I look at the recommender, filter to my region, expand each rec to verify the data, approve the obvious ones, leave the borderline cases for the buyer to discuss."* The page now lets me literally walk through that flow on screen.
+
+### 2d. Bug discovered + fixed
+
+Right after pushing the dataset expansion, the Allocation page rendered zero recommendations. Diagnosis: the inventory-cover formula was `(4 + rand()*8) × (0.6 + rand()*0.9)`, whose minimum value is `4 × 0.6 = 2.4` — just above the `< 2.5` threshold that defines a "low cover" row. Before the expansion, the random spread happened to dip below by chance; with the larger, re-seeded dataset it never did. Widened the inventory generation to `(1.5 + rand()*9) × (0.4 + rand()*1.4)` so the bottom of the distribution genuinely produces stock-outs, yielding ~70 candidate recommendations across the 24 SKUs and 20 selling locations.
+
+The lesson worth recording: thresholds in synthetic data should always be inside the achievable range of the generator, not at its boundary. Easy to miss because the original seed accidentally satisfied it.
 
 ---
 
 ## Open follow-ups
 
 - [ ] Add a "Methodology" page explaining how each metric is computed.
-- [ ] Add download-CSV buttons to the Allocation table.
-- [ ] Add a Map view for the Locations data using react-simple-maps.
+- [ ] Add download-CSV button to the Allocation table (export the approved set).
+- [ ] Add a Map view for the Locations data using react-simple-maps or D3.
 - [ ] Wire a real Prophet forecast (Python service) behind the Forecast page to demonstrate end-to-end ML integration.
 - [ ] Add a screen recording / Loom in the README for hiring managers who don't click through demos.
+- [ ] Add Catalan locale once a Catalan-speaking reviewer is on the panel.
+- [ ] Add a "what changed since last week?" panel to the dashboard (deltas in stock health, MAPE, top movers).
