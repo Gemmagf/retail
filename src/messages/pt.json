@@ -13,7 +13,24 @@
     "allocation": "Allocation",
     "risks": "Riscos",
     "forecast": "Previsão",
-    "simulator": "Simulador"
+    "simulator": "Simulador",
+    "about": "Sobre"
+  },
+  "about": {
+    "title": "Sobre esta demo",
+    "subtitle": "Projeto portfólio de Gemma Garcia de la Fuente para a vaga Senior Retail Allocator na On",
+    "demoIntro": "Todos os dados são sintéticos e determinísticos. Este protótipo pessoal explora como pode ser um console moderno de allocation — demand-led replenishment, deteção de vendas perdidas, performance por tamanho e análise de desbalanceamentos. Não afiliado à On AG.",
+    "profile": "Perfil",
+    "experience": "Experiência",
+    "skills": "Competências",
+    "education": "Educação",
+    "languages": "Idiomas",
+    "hobbies": "Fora do trabalho",
+    "downloadCv": "Baixar CV",
+    "contact": "Contato",
+    "viewLinkedin": "Ver LinkedIn",
+    "viewGithub": "Projeto no GitHub",
+    "hobbiesCopy": "Quando não estou construindo ferramentas de allocation, me encontram nas pistas de esqui no inverno, nas trilhas de montanha no verão, e na maioria dos fins de semana ensinando pacientemente a nossa cachorrinha recém-adotada que as margens do Limmat são para caminhar — ela é firmemente contra a proibição de cheirar cada flor."
   },
   "common": {
     "all": "Todos",

@@ -13,7 +13,24 @@
     "allocation": "アロケーション",
     "risks": "リスク",
     "forecast": "需要予測",
-    "simulator": "シミュレーター"
+    "simulator": "シミュレーター",
+    "about": "プロフィール"
+  },
+  "about": {
+    "title": "このデモについて",
+    "subtitle": "On社Senior Retail Allocator職応募のため Gemma Garcia de la Fuente が作成したポートフォリオ",
+    "demoIntro": "サイト上のデータはすべて決定論的に生成された合成データです。需要主導型補充、失注検知、サイズ別パフォーマンス、在庫不均衡分析を組み合わせた、近代的なアロケーション・コンソールの試作品です。On AGとは無関係です。",
+    "profile": "プロフィール",
+    "experience": "経験",
+    "skills": "コアスキル",
+    "education": "学歴",
+    "languages": "言語",
+    "hobbies": "仕事の外で",
+    "downloadCv": "CVをダウンロード",
+    "contact": "連絡先",
+    "viewLinkedin": "LinkedInを見る",
+    "viewGithub": "GitHubでプロジェクトを見る",
+    "hobbiesCopy": "アロケーションツールを作っていないときは、冬はゲレンデ、夏は山のトレイルにいます。週末は、最近迎えた子犬にリマト川沿いは歩くためのものだと根気よく教えています — 道端のどの花も嗅がずにはいられない彼女は、この方針に断固反対しています。"
   },
   "common": {
     "all": "すべて",

@@ -4,7 +4,7 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { cn } from "@/lib/utils";
-import { LayoutGrid, Package, Store, Ruler, Layers, Boxes, AlertTriangle, LineChart, FlaskConical } from "lucide-react";
+import { LayoutGrid, Package, Store, Ruler, Layers, Boxes, AlertTriangle, LineChart, FlaskConical, User } from "lucide-react";
 
 const items = [
   { href: "/", key: "dashboard", Icon: LayoutGrid },
@@ -16,6 +16,7 @@ const items = [
   { href: "/risks", key: "risks", Icon: AlertTriangle },
   { href: "/forecast", key: "forecast", Icon: LineChart },
   { href: "/simulator", key: "simulator", Icon: FlaskConical },
+  { href: "/about", key: "about", Icon: User },
 ] as const;
 
 export function Nav() {
