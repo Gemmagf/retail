@@ -43,6 +43,7 @@ export function ForecastClient({ products, forecastByKey, spendByRegion }: Props
   return (
     <Card
       title={`${product.name} · ${region === "ALL" ? t("common.all") : t(`regions.${region}`)}`}
+      info={t("info.forecastChart")}
       action={
         <div className="flex flex-wrap gap-2">
           <select

@@ -4,6 +4,28 @@
     "tagline": "グローバルリテール向けAI支援在庫配分",
     "demo": "デモプロジェクト · On AGとは無関係"
   },
+  "info": {
+    "stockHealth": "健全在庫(2〜8週)のSKU-店舗ペアの割合。60%未満は外れ値が多い兆候。",
+    "sellThrough": "前週販売 ÷ (販売+残在庫)。高い=回転が速い。2%未満は低回転や過剰在庫のサイン。",
+    "stockOuts": "需要ありで在庫ゼロのSKU-拠点。今日の失注と信用失墜。",
+    "weeklyRevenue": "販売数 × 定価。前年比タグで成長がオーガニックかキャンペーン由来かを確認。",
+    "weeklyMargin": "販売数 ×(価格−原価)。会議で守るべきは粗利であり売上ではない。",
+    "inTransit": "未決済POで確定済みの数量。新規転送を承認する前に必ず確認。",
+    "forecastMape": "直近8週の平均絶対誤差率。12%未満が良好、20%超は判断にノイズを招く。",
+    "missedRevenue": "在庫切れとサイズ欠品による失注の推定額(定価ベース)。",
+    "imbalanceCost": "他店が薄い間、過剰在庫を抱え続けることによる週間保有コスト。",
+    "salesByRegion": "地域別週間販売数(直近26週)。地域間の乖離はキャンペーン週と一致することが多い。",
+    "stockByRegion": "地域別平均在庫週数。2週未満=薄い、10週超=資本滞留。",
+    "topMovers": "直近週の売上上位SKU。そのサイズカーブを最優先で守る。",
+    "atRisk": "在庫週数2週未満かつ需要ありのSKU-拠点。次サイクルで補充。",
+    "missedOpportunities": "失注額上位の在庫切れとサイズ欠品。タグで影響サイズを表示。",
+    "imbalances": "一部店舗で薄く、他店で厚いSKU — 保有コスト付き。",
+    "allocation": "シーズン計画ではなくリアルタイム需要シグナル(販売速度・キャンペーン・サイズ欠品)に基づく推奨。",
+    "sizesHeatmap": "行=店舗、列=サイズ。赤=需要ありで欠品、琥珀=薄い、緑=健全。",
+    "forecastChart": "実線=実績、破線=予測、帯=80%信頼、灰色点線=前年、オレンジ棒=マーケ支出。",
+    "risks": "リスク:2/4/6週以内の在庫切れ予測。機会:再配分を支える過剰在庫。",
+    "categories": "カテゴリ別パフォーマンス — マーチャンダイズ・プランニング会議用ビュー。"
+  },
   "nav": {
     "dashboard": "ダッシュボード",
     "products": "製品",
@@ -124,7 +146,6 @@
     "missedRevenue": "機会損失",
     "weeklyTrend": "直近8週"
   },
-  "forecast.ly": "前年",
   "stores": {
     "title": "店舗",
     "subtitle": "店舗別ネットワーク健全性 — 行をクリックでSKU詳細へ",
@@ -152,7 +173,6 @@
     "expectedShare": "想定需要シェア",
     "storesOut": "このサイズで在庫切れの店舗:{n}"
   },
-  "dashboard.missedOpportunities": "失注機会",
   "channelsLabel": "チャネル",
   "size": {
     "title": "サイズグリッド",
@@ -173,7 +193,8 @@
     "stockByRegionHelp": "SKU平均在庫週数",
     "topMovers": "今週のトップ売上",
     "atRisk": "リスクSKU",
-    "atRiskHelp": "現在の販売速度で2週以内に在庫切れ予測"
+    "atRiskHelp": "現在の販売速度で2週以内に在庫切れ予測",
+    "missedOpportunities": "失注機会"
   },
   "products": {
     "title": "製品カタログ",
@@ -238,7 +259,8 @@
     "marketingSpend": "マーケティング支出",
     "confidenceBand": "80%信頼区間",
     "selectProduct": "製品を選択",
-    "selectRegion": "地域を選択"
+    "selectRegion": "地域を選択",
+    "ly": "前年"
   },
   "simulator": {
     "title": "シナリオシミュレーター",

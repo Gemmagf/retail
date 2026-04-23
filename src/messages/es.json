@@ -4,6 +4,28 @@
     "tagline": "Distribución de stock asistida por IA para retail global",
     "demo": "Proyecto demo · No afiliado a On AG"
   },
+  "info": {
+    "stockHealth": "% de pares SKU-tienda con cobertura sana (2–8 semanas). Debajo de 60% suele indicar demasiados extremos.",
+    "sellThrough": "Ventas S-1 ÷ (ventas + stock restante). Mayor = rotación más rápida. Por debajo de 2% suele indicar lento o sobrestock.",
+    "stockOuts": "SKU-ubicaciones a cero con demanda positiva. Ventas perdidas hoy y credibilidad mañana.",
+    "weeklyRevenue": "Unidades × precio. El tag vs AA dice si el crecimiento es orgánico o por campaña.",
+    "weeklyMargin": "Unidades × (precio − COGS). El margen es lo que se defiende en reunión, no el ingreso.",
+    "inTransit": "Unidades ya comprometidas en OC abiertas. Revisar siempre antes de aprobar nuevos transferencias.",
+    "forecastMape": "Error porcentual absoluto medio de 8 semanas. Menos de 12% sólido; más de 20% mete ruido en las decisiones.",
+    "missedRevenue": "Ventas perdidas estimadas por roturas y gaps de talla, a precio de lista.",
+    "imbalanceCost": "Coste semanal de mantener excedentes mientras otras tiendas están escasas.",
+    "salesByRegion": "Unidades vendidas por semana por región, 26 últimas. La divergencia suele indicar una campaña.",
+    "stockByRegion": "Cobertura media por región. <2s ajustado; >10s capital parado.",
+    "topMovers": "Top SKUs de la semana por ingreso. Proteger su curva de tallas primero.",
+    "atRisk": "SKU-ubicación con <2s de cobertura y demanda positiva. Reponer en el siguiente ciclo.",
+    "missedOpportunities": "Top roturas y gaps de talla por ingreso perdido. Los tags indican qué tallas.",
+    "imbalances": "SKUs con poca cobertura aquí y mucha allá — con el coste de mantenimiento.",
+    "allocation": "Recomendaciones por señales en vivo (velocidad, campaña, gap de talla), no por el plan de temporada.",
+    "sizesHeatmap": "Filas = tiendas, columnas = tallas. Rojo = rotura con demanda, ámbar = ajustado, verde = sano.",
+    "forecastChart": "Línea sólida = real, discontinua = previsión, banda = confianza 80%, gris punteado = año anterior, barras naranja = gasto marketing.",
+    "risks": "Pestaña Riesgos: roturas previstas en 2/4/6 sem. Oportunidades: sobrestocks para redistribución.",
+    "categories": "Rendimiento por categoría — la vista para la reunión Merchandise Planning."
+  },
   "nav": {
     "dashboard": "Dashboard",
     "products": "Productos",
@@ -124,7 +146,6 @@
     "missedRevenue": "Ingreso perdido",
     "weeklyTrend": "Últimas 8 semanas"
   },
-  "forecast.ly": "Año anterior",
   "stores": {
     "title": "Tiendas",
     "subtitle": "Salud de la red por tienda — clic en una fila para detalle de SKU",
@@ -152,7 +173,6 @@
     "expectedShare": "Cuota de demanda esperada",
     "storesOut": "{n} tienda(s) sin stock en esta talla"
   },
-  "dashboard.missedOpportunities": "Oportunidades de venta perdidas",
   "channelsLabel": "Canal",
   "size": {
     "title": "Cuadro de tallas",
@@ -173,7 +193,8 @@
     "stockByRegionHelp": "Semanas medias de cobertura por SKU",
     "topMovers": "Top ventas esta semana",
     "atRisk": "SKU en riesgo",
-    "atRiskHelp": "Rotura prevista en 2 semanas al ritmo actual"
+    "atRiskHelp": "Rotura prevista en 2 semanas al ritmo actual",
+    "missedOpportunities": "Oportunidades de venta perdidas"
   },
   "products": {
     "title": "Catálogo de productos",
@@ -238,7 +259,8 @@
     "marketingSpend": "Gasto marketing",
     "confidenceBand": "Confianza 80%",
     "selectProduct": "Selecciona producto",
-    "selectRegion": "Selecciona región"
+    "selectRegion": "Selecciona región",
+    "ly": "Año anterior"
   },
   "simulator": {
     "title": "Simulador de escenarios",

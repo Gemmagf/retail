@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { KPICard } from "@/components/KPICard";
+import { InfoTooltip } from "@/components/InfoTooltip";
 import { cn, formatCurrency, formatNumber } from "@/lib/utils";
 import type { DashboardKPIs } from "@/data/series";
 
@@ -62,29 +63,34 @@ export function DashboardKPIBar({
           label={t("kpi.stockHealth")}
           value={`${kpis.stockHealthPct.toFixed(0)}%`}
           help={t("kpi.stockHealthHelp")}
+          info={t("info.stockHealth")}
           accent={kpis.stockHealthPct > 60 ? "success" : "warning"}
         />
         <KPICard
           label={t("kpi.sellThrough")}
           value={`${kpis.sellThroughPct.toFixed(1)}%`}
           help={t("kpi.sellThroughHelp")}
+          info={t("info.sellThrough")}
         />
         <KPICard
           label={t("kpi.stockOuts")}
           value={String(kpis.stockOutCount)}
           help={t("kpi.stockOutsHelp")}
+          info={t("info.stockOuts")}
           accent={kpis.stockOutCount > 5 ? "danger" : "default"}
         />
         <KPICard
           label={t("kpi.weeklyRevenue")}
           value={formatCurrency(kpis.weeklyRevenue, locale)}
           help={`${t("kpi.vsLY")} ${yoy.revenueGrowthPct > 0 ? "+" : ""}${yoy.revenueGrowthPct.toFixed(1)}%`}
+          info={t("info.weeklyRevenue")}
           trend={yoy.revenueGrowthPct}
         />
         <KPICard
           label={t("kpi.weeklyMargin")}
           value={formatCurrency(kpis.weeklyMargin, locale)}
           help={`${t("kpi.vsLY")} ${yoy.marginGrowthPct > 0 ? "+" : ""}${yoy.marginGrowthPct.toFixed(1)}%`}
+          info={t("info.weeklyMargin")}
           trend={yoy.marginGrowthPct}
           accent="success"
         />
@@ -92,25 +98,31 @@ export function DashboardKPIBar({
           label={t("kpi.inTransit")}
           value={formatNumber(kpis.inTransitUnits, locale)}
           help={t("kpi.inTransitHelp")}
+          info={t("info.inTransit")}
         />
         <KPICard
           label={t("kpi.forecastMape")}
           value={`${kpis.forecastMape.toFixed(1)}%`}
           help={t("kpi.forecastMapeHelp")}
+          info={t("info.forecastMape")}
           accent={kpis.forecastMape < 12 ? "success" : kpis.forecastMape < 20 ? "warning" : "danger"}
         />
         <KPICard
           label={t("kpi.missedRevenue")}
           value={formatCurrency(missedRevenue, locale)}
           help={t("kpi.missedRevenueHelp")}
+          info={t("info.missedRevenue")}
           accent={missedRevenue > 5000 ? "danger" : "default"}
         />
       </div>
 
-      <div className="rounded-lg border border-border bg-foreground/[0.03] p-3 text-xs text-muted-foreground">
-        <span className="font-medium text-foreground">{t("kpi.imbalanceCost")}:</span>{" "}
-        {formatCurrency(imbalanceCost, locale)} / {t("common.week")} ·{" "}
-        <span>{t("kpi.imbalanceCostHelp")}</span>
+      <div className="flex items-start gap-2 rounded-lg border border-border bg-foreground/[0.03] p-3 text-xs text-muted-foreground">
+        <span>
+          <span className="font-medium text-foreground">{t("kpi.imbalanceCost")}:</span>{" "}
+          {formatCurrency(imbalanceCost, locale)} / {t("common.week")} ·{" "}
+          {t("kpi.imbalanceCostHelp")}
+        </span>
+        <InfoTooltip text={t("info.imbalanceCost")} />
       </div>
     </div>
   );

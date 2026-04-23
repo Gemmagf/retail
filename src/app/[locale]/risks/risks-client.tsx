@@ -118,7 +118,7 @@ export function RisksClient({ risks, opportunities, productsById, locationsById 
       </div>
 
       {tab === "risks" ? (
-        <Card subtitle={t("risks.riskSubtitle")}>
+        <Card subtitle={t("risks.riskSubtitle")} info={t("info.risks")}>
           <ul className="divide-y divide-border">
             {filteredRisks.slice(0, 40).map((r, i) => {
               const p = productsById[r.productId];
@@ -176,7 +176,7 @@ export function RisksClient({ risks, opportunities, productsById, locationsById 
           </ul>
         </Card>
       ) : (
-        <Card subtitle={t("risks.opportunitySubtitle")}>
+        <Card subtitle={t("risks.opportunitySubtitle")} info={t("info.risks")}>
           <ul className="divide-y divide-border">
             {opportunities.slice(0, 40).map((o, i) => {
               const p = productsById[o.productId];

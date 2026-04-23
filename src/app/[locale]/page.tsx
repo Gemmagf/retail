@@ -107,6 +107,7 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
         <Card
           title={t("dashboard.salesByRegion")}
           subtitle={t("dashboard.salesByRegionHelp")}
+          info={t("info.salesByRegion")}
           className="lg:col-span-2"
         >
           <SalesByRegionChart
@@ -116,13 +117,17 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
             weekLabel={t("common.week")}
           />
         </Card>
-        <Card title={t("dashboard.stockByRegion")} subtitle={t("dashboard.stockByRegionHelp")}>
+        <Card
+          title={t("dashboard.stockByRegion")}
+          subtitle={t("dashboard.stockByRegionHelp")}
+          info={t("info.stockByRegion")}
+        >
           <StockByRegionChart data={stockByRegion} />
         </Card>
       </div>
 
       <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <Card title={t("dashboard.topMovers")}>
+        <Card title={t("dashboard.topMovers")} info={t("info.topMovers")}>
           <ul className="divide-y divide-border">
             {topMovers.map((m) => {
               const p = productById.get(m.productId)!;
@@ -151,7 +156,11 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
           </ul>
         </Card>
 
-        <Card title={t("dashboard.atRisk")} subtitle={t("dashboard.atRiskHelp")}>
+        <Card
+          title={t("dashboard.atRisk")}
+          subtitle={t("dashboard.atRiskHelp")}
+          info={t("info.atRisk")}
+        >
           <ul className="divide-y divide-border">
             {atRisk.map((r) => {
               const p = productById.get(r.productId)!;
@@ -182,7 +191,11 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
       </div>
 
       <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <Card title={t("imbalances.title")} subtitle={t("imbalances.subtitle")}>
+        <Card
+          title={t("imbalances.title")}
+          subtitle={t("imbalances.subtitle")}
+          info={t("info.imbalances")}
+        >
           <ul className="divide-y divide-border">
             {imbalances.map((im) => {
               const p = productById.get(im.productId)!;
@@ -219,7 +232,11 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
           </ul>
         </Card>
 
-        <Card title={t("dashboard.missedOpportunities")} subtitle={t("kpi.missedRevenueHelp")}>
+        <Card
+          title={t("dashboard.missedOpportunities")}
+          subtitle={t("kpi.missedRevenueHelp")}
+          info={t("info.missedOpportunities")}
+        >
           <ul className="divide-y divide-border">
             {missed.map((m) => {
               const p = productById.get(m.productId)!;
@@ -271,7 +288,7 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
       </div>
 
       <div className="mt-4">
-        <Card title={t("po.title")} subtitle={t("po.subtitle")}>
+        <Card title={t("po.title")} subtitle={t("po.subtitle")} info={t("info.inTransit")}>
           <ul className="divide-y divide-border">
             {upcomingPOs.map((po) => {
               const p = productById.get(po.productId)!;

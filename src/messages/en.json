@@ -4,6 +4,28 @@
     "tagline": "AI-assisted stock distribution for global retail",
     "demo": "Demo project · Not affiliated with On AG"
   },
+  "info": {
+    "stockHealth": "% of SKU-store pairs with healthy cover (2–8 weeks). Below 60% typically means too many outliers — too thin or too deep.",
+    "sellThrough": "Last week's sales ÷ (sales + remaining stock). Higher = stock is moving faster. Below 2% often signals slow-moving SKUs or overstock.",
+    "stockOuts": "SKU-locations that ran to zero in the last week while demand was still positive. Each one is a lost sale today and a credibility issue with the store team.",
+    "weeklyRevenue": "Units sold last completed week × list price. Use the vs LY pill to check whether growth is organic or driven by campaigns.",
+    "weeklyMargin": "Units × (price − COGS). Margin is what you actually defend in the allocation meeting, not revenue.",
+    "inTransit": "Units already committed on open POs (supplier → DC and DC → store). Always check this before approving more transfers.",
+    "forecastMape": "Mean Absolute Percent Error over the last 8 weeks. Under 12% is solid; above 20% means forecasts are driving noise into decisions.",
+    "missedRevenue": "Estimated lost sales from full stock-outs plus size gaps, valued at list price. The number this role is hired to reduce.",
+    "imbalanceCost": "Weekly carrying cost of the excess units sitting at over-covered stores while others run thin. Redistributing cuts this directly.",
+    "salesByRegion": "Weekly units sold per region, last 26 weeks. Look for divergence — a regional spike vs others usually maps to a campaign week.",
+    "stockByRegion": "Average weeks of cover across SKUs per region. Under 2w is thin; over 10w means capital is sitting idle.",
+    "topMovers": "SKUs with the highest revenue last completed week. Protect their size curve first — they are where the sell-through comes from.",
+    "atRisk": "SKU-locations with less than 2 weeks of cover and positive demand. Replenish or redirect in the next cycle.",
+    "missedOpportunities": "Top stock-outs and size gaps by lost revenue. Size-gap tags show which exact sizes went to zero.",
+    "imbalances": "SKUs where one store has thin cover and another is long — the lowest-cover vs highest-cover pairing per SKU, with the carrying cost.",
+    "allocation": "Recommendations triggered by live demand signals (velocity, upcoming campaign, size gap), not by the pre-season plan. Each one is monetised before approval.",
+    "sizesHeatmap": "Rows = stores, columns = sizes. Red = stock-out with demand, amber = thin size cover, green = healthy. Top bar shows expected demand share per size.",
+    "forecastChart": "Solid line = actual sales, dashed line = forecast, shaded band = 80% confidence, dotted grey = last year, orange bars = marketing spend (right axis).",
+    "risks": "Risks tab: SKU-locations predicted to stock out in 2/4/6 weeks with revenue at risk. Opportunities tab: overstock pockets that can fund redistributions.",
+    "categories": "Performance by product category — the rollup you bring into the Merchandise Planning meeting."
+  },
   "nav": {
     "dashboard": "Dashboard",
     "products": "Products",
@@ -124,7 +146,6 @@
     "missedRevenue": "Missed revenue",
     "weeklyTrend": "Last 8 weeks"
   },
-  "forecast.ly": "Last year",
   "stores": {
     "title": "Stores",
     "subtitle": "Network health per store — click a row to drill into SKU-level detail",
@@ -152,7 +173,6 @@
     "expectedShare": "Expected demand share",
     "storesOut": "{n} store(s) out of stock at this size"
   },
-  "dashboard.missedOpportunities": "Missed sales opportunities",
   "channelsLabel": "Channel",
   "size": {
     "title": "Size grid",
@@ -173,7 +193,8 @@
     "stockByRegionHelp": "Average weeks of cover across SKUs",
     "topMovers": "Top movers this week",
     "atRisk": "SKUs at risk",
-    "atRiskHelp": "Stock-out predicted within 2 weeks at current sell-through"
+    "atRiskHelp": "Stock-out predicted within 2 weeks at current sell-through",
+    "missedOpportunities": "Missed sales opportunities"
   },
   "products": {
     "title": "Product catalog",
@@ -238,7 +259,8 @@
     "marketingSpend": "Marketing spend",
     "confidenceBand": "80% confidence",
     "selectProduct": "Select a product",
-    "selectRegion": "Select a region"
+    "selectRegion": "Select a region",
+    "ly": "Last year"
   },
   "simulator": {
     "title": "Scenario simulator",

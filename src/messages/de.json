@@ -4,6 +4,28 @@
     "tagline": "KI-gestützte Warenverteilung für den globalen Handel",
     "demo": "Demo-Projekt · Nicht mit On AG verbunden"
   },
+  "info": {
+    "stockHealth": "% der SKU-Standort-Paare mit gesunder Reichweite (2–8 Wochen). Unter 60% heisst meist zu viele Ausreisser.",
+    "sellThrough": "Verkäufe der Vorwoche ÷ (Verkäufe + Restbestand). Höher = schnellerer Abverkauf. Unter 2% signalisiert Langsamdreher oder Überbestand.",
+    "stockOuts": "SKU-Standorte auf 0 mit positiver Nachfrage. Jeder ist ein verlorener Verkauf heute und ein Glaubwürdigkeitsproblem morgen.",
+    "weeklyRevenue": "Verkaufte Einheiten × Listenpreis. Das vs-Vorjahr-Tag zeigt, ob Wachstum organisch ist oder durch Kampagnen getrieben.",
+    "weeklyMargin": "Einheiten × (Preis − HK). Marge ist, was man im Meeting verteidigt, nicht Umsatz.",
+    "inTransit": "Bereits verbuchte Einheiten auf offenen POs. Immer vor neuen Transfers prüfen.",
+    "forecastMape": "Mittlerer absoluter Prozentfehler der letzten 8 Wochen. Unter 12% solide; über 20% stört die Entscheidungsfindung.",
+    "missedRevenue": "Geschätzter Umsatzverlust aus Fehlbeständen und Grössenlücken zu Listenpreisen.",
+    "imbalanceCost": "Wöchentliche Lagerkosten der Überbestände, während andere Stores dünn laufen.",
+    "salesByRegion": "Wöchentliche verkaufte Einheiten je Region, letzte 26 Wochen. Divergenz zwischen Regionen deutet meist auf Kampagnen hin.",
+    "stockByRegion": "Durchschnittliche Wochen Reichweite je Region. Unter 2W dünn; über 10W gebundenes Kapital.",
+    "topMovers": "Top-SKUs der Vorwoche nach Umsatz. Deren Grössenkurve zuerst schützen.",
+    "atRisk": "SKU-Standorte mit <2W Reichweite und positiver Nachfrage. Im nächsten Zyklus nachschieben.",
+    "missedOpportunities": "Top-Fehlbestände und Grössenlücken nach verlorenem Umsatz. Tags zeigen die betroffenen Grössen.",
+    "imbalances": "SKUs mit dünnem Cover in einem Store und hohem in einem anderen — mit den Haltekosten.",
+    "allocation": "Empfehlungen aus Live-Nachfragesignalen (Velocity, Kampagne, Grössenlücke), nicht aus Saisonplanung.",
+    "sizesHeatmap": "Zeilen = Stores, Spalten = Grössen. Rot = Fehlbestand mit Nachfrage, Bernstein = dünn, Grün = gesund.",
+    "forecastChart": "Durchgezogen = Ist, gestrichelt = Prognose, Band = 80% Konfidenz, grau gepunktet = Vorjahr, orange Balken = Marketing-Spend.",
+    "risks": "Risiken-Tab: prognostizierte Fehlbestände in 2/4/6 Wochen. Chancen-Tab: Überbestände, die Umverteilungen finanzieren.",
+    "categories": "Performance je Produktkategorie — die Sicht für das Merchandise-Planning-Meeting."
+  },
   "nav": {
     "dashboard": "Übersicht",
     "products": "Produkte",
@@ -124,7 +146,6 @@
     "missedRevenue": "Entgangener Umsatz",
     "weeklyTrend": "Letzte 8 Wochen"
   },
-  "forecast.ly": "Vorjahr",
   "stores": {
     "title": "Stores",
     "subtitle": "Netzwerk-Status pro Store — Zeile anklicken für SKU-Details",
@@ -152,7 +173,6 @@
     "expectedShare": "Erwarteter Nachfrageanteil",
     "storesOut": "{n} Store(s) ohne Bestand in dieser Grösse"
   },
-  "dashboard.missedOpportunities": "Verlorene Verkaufschancen",
   "channelsLabel": "Kanal",
   "size": {
     "title": "Größenraster",
@@ -173,7 +193,8 @@
     "stockByRegionHelp": "Durchschnittliche Wochen Reichweite über SKUs",
     "topMovers": "Top-Verkäufer diese Woche",
     "atRisk": "Gefährdete SKUs",
-    "atRiskHelp": "Fehlbestand in 2 Wochen bei aktueller Geschwindigkeit prognostiziert"
+    "atRiskHelp": "Fehlbestand in 2 Wochen bei aktueller Geschwindigkeit prognostiziert",
+    "missedOpportunities": "Verlorene Verkaufschancen"
   },
   "products": {
     "title": "Produktkatalog",
@@ -238,7 +259,8 @@
     "marketingSpend": "Marketing-Spend",
     "confidenceBand": "80% Konfidenz",
     "selectProduct": "Produkt wählen",
-    "selectRegion": "Region wählen"
+    "selectRegion": "Region wählen",
+    "ly": "Vorjahr"
   },
   "simulator": {
     "title": "Szenario-Simulator",

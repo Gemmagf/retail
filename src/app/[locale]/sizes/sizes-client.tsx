@@ -56,6 +56,7 @@ export function SizesClient({ products, sizes, locations, matricesByProduct }: P
       }
       title={product.name}
       subtitle={`${product.gender} · ${t(`products.categories.${product.category}`)}`}
+      info={t("info.sizesHeatmap")}
     >
       <div className="flex flex-wrap items-center gap-4 pb-4 text-xs">
         <div className="flex items-center gap-1.5">

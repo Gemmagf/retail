@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { InfoTooltip } from "./InfoTooltip";
 
 type Props = {
   label: string;
@@ -6,6 +7,7 @@ type Props = {
   help?: string;
   trend?: number;
   accent?: "default" | "success" | "warning" | "danger";
+  info?: string;
 };
 
 const accentClass: Record<NonNullable<Props["accent"]>, string> = {
@@ -15,11 +17,12 @@ const accentClass: Record<NonNullable<Props["accent"]>, string> = {
   danger: "text-rose-600",
 };
 
-export function KPICard({ label, value, help, trend, accent = "default" }: Props) {
+export function KPICard({ label, value, help, trend, accent = "default", info }: Props) {
   return (
     <div className="rounded-lg border border-border bg-background p-5">
-      <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-        {label}
+      <div className="flex items-center gap-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+        <span>{label}</span>
+        {info && <InfoTooltip text={info} />}
       </div>
       <div className={cn("mt-2 text-3xl font-semibold tracking-tight tabular-nums", accentClass[accent])}>
         {value}
