@@ -157,8 +157,8 @@ export function getInventory(): InventoryRow[] {
         ? aggregatedRegionVelocity(product.id, location.region)
         : recentVelocity(product.id, location.id);
       const rand = mulberry32(hashSeed("inv", product.id, location.id));
-      const targetCover = isWarehouse ? 8 + rand() * 12 : 4 + rand() * 8;
-      const noise = isWarehouse ? 0.8 + rand() * 0.5 : 0.6 + rand() * 0.9;
+      const targetCover = isWarehouse ? 8 + rand() * 12 : 1.5 + rand() * 9;
+      const noise = isWarehouse ? 0.8 + rand() * 0.5 : 0.4 + rand() * 1.4;
       const units = Math.max(0, Math.round(v * targetCover * noise));
       const refVel = isWarehouse ? Math.max(1, v / 3) : v;
       const weeksCover = refVel > 0 ? units / refVel : 99;
