@@ -9,7 +9,9 @@
     "products": "Produits",
     "stores": "Magasins",
     "sizes": "Tailles",
+    "categories": "Catégories",
     "allocation": "Allocation",
+    "risks": "Risques",
     "forecast": "Prévision",
     "simulator": "Simulateur"
   },
@@ -60,8 +62,52 @@
     "newIn": "Nouveautés",
     "newInHelp": "Produits lancés dans les 26 dernières semaines",
     "missedRevenue": "Revenu manqué",
-    "missedRevenueHelp": "Ventes perdues sur rupture et gaps de taille (4 dernières semaines)"
+    "missedRevenueHelp": "Ventes perdues sur rupture et gaps de taille (4 dernières semaines)",
+    "imbalanceCost": "Coût d'imbalance",
+    "imbalanceCostHelp": "Coût hebdo de portage lié à la dispersion de couverture sur le réseau",
+    "vsLY": "vs N-1"
   },
+  "region": {
+    "selector": "Région",
+    "all": "Toutes régions"
+  },
+  "imbalances": {
+    "title": "Déséquilibres de stock",
+    "subtitle": "SKU en surstock dans un magasin et en sous-stock dans un autre",
+    "spread": "Écart de couverture",
+    "overstock": "Unités en excès",
+    "tied": "Capital immobilisé",
+    "carrying": "Coût hebdo"
+  },
+  "risks": {
+    "title": "Risques et opportunités",
+    "subtitle": "Revue d'action hebdomadaire : ce qui va bientôt clocher, et où se trouve le revenu suivant",
+    "tabRisks": "Risques",
+    "tabOpportunities": "Opportunités",
+    "riskSubtitle": "SKU-emplacements prédits en rupture dans les 6 prochaines semaines",
+    "opportunitySubtitle": "Surplus qui peuvent financer des redistributions",
+    "weeksOut": "Semaines avant rupture",
+    "revenueAtRisk": "Revenu à risque",
+    "marginAtRisk": "Marge à risque",
+    "excessUnits": "Unités en excès",
+    "redistributable": "Redistribuable",
+    "reasonOverstock": "Surstock",
+    "reasonSlowMoving": "Écoulement lent",
+    "reasonIdleCapital": "Capital immobilisé",
+    "bucket": "Horizon",
+    "allBuckets": "Tous"
+  },
+  "categories": {
+    "title": "Performance catégorie",
+    "subtitle": "Vue roll-up pour la conversation Merchandise Planning",
+    "skus": "SKU",
+    "sellThrough": "Sell-through",
+    "cover": "Couv. moy.",
+    "stockouts": "Ruptures",
+    "missedRevenue": "Revenu manqué",
+    "weeklyTrend": "8 dernières semaines"
+  },
+  "forecast.ly": "N-1",
   "stores": {
     "title": "Magasins",
     "subtitle": "Santé réseau par magasin — clic sur une ligne pour le détail SKU",

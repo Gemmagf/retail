@@ -9,7 +9,9 @@
     "products": "Products",
     "stores": "Stores",
     "sizes": "Sizes",
+    "categories": "Categories",
     "allocation": "Allocation",
+    "risks": "Risks",
     "forecast": "Forecast",
     "simulator": "Simulator"
   },
@@ -60,8 +62,52 @@
     "newIn": "New-in SKUs",
     "newInHelp": "Products launched in the last 26 weeks",
     "missedRevenue": "Missed revenue",
-    "missedRevenueHelp": "Lost sales from stock-outs and size gaps (last 4 weeks)"
+    "missedRevenueHelp": "Lost sales from stock-outs and size gaps (last 4 weeks)",
+    "imbalanceCost": "Imbalance cost",
+    "imbalanceCostHelp": "Weekly carrying cost of cover dispersion across the network",
+    "vsLY": "vs LY"
   },
+  "region": {
+    "selector": "Region",
+    "all": "All regions"
+  },
+  "imbalances": {
+    "title": "Stock imbalances",
+    "subtitle": "SKUs where one store has excess cover while another is running low",
+    "spread": "Cover spread",
+    "overstock": "Excess units",
+    "tied": "Capital tied up",
+    "carrying": "Weekly carrying"
+  },
+  "risks": {
+    "title": "Risks & opportunities",
+    "subtitle": "A weekly action view: what's about to go wrong, and where the next revenue lives",
+    "tabRisks": "Risks",
+    "tabOpportunities": "Opportunities",
+    "riskSubtitle": "SKU-locations predicted to stock out in the next 6 weeks",
+    "opportunitySubtitle": "Overstock pockets that can fund redistributions",
+    "weeksOut": "Weeks until stock-out",
+    "revenueAtRisk": "Revenue at risk",
+    "marginAtRisk": "Margin at risk",
+    "excessUnits": "Excess units",
+    "redistributable": "Redistributable",
+    "reasonOverstock": "Overstock",
+    "reasonSlowMoving": "Slow-moving",
+    "reasonIdleCapital": "Idle capital",
+    "bucket": "Horizon",
+    "allBuckets": "All"
+  },
+  "categories": {
+    "title": "Category performance",
+    "subtitle": "Roll-up view for the merchandise planning conversation",
+    "skus": "SKUs",
+    "sellThrough": "Sell-through",
+    "cover": "Avg cover",
+    "stockouts": "Stock-outs",
+    "missedRevenue": "Missed revenue",
+    "weeklyTrend": "Last 8 weeks"
+  },
+  "forecast.ly": "Last year",
   "stores": {
     "title": "Stores",
     "subtitle": "Network health per store — click a row to drill into SKU-level detail",

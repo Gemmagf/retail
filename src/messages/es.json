@@ -9,7 +9,9 @@
     "products": "Productos",
     "stores": "Tiendas",
     "sizes": "Tallas",
+    "categories": "Categorías",
     "allocation": "Allocation",
+    "risks": "Riesgos",
     "forecast": "Previsión",
     "simulator": "Simulador"
   },
@@ -60,8 +62,52 @@
     "newIn": "Novedades",
     "newInHelp": "Productos lanzados en las últimas 26 semanas",
     "missedRevenue": "Ingreso perdido",
-    "missedRevenueHelp": "Ventas perdidas por roturas y gaps de talla (últimas 4 semanas)"
+    "missedRevenueHelp": "Ventas perdidas por roturas y gaps de talla (últimas 4 semanas)",
+    "imbalanceCost": "Coste de desbalance",
+    "imbalanceCostHelp": "Coste semanal de mantenimiento por la dispersión de cobertura en red",
+    "vsLY": "vs AA"
   },
+  "region": {
+    "selector": "Región",
+    "all": "Todas las regiones"
+  },
+  "imbalances": {
+    "title": "Desbalances de stock",
+    "subtitle": "SKU con exceso de cobertura en una tienda y falta en otra",
+    "spread": "Rango de cobertura",
+    "overstock": "Unidades en exceso",
+    "tied": "Capital inmovilizado",
+    "carrying": "Semanal"
+  },
+  "risks": {
+    "title": "Riesgos y oportunidades",
+    "subtitle": "Vista de acción semanal: qué va a fallar y dónde está el próximo ingreso",
+    "tabRisks": "Riesgos",
+    "tabOpportunities": "Oportunidades",
+    "riskSubtitle": "SKU-ubicación con rotura prevista en las próximas 6 semanas",
+    "opportunitySubtitle": "Excedentes que pueden financiar redistribuciones",
+    "weeksOut": "Semanas hasta rotura",
+    "revenueAtRisk": "Ingreso en riesgo",
+    "marginAtRisk": "Margen en riesgo",
+    "excessUnits": "Unidades en exceso",
+    "redistributable": "Redistribuible",
+    "reasonOverstock": "Sobrestock",
+    "reasonSlowMoving": "Lento",
+    "reasonIdleCapital": "Capital inactivo",
+    "bucket": "Horizonte",
+    "allBuckets": "Todos"
+  },
+  "categories": {
+    "title": "Rendimiento por categoría",
+    "subtitle": "Vista agregada para la conversación con Merchandise Planning",
+    "skus": "SKU",
+    "sellThrough": "Sell-through",
+    "cover": "Cobert. media",
+    "stockouts": "Roturas",
+    "missedRevenue": "Ingreso perdido",
+    "weeklyTrend": "Últimas 8 semanas"
+  },
+  "forecast.ly": "Año anterior",
   "stores": {
     "title": "Tiendas",
     "subtitle": "Salud de la red por tienda — clic en una fila para detalle de SKU",

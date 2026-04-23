@@ -1,13 +1,14 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PageHeader } from "@/components/PageHeader";
-import { KPICard } from "@/components/KPICard";
 import { Card } from "@/components/Card";
 import { SalesByRegionChart } from "@/components/charts/SalesByRegionChart";
 import { StockByRegionChart } from "@/components/charts/StockByRegionChart";
 import { ShoeMark } from "@/components/ShoeMark";
+import { DashboardKPIBar } from "./dashboard-client";
 import { Truck } from "lucide-react";
 import {
   getKPIs,
+  getKPIsForRegion,
   getWeeklyByRegion,
   getInventory,
   getTopMovers,
@@ -15,6 +16,9 @@ import {
   getPurchaseOrders,
   getMissedSales,
   getMissedSalesTotals,
+  getYoYComparison,
+  getStockImbalances,
+  getTotalImbalanceCost,
   regionColor,
 } from "@/data/series";
 import { productById } from "@/data/products";
@@ -28,7 +32,12 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
   setRequestLocale(locale);
   const t = await getTranslations();
 
-  const kpis = getKPIs();
+  const kpisAll = getKPIs();
+  const kpisByRegion = {
+    EMEA: getKPIsForRegion("EMEA") as ReturnType<typeof getKPIsForRegion> & { missedRevenueTotal: number },
+    AMER: getKPIsForRegion("AMER") as ReturnType<typeof getKPIsForRegion> & { missedRevenueTotal: number },
+    APAC: getKPIsForRegion("APAC") as ReturnType<typeof getKPIsForRegion> & { missedRevenueTotal: number },
+  };
   const weekly = getWeeklyByRegion(26);
 
   const weeksSet = Array.from(new Set(weekly.map((w) => w.week))).sort((a, b) => a - b);
@@ -65,58 +74,34 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
     .slice(0, 6);
   const missed = getMissedSales().slice(0, 8);
   const missedTotals = getMissedSalesTotals();
+  const yoy = getYoYComparison();
+  const imbalances = getStockImbalances().slice(0, 6);
+  const imbalanceCost = getTotalImbalanceCost();
+
+  const missedByRegion = {
+    EMEA: getMissedSales()
+      .filter((m) => locationById.get(m.locationId)!.region === "EMEA")
+      .reduce((a, b) => a + b.missedRevenue, 0),
+    AMER: getMissedSales()
+      .filter((m) => locationById.get(m.locationId)!.region === "AMER")
+      .reduce((a, b) => a + b.missedRevenue, 0),
+    APAC: getMissedSales()
+      .filter((m) => locationById.get(m.locationId)!.region === "APAC")
+      .reduce((a, b) => a + b.missedRevenue, 0),
+  };
 
   return (
     <>
       <PageHeader title={t("dashboard.title")} subtitle={t("dashboard.subtitle")} />
 
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4 lg:gap-4">
-        <KPICard
-          label={t("kpi.stockHealth")}
-          value={`${kpis.stockHealthPct.toFixed(0)}%`}
-          help={t("kpi.stockHealthHelp")}
-          accent={kpis.stockHealthPct > 60 ? "success" : "warning"}
-        />
-        <KPICard
-          label={t("kpi.sellThrough")}
-          value={`${kpis.sellThroughPct.toFixed(1)}%`}
-          help={t("kpi.sellThroughHelp")}
-        />
-        <KPICard
-          label={t("kpi.stockOuts")}
-          value={String(kpis.stockOutCount)}
-          help={t("kpi.stockOutsHelp")}
-          accent={kpis.stockOutCount > 5 ? "danger" : "default"}
-        />
-        <KPICard
-          label={t("kpi.weeklyRevenue")}
-          value={formatCurrency(kpis.weeklyRevenue, locale)}
-          help={t("kpi.weeklyRevenueHelp")}
-        />
-        <KPICard
-          label={t("kpi.weeklyMargin")}
-          value={formatCurrency(kpis.weeklyMargin, locale)}
-          help={t("kpi.weeklyMarginHelp")}
-          accent="success"
-        />
-        <KPICard
-          label={t("kpi.inTransit")}
-          value={formatNumber(kpis.inTransitUnits, locale)}
-          help={t("kpi.inTransitHelp")}
-        />
-        <KPICard
-          label={t("kpi.forecastMape")}
-          value={`${kpis.forecastMape.toFixed(1)}%`}
-          help={t("kpi.forecastMapeHelp")}
-          accent={kpis.forecastMape < 12 ? "success" : kpis.forecastMape < 20 ? "warning" : "danger"}
-        />
-        <KPICard
-          label={t("kpi.missedRevenue")}
-          value={formatCurrency(missedTotals.totalRevenue, locale)}
-          help={t("kpi.missedRevenueHelp")}
-          accent={missedTotals.totalRevenue > 5000 ? "danger" : "default"}
-        />
-      </div>
+      <DashboardKPIBar
+        kpisAll={kpisAll}
+        kpisByRegion={kpisByRegion}
+        missedByRegion={missedByRegion}
+        missedTotal={missedTotals.totalRevenue}
+        imbalanceCost={imbalanceCost}
+        yoy={yoy}
+      />
 
       <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3">
         <Card
@@ -196,7 +181,44 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
         </Card>
       </div>
 
-      <div className="mt-4">
+      <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <Card title={t("imbalances.title")} subtitle={t("imbalances.subtitle")}>
+          <ul className="divide-y divide-border">
+            {imbalances.map((im) => {
+              const p = productById.get(im.productId)!;
+              const low = locationById.get(im.lowestLocationId)!;
+              const high = locationById.get(im.highestLocationId)!;
+              return (
+                <li key={im.productId} className="flex items-center gap-4 py-3 first:pt-0 last:pb-0">
+                  <div className="h-9 w-14 shrink-0 rounded bg-muted p-1">
+                    <ShoeMark color={p.color} className="h-full w-full" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="truncate text-sm font-medium">{p.name}</div>
+                    <div className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
+                      <span className="rounded bg-rose-100 px-1.5 py-0.5 text-[10px] font-semibold text-rose-700 tabular-nums">
+                        {low.city} {im.minCover.toFixed(1)}w
+                      </span>
+                      <span>↔</span>
+                      <span className="rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-semibold text-amber-800 tabular-nums">
+                        {high.city} {im.maxCover.toFixed(1)}w
+                      </span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm font-semibold tabular-nums text-amber-700">
+                      {formatCurrency(im.weeklyCarryingCost, locale)}
+                    </div>
+                    <div className="text-xs text-muted-foreground tabular-nums">
+                      {formatNumber(im.overstockUnits, locale)} excess
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </Card>
+
         <Card title={t("dashboard.missedOpportunities")} subtitle={t("kpi.missedRevenueHelp")}>
           <ul className="divide-y divide-border">
             {missed.map((m) => {

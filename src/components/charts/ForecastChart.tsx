@@ -20,11 +20,12 @@ type Point = {
   low?: number;
   high?: number;
   spend?: number;
+  ly?: number;
 };
 
 type Props = {
   data: Point[];
-  labels: { actual: string; forecast: string; band: string; spend: string; week: string };
+  labels: { actual: string; forecast: string; band: string; spend: string; ly: string; week: string };
   primaryColor: string;
 };
 
@@ -87,6 +88,16 @@ export function ForecastChart({ data, labels, primaryColor }: Props) {
             stroke="none"
             fill={primaryColor}
             fillOpacity={0.15}
+          />
+          <Line
+            yAxisId="left"
+            type="monotone"
+            dataKey="ly"
+            name={labels.ly}
+            stroke="#94a3b8"
+            strokeWidth={1.5}
+            strokeDasharray="2 3"
+            dot={false}
           />
           <Line
             yAxisId="left"

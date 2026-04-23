@@ -9,7 +9,9 @@
     "products": "Prodotti",
     "stores": "Negozi",
     "sizes": "Taglie",
+    "categories": "Categorie",
     "allocation": "Allocation",
+    "risks": "Rischi",
     "forecast": "Previsione",
     "simulator": "Simulatore"
   },
@@ -60,8 +62,52 @@
     "newIn": "Novità",
     "newInHelp": "Prodotti lanciati nelle ultime 26 settimane",
     "missedRevenue": "Ricavo perso",
-    "missedRevenueHelp": "Vendite perse da stock-out e gap di taglia (ultime 4 settimane)"
+    "missedRevenueHelp": "Vendite perse da stock-out e gap di taglia (ultime 4 settimane)",
+    "imbalanceCost": "Costo di sbilanciamento",
+    "imbalanceCostHelp": "Costo settimanale di gestione dello scarto di copertura in rete",
+    "vsLY": "vs LY"
   },
+  "region": {
+    "selector": "Regione",
+    "all": "Tutte le regioni"
+  },
+  "imbalances": {
+    "title": "Sbilanciamenti di stock",
+    "subtitle": "SKU con sovra-copertura in un negozio e sotto-copertura in un altro",
+    "spread": "Scarto di copertura",
+    "overstock": "Unità in eccesso",
+    "tied": "Capitale immobilizzato",
+    "carrying": "Settimanale"
+  },
+  "risks": {
+    "title": "Rischi e opportunità",
+    "subtitle": "Vista d'azione settimanale: cosa sta per andare storto e dove sono i prossimi ricavi",
+    "tabRisks": "Rischi",
+    "tabOpportunities": "Opportunità",
+    "riskSubtitle": "SKU-location previste in stock-out nelle prossime 6 settimane",
+    "opportunitySubtitle": "Eccessi che possono finanziare redistribuzioni",
+    "weeksOut": "Settimane a stock-out",
+    "revenueAtRisk": "Ricavo a rischio",
+    "marginAtRisk": "Margine a rischio",
+    "excessUnits": "Unità in eccesso",
+    "redistributable": "Redistribuibile",
+    "reasonOverstock": "Sovra-scorta",
+    "reasonSlowMoving": "Lento movimento",
+    "reasonIdleCapital": "Capitale fermo",
+    "bucket": "Orizzonte",
+    "allBuckets": "Tutti"
+  },
+  "categories": {
+    "title": "Performance per categoria",
+    "subtitle": "Vista roll-up per la conversazione col Merchandise Planner",
+    "skus": "SKU",
+    "sellThrough": "Sell-through",
+    "cover": "Copertura media",
+    "stockouts": "Stock-out",
+    "missedRevenue": "Ricavo perso",
+    "weeklyTrend": "Ultime 8 settimane"
+  },
+  "forecast.ly": "Anno scorso",
   "stores": {
     "title": "Negozi",
     "subtitle": "Salute della rete per negozio — clicca una riga per il dettaglio SKU",

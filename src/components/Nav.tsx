@@ -4,14 +4,16 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { cn } from "@/lib/utils";
-import { LayoutGrid, Package, Store, Ruler, Boxes, LineChart, FlaskConical } from "lucide-react";
+import { LayoutGrid, Package, Store, Ruler, Layers, Boxes, AlertTriangle, LineChart, FlaskConical } from "lucide-react";
 
 const items = [
   { href: "/", key: "dashboard", Icon: LayoutGrid },
+  { href: "/categories", key: "categories", Icon: Layers },
   { href: "/products", key: "products", Icon: Package },
   { href: "/stores", key: "stores", Icon: Store },
   { href: "/sizes", key: "sizes", Icon: Ruler },
   { href: "/allocation", key: "allocation", Icon: Boxes },
+  { href: "/risks", key: "risks", Icon: AlertTriangle },
   { href: "/forecast", key: "forecast", Icon: LineChart },
   { href: "/simulator", key: "simulator", Icon: FlaskConical },
 ] as const;

@@ -12,6 +12,7 @@ type ForecastPoint = {
   forecast?: number;
   low?: number;
   high?: number;
+  ly?: number;
 };
 
 type SpendPoint = { week: number; spend: number };
@@ -79,6 +80,7 @@ export function ForecastClient({ products, forecastByKey, spendByRegion }: Props
           forecast: t("forecast.forecasted"),
           band: t("forecast.confidenceBand"),
           spend: t("forecast.marketingSpend"),
+          ly: t("forecast.ly"),
           week: t("common.week"),
         }}
       />

@@ -9,7 +9,9 @@
     "products": "製品",
     "stores": "店舗",
     "sizes": "サイズ",
+    "categories": "カテゴリ",
     "allocation": "アロケーション",
+    "risks": "リスク",
     "forecast": "需要予測",
     "simulator": "シミュレーター"
   },
@@ -60,8 +62,52 @@
     "newIn": "新商品",
     "newInHelp": "直近26週に発売された製品",
     "missedRevenue": "機会損失売上",
-    "missedRevenueHelp": "在庫切れとサイズ欠品による失注(直近4週)"
+    "missedRevenueHelp": "在庫切れとサイズ欠品による失注(直近4週)",
+    "imbalanceCost": "不均衡コスト",
+    "imbalanceCostHelp": "ネットワーク内の在庫週数ばらつきに伴う週間保有コスト",
+    "vsLY": "前年比"
   },
+  "region": {
+    "selector": "地域",
+    "all": "全地域"
+  },
+  "imbalances": {
+    "title": "在庫不均衡",
+    "subtitle": "一部店舗で過剰、他店舗で不足となっているSKU",
+    "spread": "在庫週数レンジ",
+    "overstock": "過剰数量",
+    "tied": "滞留資本",
+    "carrying": "週間コスト"
+  },
+  "risks": {
+    "title": "リスクと機会",
+    "subtitle": "週次アクションビュー — 直近の問題と次の売上機会",
+    "tabRisks": "リスク",
+    "tabOpportunities": "機会",
+    "riskSubtitle": "今後6週以内に在庫切れ予測のSKU-拠点",
+    "opportunitySubtitle": "再配分で売上に変えられる過剰在庫",
+    "weeksOut": "在庫切れまで週数",
+    "revenueAtRisk": "売上リスク",
+    "marginAtRisk": "粗利リスク",
+    "excessUnits": "過剰数量",
+    "redistributable": "再配分可能",
+    "reasonOverstock": "過剰在庫",
+    "reasonSlowMoving": "低回転",
+    "reasonIdleCapital": "資本滞留",
+    "bucket": "対象期間",
+    "allBuckets": "すべて"
+  },
+  "categories": {
+    "title": "カテゴリ別パフォーマンス",
+    "subtitle": "マーチャンダイズ・プランニング用ロールアップ",
+    "skus": "SKU",
+    "sellThrough": "セルスルー",
+    "cover": "平均在庫週数",
+    "stockouts": "在庫切れ",
+    "missedRevenue": "機会損失",
+    "weeklyTrend": "直近8週"
+  },
+  "forecast.ly": "前年",
   "stores": {
     "title": "店舗",
     "subtitle": "店舗別ネットワーク健全性 — 行をクリックでSKU詳細へ",

@@ -9,7 +9,9 @@
     "products": "Produkte",
     "stores": "Stores",
     "sizes": "Grössen",
+    "categories": "Kategorien",
     "allocation": "Allocation",
+    "risks": "Risiken",
     "forecast": "Prognose",
     "simulator": "Simulator"
   },
@@ -60,8 +62,52 @@
     "newIn": "Neue SKUs",
     "newInHelp": "In den letzten 26 Wochen lancierte Produkte",
     "missedRevenue": "Entgangener Umsatz",
-    "missedRevenueHelp": "Verlorene Verkäufe durch Fehlbestände und Grössenlücken (letzte 4 Wochen)"
+    "missedRevenueHelp": "Verlorene Verkäufe durch Fehlbestände und Grössenlücken (letzte 4 Wochen)",
+    "imbalanceCost": "Imbalance-Kosten",
+    "imbalanceCostHelp": "Wöchentliche Lagerhaltungskosten der Cover-Streuung im Netzwerk",
+    "vsLY": "ggü. Vorjahr"
   },
+  "region": {
+    "selector": "Region",
+    "all": "Alle Regionen"
+  },
+  "imbalances": {
+    "title": "Bestands-Imbalances",
+    "subtitle": "SKUs mit Überdeckung in einem Store und zu wenig in einem anderen",
+    "spread": "Cover-Spread",
+    "overstock": "Übereinheiten",
+    "tied": "Gebundenes Kapital",
+    "carrying": "Wöchentlich"
+  },
+  "risks": {
+    "title": "Risiken & Chancen",
+    "subtitle": "Wochenaktion: was gleich schiefgeht und wo der nächste Umsatz liegt",
+    "tabRisks": "Risiken",
+    "tabOpportunities": "Chancen",
+    "riskSubtitle": "SKU-Standorte mit prognostiziertem Fehlbestand in 6 Wochen",
+    "opportunitySubtitle": "Überbestände, die Umverteilungen finanzieren können",
+    "weeksOut": "Wochen bis Fehlbestand",
+    "revenueAtRisk": "Umsatz-Risiko",
+    "marginAtRisk": "Margen-Risiko",
+    "excessUnits": "Übereinheiten",
+    "redistributable": "Umverteilbar",
+    "reasonOverstock": "Überbestand",
+    "reasonSlowMoving": "Langsamdreher",
+    "reasonIdleCapital": "Gebundenes Kapital",
+    "bucket": "Horizont",
+    "allBuckets": "Alle"
+  },
+  "categories": {
+    "title": "Kategorie-Performance",
+    "subtitle": "Roll-up für das Merchandise-Planning-Gespräch",
+    "skus": "SKUs",
+    "sellThrough": "Sell-through",
+    "cover": "Ø Reichweite",
+    "stockouts": "Fehlbestände",
+    "missedRevenue": "Entgangener Umsatz",
+    "weeklyTrend": "Letzte 8 Wochen"
+  },
+  "forecast.ly": "Vorjahr",
   "stores": {
     "title": "Stores",
     "subtitle": "Netzwerk-Status pro Store — Zeile anklicken für SKU-Details",
