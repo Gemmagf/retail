@@ -1,0 +1,120 @@
+{
+  "brand": {
+    "title": "Allocation Studio",
+    "tagline": "AI-assisted stock distribution for global retail",
+    "demo": "Demo project · Not affiliated with On AG"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "allocation": "Allocation",
+    "forecast": "Forecast",
+    "simulator": "Simulator"
+  },
+  "common": {
+    "all": "All",
+    "region": "Region",
+    "product": "Product",
+    "location": "Location",
+    "channel": "Channel",
+    "week": "Week",
+    "units": "units",
+    "currency": "CHF",
+    "loading": "Loading…",
+    "noData": "No data",
+    "viewDetails": "View details",
+    "search": "Search"
+  },
+  "regions": {
+    "EMEA": "EMEA",
+    "AMER": "Americas",
+    "APAC": "APAC"
+  },
+  "channels": {
+    "flagship": "Flagship store",
+    "retail": "Retail partner",
+    "warehouse": "Warehouse",
+    "ecom": "E-commerce"
+  },
+  "kpi": {
+    "stockHealth": "Stock health",
+    "stockHealthHelp": "% of SKU-locations with healthy stock cover (2-8 weeks)",
+    "sellThrough": "Sell-through (W-1)",
+    "sellThroughHelp": "Units sold ÷ available stock, last completed week",
+    "stockOuts": "Stock-outs",
+    "stockOutsHelp": "SKU-locations with 0 inventory and demand last 4 weeks",
+    "overstock": "Overstock risk",
+    "overstockHelp": "SKU-locations with > 12 weeks of cover",
+    "weeklyRevenue": "Weekly revenue",
+    "weeklyRevenueHelp": "Last completed week, all regions",
+    "openOrders": "Open replen orders",
+    "openOrdersHelp": "Pending warehouse → store transfers"
+  },
+  "dashboard": {
+    "title": "Global allocation overview",
+    "subtitle": "Network-wide health of inventory, sales velocity and forecast risk",
+    "salesByRegion": "Weekly sales by region",
+    "salesByRegionHelp": "Units sold per week, last 26 weeks",
+    "stockByRegion": "Inventory cover by region",
+    "stockByRegionHelp": "Average weeks of cover across SKUs",
+    "topMovers": "Top movers this week",
+    "atRisk": "SKUs at risk",
+    "atRiskHelp": "Stock-out predicted within 2 weeks at current sell-through"
+  },
+  "products": {
+    "title": "Product catalog",
+    "subtitle": "Active SKUs across the global allocation network",
+    "category": "Category",
+    "price": "Price",
+    "globalStock": "Global stock",
+    "weeksCover": "Weeks of cover",
+    "categories": {
+      "road": "Road running",
+      "trail": "Trail",
+      "training": "Training",
+      "lifestyle": "Lifestyle",
+      "hike": "Hike"
+    }
+  },
+  "allocation": {
+    "title": "Allocation recommender",
+    "subtitle": "Suggested stock movements based on demand forecast and current cover",
+    "current": "Current",
+    "recommended": "Recommended",
+    "delta": "Δ",
+    "reasoning": "Reasoning",
+    "approve": "Approve",
+    "reject": "Reject",
+    "reasonStockOut": "Stock-out predicted in {weeks} weeks",
+    "reasonOverstock": "Excess cover ({weeks}w) — redistribute",
+    "reasonCampaign": "Marketing campaign uplift forecast",
+    "reasonSeasonality": "Seasonal demand pattern"
+  },
+  "forecast": {
+    "title": "Demand forecast",
+    "subtitle": "8-week horizon with marketing spend overlay",
+    "actual": "Actual",
+    "forecasted": "Forecasted",
+    "marketingSpend": "Marketing spend",
+    "confidenceBand": "80% confidence",
+    "selectProduct": "Select a product",
+    "selectRegion": "Select a region"
+  },
+  "simulator": {
+    "title": "Scenario simulator",
+    "subtitle": "Test the impact of marketing investment on demand and stock cover",
+    "marketingMultiplier": "Marketing spend multiplier",
+    "leadTime": "Replenishment lead time (weeks)",
+    "targetWeeksCover": "Target weeks of cover",
+    "run": "Run simulation",
+    "results": "Results",
+    "expectedSales": "Expected sales",
+    "expectedRevenue": "Expected revenue",
+    "stockOutRisk": "Stock-out risk",
+    "recommendedTransfer": "Recommended transfer"
+  },
+  "footer": {
+    "disclaimer": "Demo portfolio project. Product names and brand are © On AG, used for non-commercial demonstration only. All data is synthetic.",
+    "stack": "Built with Next.js, next-intl, Recharts and Tailwind"
+  }
+}

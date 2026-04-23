@@ -1,0 +1,120 @@
+{
+  "brand": {
+    "title": "Allocation Studio",
+    "tagline": "KI-gestützte Warenverteilung für den globalen Handel",
+    "demo": "Demo-Projekt · Nicht mit On AG verbunden"
+  },
+  "nav": {
+    "dashboard": "Übersicht",
+    "products": "Produkte",
+    "allocation": "Allocation",
+    "forecast": "Prognose",
+    "simulator": "Simulator"
+  },
+  "common": {
+    "all": "Alle",
+    "region": "Region",
+    "product": "Produkt",
+    "location": "Standort",
+    "channel": "Kanal",
+    "week": "Woche",
+    "units": "Stück",
+    "currency": "CHF",
+    "loading": "Lädt…",
+    "noData": "Keine Daten",
+    "viewDetails": "Details anzeigen",
+    "search": "Suchen"
+  },
+  "regions": {
+    "EMEA": "EMEA",
+    "AMER": "Amerika",
+    "APAC": "APAC"
+  },
+  "channels": {
+    "flagship": "Flagship-Store",
+    "retail": "Einzelhandelspartner",
+    "warehouse": "Lager",
+    "ecom": "E-Commerce"
+  },
+  "kpi": {
+    "stockHealth": "Bestandsgesundheit",
+    "stockHealthHelp": "% der SKU-Standorte mit gesunder Reichweite (2-8 Wochen)",
+    "sellThrough": "Sell-through (W-1)",
+    "sellThroughHelp": "Verkaufte Einheiten ÷ Bestand, letzte abgeschlossene Woche",
+    "stockOuts": "Fehlbestände",
+    "stockOutsHelp": "SKU-Standorte ohne Bestand mit Nachfrage in den letzten 4 Wochen",
+    "overstock": "Überbestand-Risiko",
+    "overstockHelp": "SKU-Standorte mit > 12 Wochen Reichweite",
+    "weeklyRevenue": "Wochenumsatz",
+    "weeklyRevenueHelp": "Letzte abgeschlossene Woche, alle Regionen",
+    "openOrders": "Offene Nachorders",
+    "openOrdersHelp": "Ausstehende Lager → Store-Transfers"
+  },
+  "dashboard": {
+    "title": "Globale Allocation-Übersicht",
+    "subtitle": "Netzwerkweiter Status von Bestand, Verkaufsgeschwindigkeit und Prognoserisiko",
+    "salesByRegion": "Wöchentliche Verkäufe nach Region",
+    "salesByRegionHelp": "Verkaufte Einheiten pro Woche, letzte 26 Wochen",
+    "stockByRegion": "Reichweite nach Region",
+    "stockByRegionHelp": "Durchschnittliche Wochen Reichweite über SKUs",
+    "topMovers": "Top-Verkäufer diese Woche",
+    "atRisk": "Gefährdete SKUs",
+    "atRiskHelp": "Fehlbestand in 2 Wochen bei aktueller Geschwindigkeit prognostiziert"
+  },
+  "products": {
+    "title": "Produktkatalog",
+    "subtitle": "Aktive SKUs im globalen Allocation-Netzwerk",
+    "category": "Kategorie",
+    "price": "Preis",
+    "globalStock": "Globaler Bestand",
+    "weeksCover": "Wochen Reichweite",
+    "categories": {
+      "road": "Straßenlauf",
+      "trail": "Trail",
+      "training": "Training",
+      "lifestyle": "Lifestyle",
+      "hike": "Wandern"
+    }
+  },
+  "allocation": {
+    "title": "Allocation-Empfehler",
+    "subtitle": "Vorgeschlagene Bestandsbewegungen basierend auf Prognose und Reichweite",
+    "current": "Aktuell",
+    "recommended": "Empfohlen",
+    "delta": "Δ",
+    "reasoning": "Begründung",
+    "approve": "Genehmigen",
+    "reject": "Ablehnen",
+    "reasonStockOut": "Fehlbestand in {weeks} Wochen prognostiziert",
+    "reasonOverstock": "Überreichweite ({weeks}W) — umverteilen",
+    "reasonCampaign": "Marketingkampagnen-Uplift erwartet",
+    "reasonSeasonality": "Saisonales Nachfragemuster"
+  },
+  "forecast": {
+    "title": "Nachfrageprognose",
+    "subtitle": "8-Wochen-Horizont mit Marketing-Spend-Overlay",
+    "actual": "Ist",
+    "forecasted": "Prognose",
+    "marketingSpend": "Marketing-Spend",
+    "confidenceBand": "80% Konfidenz",
+    "selectProduct": "Produkt wählen",
+    "selectRegion": "Region wählen"
+  },
+  "simulator": {
+    "title": "Szenario-Simulator",
+    "subtitle": "Auswirkung von Marketinginvestitionen auf Nachfrage und Reichweite testen",
+    "marketingMultiplier": "Marketing-Spend-Multiplikator",
+    "leadTime": "Nachschub-Lieferzeit (Wochen)",
+    "targetWeeksCover": "Ziel-Reichweite (Wochen)",
+    "run": "Simulation starten",
+    "results": "Ergebnisse",
+    "expectedSales": "Erwartete Verkäufe",
+    "expectedRevenue": "Erwarteter Umsatz",
+    "stockOutRisk": "Fehlbestand-Risiko",
+    "recommendedTransfer": "Empfohlener Transfer"
+  },
+  "footer": {
+    "disclaimer": "Demo-Portfolio-Projekt. Produktnamen und Marke sind © On AG, nur zur nicht-kommerziellen Demonstration verwendet. Alle Daten sind synthetisch.",
+    "stack": "Gebaut mit Next.js, next-intl, Recharts und Tailwind"
+  }
+}

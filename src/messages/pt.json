@@ -1,0 +1,120 @@
+{
+  "brand": {
+    "title": "Allocation Studio",
+    "tagline": "Distribuição de estoque assistida por IA para varejo global",
+    "demo": "Projeto demo · Não afiliado à On AG"
+  },
+  "nav": {
+    "dashboard": "Painel",
+    "products": "Produtos",
+    "allocation": "Allocation",
+    "forecast": "Previsão",
+    "simulator": "Simulador"
+  },
+  "common": {
+    "all": "Todos",
+    "region": "Região",
+    "product": "Produto",
+    "location": "Localização",
+    "channel": "Canal",
+    "week": "Semana",
+    "units": "unidades",
+    "currency": "CHF",
+    "loading": "Carregando…",
+    "noData": "Sem dados",
+    "viewDetails": "Ver detalhes",
+    "search": "Buscar"
+  },
+  "regions": {
+    "EMEA": "EMEA",
+    "AMER": "Américas",
+    "APAC": "APAC"
+  },
+  "channels": {
+    "flagship": "Loja flagship",
+    "retail": "Parceiro varejo",
+    "warehouse": "Armazém",
+    "ecom": "E-commerce"
+  },
+  "kpi": {
+    "stockHealth": "Saúde do estoque",
+    "stockHealthHelp": "% de SKU-locais com cobertura saudável (2-8 semanas)",
+    "sellThrough": "Sell-through (S-1)",
+    "sellThroughHelp": "Unidades vendidas ÷ estoque disponível, última semana completa",
+    "stockOuts": "Rupturas de estoque",
+    "stockOutsHelp": "SKU-locais a 0 estoque com demanda nas últimas 4 semanas",
+    "overstock": "Risco de superestoque",
+    "overstockHelp": "SKU-locais com > 12 semanas de cobertura",
+    "weeklyRevenue": "Receita semanal",
+    "weeklyRevenueHelp": "Última semana completa, todas as regiões",
+    "openOrders": "Pedidos de reposição abertos",
+    "openOrdersHelp": "Transferências armazém → loja pendentes"
+  },
+  "dashboard": {
+    "title": "Visão global de allocation",
+    "subtitle": "Saúde da rede de estoque, velocidade de venda e risco de previsão",
+    "salesByRegion": "Vendas semanais por região",
+    "salesByRegionHelp": "Unidades vendidas por semana, últimas 26 semanas",
+    "stockByRegion": "Cobertura de estoque por região",
+    "stockByRegionHelp": "Semanas médias de cobertura por SKU",
+    "topMovers": "Top vendas esta semana",
+    "atRisk": "SKU em risco",
+    "atRiskHelp": "Ruptura prevista em 2 semanas no ritmo atual"
+  },
+  "products": {
+    "title": "Catálogo de produtos",
+    "subtitle": "SKU ativos na rede global de allocation",
+    "category": "Categoria",
+    "price": "Preço",
+    "globalStock": "Estoque global",
+    "weeksCover": "Semanas de cobertura",
+    "categories": {
+      "road": "Asfalto",
+      "trail": "Trail",
+      "training": "Training",
+      "lifestyle": "Lifestyle",
+      "hike": "Trilha"
+    }
+  },
+  "allocation": {
+    "title": "Recomendador de allocation",
+    "subtitle": "Movimentos de estoque sugeridos com base em previsão e cobertura",
+    "current": "Atual",
+    "recommended": "Recomendado",
+    "delta": "Δ",
+    "reasoning": "Justificativa",
+    "approve": "Aprovar",
+    "reject": "Rejeitar",
+    "reasonStockOut": "Ruptura prevista em {weeks} semanas",
+    "reasonOverstock": "Cobertura excessiva ({weeks}s) — redistribuir",
+    "reasonCampaign": "Aumento previsto por campanha de marketing",
+    "reasonSeasonality": "Padrão sazonal de demanda"
+  },
+  "forecast": {
+    "title": "Previsão de demanda",
+    "subtitle": "Horizonte de 8 semanas com overlay de gasto em marketing",
+    "actual": "Real",
+    "forecasted": "Previsto",
+    "marketingSpend": "Gasto em marketing",
+    "confidenceBand": "Confiança 80%",
+    "selectProduct": "Selecione um produto",
+    "selectRegion": "Selecione uma região"
+  },
+  "simulator": {
+    "title": "Simulador de cenários",
+    "subtitle": "Testar o impacto do investimento em marketing sobre demanda e cobertura",
+    "marketingMultiplier": "Multiplicador de gasto em marketing",
+    "leadTime": "Lead time de reposição (semanas)",
+    "targetWeeksCover": "Cobertura alvo (semanas)",
+    "run": "Executar simulação",
+    "results": "Resultados",
+    "expectedSales": "Vendas esperadas",
+    "expectedRevenue": "Receita esperada",
+    "stockOutRisk": "Risco de ruptura",
+    "recommendedTransfer": "Transferência recomendada"
+  },
+  "footer": {
+    "disclaimer": "Projeto portfólio demo. Nomes de produtos e marca são © On AG, usados apenas para demonstração não comercial. Todos os dados são sintéticos.",
+    "stack": "Construído com Next.js, next-intl, Recharts e Tailwind"
+  }
+}

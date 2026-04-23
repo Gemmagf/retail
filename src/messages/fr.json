@@ -1,0 +1,120 @@
+{
+  "brand": {
+    "title": "Allocation Studio",
+    "tagline": "Distribution de stock assistée par IA pour le retail global",
+    "demo": "Projet démo · Non affilié à On AG"
+  },
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "products": "Produits",
+    "allocation": "Allocation",
+    "forecast": "Prévision",
+    "simulator": "Simulateur"
+  },
+  "common": {
+    "all": "Tous",
+    "region": "Région",
+    "product": "Produit",
+    "location": "Emplacement",
+    "channel": "Canal",
+    "week": "Semaine",
+    "units": "unités",
+    "currency": "CHF",
+    "loading": "Chargement…",
+    "noData": "Aucune donnée",
+    "viewDetails": "Voir les détails",
+    "search": "Rechercher"
+  },
+  "regions": {
+    "EMEA": "EMEA",
+    "AMER": "Amériques",
+    "APAC": "APAC"
+  },
+  "channels": {
+    "flagship": "Boutique flagship",
+    "retail": "Partenaire retail",
+    "warehouse": "Entrepôt",
+    "ecom": "E-commerce"
+  },
+  "kpi": {
+    "stockHealth": "Santé du stock",
+    "stockHealthHelp": "% des SKU-emplacements avec couverture saine (2-8 semaines)",
+    "sellThrough": "Sell-through (S-1)",
+    "sellThroughHelp": "Unités vendues ÷ stock disponible, dernière semaine complète",
+    "stockOuts": "Ruptures de stock",
+    "stockOutsHelp": "SKU-emplacements à 0 stock avec demande sur 4 dernières semaines",
+    "overstock": "Risque de surstock",
+    "overstockHelp": "SKU-emplacements avec > 12 semaines de couverture",
+    "weeklyRevenue": "Revenu hebdomadaire",
+    "weeklyRevenueHelp": "Dernière semaine complète, toutes régions",
+    "openOrders": "Commandes de réassort ouvertes",
+    "openOrdersHelp": "Transferts entrepôt → magasin en attente"
+  },
+  "dashboard": {
+    "title": "Vue d'ensemble allocation globale",
+    "subtitle": "Santé réseau du stock, vélocité de vente et risque de prévision",
+    "salesByRegion": "Ventes hebdomadaires par région",
+    "salesByRegionHelp": "Unités vendues par semaine, 26 dernières semaines",
+    "stockByRegion": "Couverture stock par région",
+    "stockByRegionHelp": "Semaines moyennes de couverture par SKU",
+    "topMovers": "Top ventes cette semaine",
+    "atRisk": "SKU à risque",
+    "atRiskHelp": "Rupture prévue sous 2 semaines au rythme actuel"
+  },
+  "products": {
+    "title": "Catalogue produits",
+    "subtitle": "SKU actifs dans le réseau global d'allocation",
+    "category": "Catégorie",
+    "price": "Prix",
+    "globalStock": "Stock global",
+    "weeksCover": "Semaines de couverture",
+    "categories": {
+      "road": "Route",
+      "trail": "Trail",
+      "training": "Training",
+      "lifestyle": "Lifestyle",
+      "hike": "Randonnée"
+    }
+  },
+  "allocation": {
+    "title": "Recommandeur d'allocation",
+    "subtitle": "Mouvements de stock suggérés selon prévision de demande et couverture",
+    "current": "Actuel",
+    "recommended": "Recommandé",
+    "delta": "Δ",
+    "reasoning": "Justification",
+    "approve": "Approuver",
+    "reject": "Rejeter",
+    "reasonStockOut": "Rupture prévue sous {weeks} semaines",
+    "reasonOverstock": "Couverture excédentaire ({weeks}s) — redistribuer",
+    "reasonCampaign": "Hausse prévue suite campagne marketing",
+    "reasonSeasonality": "Schéma saisonnier de demande"
+  },
+  "forecast": {
+    "title": "Prévision de demande",
+    "subtitle": "Horizon 8 semaines avec overlay dépense marketing",
+    "actual": "Réel",
+    "forecasted": "Prévu",
+    "marketingSpend": "Dépense marketing",
+    "confidenceBand": "Confiance 80%",
+    "selectProduct": "Sélectionner un produit",
+    "selectRegion": "Sélectionner une région"
+  },
+  "simulator": {
+    "title": "Simulateur de scénario",
+    "subtitle": "Tester l'impact de l'investissement marketing sur la demande et la couverture",
+    "marketingMultiplier": "Multiplicateur dépense marketing",
+    "leadTime": "Délai de réassort (semaines)",
+    "targetWeeksCover": "Couverture cible (semaines)",
+    "run": "Lancer la simulation",
+    "results": "Résultats",
+    "expectedSales": "Ventes attendues",
+    "expectedRevenue": "Revenu attendu",
+    "stockOutRisk": "Risque de rupture",
+    "recommendedTransfer": "Transfert recommandé"
+  },
+  "footer": {
+    "disclaimer": "Projet portfolio démo. Noms produits et marque sont © On AG, utilisés uniquement à des fins de démonstration non commerciale. Toutes les données sont synthétiques.",
+    "stack": "Construit avec Next.js, next-intl, Recharts et Tailwind"
+  }
+}

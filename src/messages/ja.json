@@ -1,0 +1,120 @@
+{
+  "brand": {
+    "title": "Allocation Studio",
+    "tagline": "グローバルリテール向けAI支援在庫配分",
+    "demo": "デモプロジェクト · On AGとは無関係"
+  },
+  "nav": {
+    "dashboard": "ダッシュボード",
+    "products": "製品",
+    "allocation": "アロケーション",
+    "forecast": "需要予測",
+    "simulator": "シミュレーター"
+  },
+  "common": {
+    "all": "すべて",
+    "region": "地域",
+    "product": "製品",
+    "location": "拠点",
+    "channel": "チャネル",
+    "week": "週",
+    "units": "個",
+    "currency": "CHF",
+    "loading": "読み込み中…",
+    "noData": "データなし",
+    "viewDetails": "詳細を見る",
+    "search": "検索"
+  },
+  "regions": {
+    "EMEA": "EMEA",
+    "AMER": "アメリカ",
+    "APAC": "APAC"
+  },
+  "channels": {
+    "flagship": "旗艦店",
+    "retail": "小売パートナー",
+    "warehouse": "倉庫",
+    "ecom": "EC"
+  },
+  "kpi": {
+    "stockHealth": "在庫健全性",
+    "stockHealthHelp": "健全な在庫週数(2-8週)を持つSKU-拠点の割合",
+    "sellThrough": "Sell-through (W-1)",
+    "sellThroughHelp": "販売数 ÷ 在庫数、直近完了週",
+    "stockOuts": "在庫切れ",
+    "stockOutsHelp": "直近4週に需要があり在庫0のSKU-拠点",
+    "overstock": "過剰在庫リスク",
+    "overstockHelp": "12週以上の在庫週数を持つSKU-拠点",
+    "weeklyRevenue": "週間売上",
+    "weeklyRevenueHelp": "直近完了週、全地域",
+    "openOrders": "未処理補充オーダー",
+    "openOrdersHelp": "倉庫 → 店舗の未処理転送"
+  },
+  "dashboard": {
+    "title": "グローバルアロケーション概要",
+    "subtitle": "在庫、販売速度、予測リスクのネットワーク全体ヘルス",
+    "salesByRegion": "地域別週間販売",
+    "salesByRegionHelp": "週ごとの販売数、直近26週",
+    "stockByRegion": "地域別在庫週数",
+    "stockByRegionHelp": "SKU平均在庫週数",
+    "topMovers": "今週のトップ売上",
+    "atRisk": "リスクSKU",
+    "atRiskHelp": "現在の販売速度で2週以内に在庫切れ予測"
+  },
+  "products": {
+    "title": "製品カタログ",
+    "subtitle": "グローバルアロケーションネットワークのアクティブSKU",
+    "category": "カテゴリ",
+    "price": "価格",
+    "globalStock": "グローバル在庫",
+    "weeksCover": "在庫週数",
+    "categories": {
+      "road": "ロード",
+      "trail": "トレイル",
+      "training": "トレーニング",
+      "lifestyle": "ライフスタイル",
+      "hike": "ハイキング"
+    }
+  },
+  "allocation": {
+    "title": "アロケーション推奨",
+    "subtitle": "需要予測と在庫週数に基づく推奨在庫移動",
+    "current": "現在",
+    "recommended": "推奨",
+    "delta": "Δ",
+    "reasoning": "理由",
+    "approve": "承認",
+    "reject": "却下",
+    "reasonStockOut": "{weeks}週以内に在庫切れ予測",
+    "reasonOverstock": "在庫過多({weeks}週) — 再分配",
+    "reasonCampaign": "マーケティングキャンペーンによる需要増予測",
+    "reasonSeasonality": "季節需要パターン"
+  },
+  "forecast": {
+    "title": "需要予測",
+    "subtitle": "8週ホライズン、マーケティング支出オーバーレイ付き",
+    "actual": "実績",
+    "forecasted": "予測",
+    "marketingSpend": "マーケティング支出",
+    "confidenceBand": "80%信頼区間",
+    "selectProduct": "製品を選択",
+    "selectRegion": "地域を選択"
+  },
+  "simulator": {
+    "title": "シナリオシミュレーター",
+    "subtitle": "マーケティング投資が需要と在庫週数に与える影響をテスト",
+    "marketingMultiplier": "マーケティング支出倍率",
+    "leadTime": "補充リードタイム(週)",
+    "targetWeeksCover": "目標在庫週数",
+    "run": "シミュレーション実行",
+    "results": "結果",
+    "expectedSales": "予想販売数",
+    "expectedRevenue": "予想売上",
+    "stockOutRisk": "在庫切れリスク",
+    "recommendedTransfer": "推奨転送"
+  },
+  "footer": {
+    "disclaimer": "ポートフォリオデモプロジェクト。製品名およびブランドは © On AG であり、非商用デモのみに使用しています。全データは合成です。",
+    "stack": "Next.js、next-intl、Recharts、Tailwindで構築"
+  }
+}
