@@ -18,7 +18,11 @@ export default async function RisksPage({ params }: PageProps<"/[locale]">) {
 
   return (
     <>
-      <PageHeader title={t("risks.title")} subtitle={t("risks.subtitle")} />
+      <PageHeader
+        title={t("risks.title")}
+        subtitle={t("risks.subtitle")}
+        info={t("info.risks")}
+      />
       <SectionTabs
         tabs={[
           { href: "/allocation", label: t("nav.allocation") },

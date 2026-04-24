@@ -16,7 +16,11 @@ export default async function StoresPage({ params }: PageProps<"/[locale]">) {
 
   return (
     <>
-      <PageHeader title={t("stores.title")} subtitle={t("stores.subtitle")} />
+      <PageHeader
+        title={t("stores.title")}
+        subtitle={t("stores.subtitle")}
+        info={t("info.imbalances")}
+      />
 
       <Card>
         <div className="overflow-x-auto">
