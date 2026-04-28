@@ -19,10 +19,12 @@ import {
   getYoYComparison,
   getStockImbalances,
   getTotalImbalanceCost,
+  getTopDecisions,
   regionColor,
 } from "@/data/series";
-import { productById } from "@/data/products";
-import { locationById, type Region } from "@/data/locations";
+import { productById, products } from "@/data/products";
+import { locationById, locations, type Region } from "@/data/locations";
+import { DecisionsQueue } from "./decisions-queue";
 import { formatCurrency, formatNumber } from "@/lib/utils";
 
 const REGIONS: Region[] = ["EMEA", "AMER", "APAC"];
@@ -90,9 +92,21 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
       .reduce((a, b) => a + b.missedRevenue, 0),
   };
 
+  const decisions = getTopDecisions(12);
+  const productsById = Object.fromEntries(products.map((p) => [p.id, p]));
+  const locationsById = Object.fromEntries(locations.map((l) => [l.id, l]));
+
   return (
     <>
       <PageHeader title={t("dashboard.title")} subtitle={t("dashboard.subtitle")} />
+
+      <div className="mb-6">
+        <DecisionsQueue
+          decisions={decisions}
+          productsById={productsById}
+          locationsById={locationsById}
+        />
+      </div>
 
       <DashboardKPIBar
         kpisAll={kpisAll}

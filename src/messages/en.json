@@ -4,6 +4,50 @@
     "tagline": "AI-assisted stock distribution for global retail",
     "demo": "Demo project · Not affiliated with On AG"
   },
+  "decisions": {
+    "title": "Today's priority decisions",
+    "subtitle": "{count} pending · {impact} of weekly impact at stake",
+    "empty": "All caught up. New signals will appear here as the week progresses.",
+    "types": {
+      "stockOut": "Stock-out risk",
+      "campaign": "Campaign uplift",
+      "missedSize": "Size gap",
+      "imbalance": "Stock imbalance",
+      "overstock": "Overstock"
+    },
+    "context": {
+      "weeksLeft": "{weeks}w until empty",
+      "sizesAffected": "Sizes {sizes}",
+      "coverSpread": "Spread {weeks}w",
+      "excessUnits": "{units} excess units",
+      "moveTo": "Move to {to}",
+      "fromTo": "{from} → {to}"
+    },
+    "actions": {
+      "approve": "Approve",
+      "defer": "Defer",
+      "escalate": "Escalate",
+      "open": "Review"
+    },
+    "status": {
+      "approved": "Approved",
+      "deferred": "Deferred",
+      "escalated": "Escalated"
+    },
+    "summary": {
+      "pending": "pending",
+      "approved": "approved",
+      "deferred": "deferred",
+      "escalated": "escalated",
+      "approvedImpact": "Approved impact",
+      "approvedMargin": "Approved margin"
+    },
+    "ctas": {
+      "approveTransfer": "Approve transfer",
+      "redistribute": "Redistribute",
+      "review": "Review"
+    }
+  },
   "info": {
     "stockHealth": "% of SKU-store pairs with healthy cover (2–8 weeks). Below 60% typically means too many outliers — too thin or too deep.",
     "sellThrough": "Last week's sales ÷ (sales + remaining stock). Higher = stock is moving faster. Below 2% often signals slow-moving SKUs or overstock.",

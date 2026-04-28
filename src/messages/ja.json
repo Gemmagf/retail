@@ -4,6 +4,50 @@
     "tagline": "グローバルリテール向けAI支援在庫配分",
     "demo": "デモプロジェクト · On AGとは無関係"
   },
+  "decisions": {
+    "title": "今日の優先決定事項",
+    "subtitle": "{count}件未対応・週次インパクト{impact}",
+    "empty": "対応すべき案件はありません。新しいシグナルがあればここに表示されます。",
+    "types": {
+      "stockOut": "在庫切れリスク",
+      "campaign": "キャンペーン需要増",
+      "missedSize": "サイズ欠品",
+      "imbalance": "在庫不均衡",
+      "overstock": "過剰在庫"
+    },
+    "context": {
+      "weeksLeft": "在庫切れまで{weeks}週",
+      "sizesAffected": "サイズ{sizes}",
+      "coverSpread": "差{weeks}週",
+      "excessUnits": "過剰{units}",
+      "moveTo": "{to}へ移動",
+      "fromTo": "{from} → {to}"
+    },
+    "actions": {
+      "approve": "承認",
+      "defer": "保留",
+      "escalate": "エスカレ",
+      "open": "確認"
+    },
+    "status": {
+      "approved": "承認済",
+      "deferred": "保留",
+      "escalated": "エスカレ済"
+    },
+    "summary": {
+      "pending": "未対応",
+      "approved": "承認済",
+      "deferred": "保留中",
+      "escalated": "エスカレ済",
+      "approvedImpact": "承認後インパクト",
+      "approvedMargin": "承認後粗利"
+    },
+    "ctas": {
+      "approveTransfer": "転送承認",
+      "redistribute": "再配分",
+      "review": "確認"
+    }
+  },
   "info": {
     "stockHealth": "健全在庫(2〜8週)のSKU-店舗ペアの割合。60%未満は外れ値が多い兆候。",
     "sellThrough": "前週販売 ÷ (販売+残在庫)。高い=回転が速い。2%未満は低回転や過剰在庫のサイン。",

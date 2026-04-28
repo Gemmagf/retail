@@ -4,6 +4,50 @@
     "tagline": "KI-gestützte Warenverteilung für den globalen Handel",
     "demo": "Demo-Projekt · Nicht mit On AG verbunden"
   },
+  "decisions": {
+    "title": "Prioritätsentscheidungen heute",
+    "subtitle": "{count} offen · {impact} wöchentliche Auswirkung",
+    "empty": "Alles erledigt. Neue Signale erscheinen hier im Wochenverlauf.",
+    "types": {
+      "stockOut": "Fehlbestand-Risiko",
+      "campaign": "Kampagnen-Uplift",
+      "missedSize": "Grössenlücke",
+      "imbalance": "Bestandsimbalance",
+      "overstock": "Überbestand"
+    },
+    "context": {
+      "weeksLeft": "{weeks}W bis leer",
+      "sizesAffected": "Grössen {sizes}",
+      "coverSpread": "Spread {weeks}W",
+      "excessUnits": "{units} Übereinheiten",
+      "moveTo": "Verlagern nach {to}",
+      "fromTo": "{from} → {to}"
+    },
+    "actions": {
+      "approve": "Genehmigen",
+      "defer": "Vertagen",
+      "escalate": "Eskalieren",
+      "open": "Prüfen"
+    },
+    "status": {
+      "approved": "Genehmigt",
+      "deferred": "Vertagt",
+      "escalated": "Eskaliert"
+    },
+    "summary": {
+      "pending": "offen",
+      "approved": "genehmigt",
+      "deferred": "vertagt",
+      "escalated": "eskaliert",
+      "approvedImpact": "Genehmigte Auswirkung",
+      "approvedMargin": "Genehmigte Marge"
+    },
+    "ctas": {
+      "approveTransfer": "Transfer genehmigen",
+      "redistribute": "Umverteilen",
+      "review": "Prüfen"
+    }
+  },
   "info": {
     "stockHealth": "% der SKU-Standort-Paare mit gesunder Reichweite (2–8 Wochen). Unter 60% heisst meist zu viele Ausreisser.",
     "sellThrough": "Verkäufe der Vorwoche ÷ (Verkäufe + Restbestand). Höher = schnellerer Abverkauf. Unter 2% signalisiert Langsamdreher oder Überbestand.",

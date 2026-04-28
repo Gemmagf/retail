@@ -1239,6 +1239,140 @@ export function getKPIsForRegion(region: Region): DashboardKPIs {
   } as DashboardKPIs & { missedRevenueTotal: number };
 }
 
+export type DecisionType =
+  | "stockOut"
+  | "campaign"
+  | "missedSize"
+  | "imbalance"
+  | "overstock";
+
+export type Decision = {
+  id: string;
+  type: DecisionType;
+  productId: string;
+  locationId: string;
+  secondaryLocationId?: string;
+  impact: number;
+  margin: number;
+  unitsHint?: number;
+  weeksContext?: number;
+  campaignLabel?: string;
+  sizesContext?: Size[];
+  href: string;
+  ctaKey: "approveTransfer" | "redistribute" | "review";
+};
+
+let _decisions: Decision[] | null = null;
+
+export function getTopDecisions(limit = 14): Decision[] {
+  if (_decisions) return _decisions.slice(0, limit);
+
+  const out: Decision[] = [];
+
+  for (const r of getRisks().slice(0, 30)) {
+    const t: DecisionType = r.upcomingCampaign ? "campaign" : "stockOut";
+    out.push({
+      id: `risk-${r.productId}-${r.locationId}`,
+      type: t,
+      productId: r.productId,
+      locationId: r.locationId,
+      impact: r.revenueAtRisk,
+      margin: r.marginAtRisk,
+      unitsHint: Math.max(1, Math.round(r.velocity * 6 - r.units)),
+      weeksContext: Math.round(r.weeksToStockout * 10) / 10,
+      campaignLabel: r.upcomingCampaign,
+      href: `/allocation`,
+      ctaKey: "approveTransfer",
+    });
+  }
+
+  for (const m of getMissedSales().slice(0, 20)) {
+    if (m.reason !== "sizeGap") continue;
+    out.push({
+      id: `size-${m.productId}-${m.locationId}`,
+      type: "missedSize",
+      productId: m.productId,
+      locationId: m.locationId,
+      impact: m.missedRevenue,
+      margin: m.missedMargin,
+      unitsHint: m.missedUnits,
+      sizesContext: m.sizeGaps,
+      href: `/sizes`,
+      ctaKey: "approveTransfer",
+    });
+  }
+
+  for (const im of getStockImbalances().slice(0, 15)) {
+    out.push({
+      id: `imb-${im.productId}`,
+      type: "imbalance",
+      productId: im.productId,
+      locationId: im.lowestLocationId,
+      secondaryLocationId: im.highestLocationId,
+      impact: im.weeklyCarryingCost * 8,
+      margin: im.weeklyCarryingCost * 8 * 0.4,
+      unitsHint: im.overstockUnits,
+      weeksContext: Math.round((im.maxCover - im.minCover) * 10) / 10,
+      href: `/allocation`,
+      ctaKey: "redistribute",
+    });
+  }
+
+  for (const op of getOpportunities().slice(0, 15)) {
+    out.push({
+      id: `opp-${op.productId}-${op.locationId}`,
+      type: "overstock",
+      productId: op.productId,
+      locationId: op.locationId,
+      impact: op.redistributableRevenue,
+      margin: op.redistributableMargin,
+      unitsHint: op.excessUnits,
+      weeksContext: op.weeksCover,
+      href: `/risks`,
+      ctaKey: "review",
+    });
+  }
+
+  out.sort((a, b) => b.impact - a.impact);
+
+  const seen = new Set<string>();
+  const deduped: Decision[] = [];
+  for (const d of out) {
+    const key = `${d.type}-${d.productId}-${d.locationId}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    deduped.push(d);
+  }
+
+  _decisions = deduped;
+  return deduped.slice(0, limit);
+}
+
+export type DecisionTotals = {
+  totalImpact: number;
+  totalMargin: number;
+  byType: Record<DecisionType, number>;
+};
+
+export function getDecisionTotals(): DecisionTotals {
+  const decisions = getTopDecisions(50);
+  const byType: Record<DecisionType, number> = {
+    stockOut: 0,
+    campaign: 0,
+    missedSize: 0,
+    imbalance: 0,
+    overstock: 0,
+  };
+  let totalImpact = 0;
+  let totalMargin = 0;
+  for (const d of decisions) {
+    byType[d.type]++;
+    totalImpact += d.impact;
+    totalMargin += d.margin;
+  }
+  return { totalImpact, totalMargin, byType };
+}
+
 export type SizeMatrixCell = {
   locationId: string;
   size: Size;

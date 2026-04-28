@@ -4,6 +4,50 @@
     "tagline": "Distribution de stock assistée par IA pour le retail global",
     "demo": "Projet démo · Non affilié à On AG"
   },
+  "decisions": {
+    "title": "Décisions prioritaires du jour",
+    "subtitle": "{count} en attente · {impact} d'impact hebdomadaire en jeu",
+    "empty": "Tout est traité. De nouveaux signaux apparaîtront au fil de la semaine.",
+    "types": {
+      "stockOut": "Risque de rupture",
+      "campaign": "Lift de campagne",
+      "missedSize": "Gap de taille",
+      "imbalance": "Déséquilibre stock",
+      "overstock": "Surstock"
+    },
+    "context": {
+      "weeksLeft": "{weeks}s avant rupture",
+      "sizesAffected": "Tailles {sizes}",
+      "coverSpread": "Écart {weeks}s",
+      "excessUnits": "{units} unités en excès",
+      "moveTo": "Déplacer vers {to}",
+      "fromTo": "{from} → {to}"
+    },
+    "actions": {
+      "approve": "Approuver",
+      "defer": "Reporter",
+      "escalate": "Escalader",
+      "open": "Examiner"
+    },
+    "status": {
+      "approved": "Approuvée",
+      "deferred": "Reportée",
+      "escalated": "Escaladée"
+    },
+    "summary": {
+      "pending": "en attente",
+      "approved": "approuvées",
+      "deferred": "reportées",
+      "escalated": "escaladées",
+      "approvedImpact": "Impact approuvé",
+      "approvedMargin": "Marge approuvée"
+    },
+    "ctas": {
+      "approveTransfer": "Approuver le transfert",
+      "redistribute": "Redistribuer",
+      "review": "Examiner"
+    }
+  },
   "info": {
     "stockHealth": "% de paires SKU-magasin avec couverture saine (2–8 semaines). Sous 60% indique trop d'extrêmes.",
     "sellThrough": "Ventes S-1 ÷ (ventes + stock restant). Plus élevé = rotation rapide. Sous 2% = rotation lente ou surstock.",
