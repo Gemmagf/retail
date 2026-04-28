@@ -16,6 +16,7 @@ import {
   Zap,
 } from "lucide-react";
 import { ShoeMark } from "@/components/ShoeMark";
+import { InfoTooltip } from "@/components/InfoTooltip";
 import { cn, formatCurrency, formatNumber } from "@/lib/utils";
 import type { Product } from "@/data/products";
 import type { Location } from "@/data/locations";
@@ -126,6 +127,7 @@ export function DecisionsQueue({ decisions, productsById, locationsById }: Props
           <h2 className="flex items-center gap-2 text-base font-semibold tracking-tight">
             <Zap className="h-4 w-4 text-accent" />
             {t("decisions.title")}
+            <InfoTooltip text={t("info.decisionsQueue")} />
           </h2>
           <p className="mt-0.5 text-xs text-muted-foreground">
             {t("decisions.subtitle", {

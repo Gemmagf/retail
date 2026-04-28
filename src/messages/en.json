@@ -4,6 +4,37 @@
     "tagline": "AI-assisted stock distribution for global retail",
     "demo": "Demo project · Not affiliated with On AG"
   },
+  "missed": {
+    "title": "Missed sales opportunities",
+    "subtitle": "Recent lost sales — what caused them, how to recover, how to stop the bleed",
+    "framework": "Diagnose → Recover → Prevent. Click any row to expand.",
+    "rootCause": "Why it happened",
+    "recoverNow": "Recover now",
+    "preventNext": "Prevent next time",
+    "owner": "Owner",
+    "fixOwners": {
+      "Forecasting": "Forecasting",
+      "Allocation": "Allocation",
+      "Merchandising": "Merchandising",
+      "Replenishment": "Replenishment"
+    },
+    "actions": {
+      "recover": "Approve recovery",
+      "prevent": "Add to fix log",
+      "open": "Open SKU"
+    },
+    "labels": {
+      "recovered": "Recovered",
+      "logged": "Logged",
+      "stockOut": "Stock-out",
+      "sizeGap": "Size gap"
+    },
+    "summary": {
+      "totalLost": "Lost this cycle",
+      "recoverable": "Recoverable now",
+      "actionsLogged": "Fixes logged"
+    }
+  },
   "decisions": {
     "title": "Today's priority decisions",
     "subtitle": "{count} pending · {impact} of weekly impact at stake",
@@ -68,7 +99,11 @@
     "sizesHeatmap": "Rows = stores, columns = sizes. Red = stock-out with demand, amber = thin size cover, green = healthy. Top bar shows expected demand share per size.",
     "forecastChart": "Solid line = actual sales, dashed line = forecast, shaded band = 80% confidence, dotted grey = last year, orange bars = marketing spend (right axis).",
     "risks": "Risks tab: SKU-locations predicted to stock out in 2/4/6 weeks with revenue at risk. Opportunities tab: overstock pockets that can fund redistributions.",
-    "categories": "Performance by product category — the rollup you bring into the Merchandise Planning meeting."
+    "categories": "Performance by product category — the rollup you bring into the Merchandise Planning meeting.",
+    "decisionsQueue": "Top open decisions ranked by absolute revenue impact across stock-outs, campaign signals, size gaps, imbalances and overstock. Approve, defer or escalate inline.",
+    "products": "Active SKUs with global stock, weeks-of-cover (traffic-light) and a per-product size grid. Red bars in the size grid mark sizes that are out of stock somewhere.",
+    "simulator": "What-if sliders. Move marketing spend, lead time and target cover; the four KPI cards on the right recompute live so you can defend the trade-off before approving a campaign-driven transfer.",
+    "storeDetail": "Store-level execution view. Tile colours show cover health, the SKU table flags size gaps, and the right column lists incoming POs."
   },
   "nav": {
     "dashboard": "Dashboard",

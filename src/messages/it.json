@@ -4,6 +4,37 @@
     "tagline": "Distribuzione stock assistita da IA per il retail globale",
     "demo": "Progetto demo · Non affiliato a On AG"
   },
+  "missed": {
+    "title": "Opportunità di vendita perse",
+    "subtitle": "Vendite perse — causa, recupero, prevenzione",
+    "framework": "Diagnosi → Recupero → Prevenzione. Clicca una riga per espanderla.",
+    "rootCause": "Perché è successo",
+    "recoverNow": "Recupera ora",
+    "preventNext": "Prevenire la prossima volta",
+    "owner": "Responsabile",
+    "fixOwners": {
+      "Forecasting": "Forecasting",
+      "Allocation": "Allocation",
+      "Merchandising": "Acquisti",
+      "Replenishment": "Replenishment"
+    },
+    "actions": {
+      "recover": "Approva recupero",
+      "prevent": "Aggiungi al log",
+      "open": "Apri SKU"
+    },
+    "labels": {
+      "recovered": "Recuperato",
+      "logged": "Registrato",
+      "stockOut": "Stock-out",
+      "sizeGap": "Gap taglia"
+    },
+    "summary": {
+      "totalLost": "Perdita del ciclo",
+      "recoverable": "Recuperabile ora",
+      "actionsLogged": "Fix registrati"
+    }
+  },
   "decisions": {
     "title": "Decisioni prioritarie di oggi",
     "subtitle": "{count} in attesa · {impact} di impatto settimanale in gioco",
@@ -68,7 +99,11 @@
     "sizesHeatmap": "Righe = negozi, colonne = taglie. Rosso = stock-out con domanda, ambra = sottile, verde = sano.",
     "forecastChart": "Linea piena = reale, tratteggiata = previsione, banda = confidenza 80%, grigio punteggiato = anno scorso, barre arancio = spesa marketing.",
     "risks": "Tab Rischi: stock-out previsti in 2/4/6 settimane. Tab Opportunità: eccedenze che finanziano redistribuzioni.",
-    "categories": "Performance per categoria — la vista per la riunione Merchandise Planning."
+    "categories": "Performance per categoria — la vista per la riunione Merchandise Planning.",
+    "decisionsQueue": "Top decisioni aperte ordinate per impatto ricavi assoluto — stock-out, campagne, gap taglia, sbilanciamenti, sovrastock. Approva, posticipa o escala inline.",
+    "products": "SKU attivi con stock globale, settimane di copertura (semaforo) e griglia taglie per prodotto. Barre rosse = taglia in stock-out da qualche parte.",
+    "simulator": "Slider what-if. Spostare marketing, lead time e copertura target; i KPI a destra si ricalcolano in tempo reale.",
+    "storeDetail": "Vista esecuzione negozio. Colori delle card = salute copertura, tabella SKU = gap di taglia, colonna destra = PO in arrivo."
   },
   "nav": {
     "dashboard": "Dashboard",

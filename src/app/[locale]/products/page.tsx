@@ -27,7 +27,11 @@ export default async function ProductsPage({ params }: PageProps<"/[locale]">) {
 
   return (
     <>
-      <PageHeader title={t("products.title")} subtitle={t("products.subtitle")} />
+      <PageHeader
+        title={t("products.title")}
+        subtitle={t("products.subtitle")}
+        info={t("info.products")}
+      />
       <SectionTabs
         tabs={[
           { href: "/products", label: t("nav.products") },

@@ -4,6 +4,37 @@
     "tagline": "Distribuição de estoque assistida por IA para varejo global",
     "demo": "Projeto demo · Não afiliado à On AG"
   },
+  "missed": {
+    "title": "Oportunidades de venda perdidas",
+    "subtitle": "Vendas perdidas — causa, recuperação, prevenção",
+    "framework": "Diagnosticar → Recuperar → Prevenir. Clique numa linha para expandir.",
+    "rootCause": "Por que aconteceu",
+    "recoverNow": "Recuperar agora",
+    "preventNext": "Evitar da próxima vez",
+    "owner": "Responsável",
+    "fixOwners": {
+      "Forecasting": "Forecasting",
+      "Allocation": "Allocation",
+      "Merchandising": "Compras",
+      "Replenishment": "Reposição"
+    },
+    "actions": {
+      "recover": "Aprovar recuperação",
+      "prevent": "Adicionar ao log",
+      "open": "Abrir SKU"
+    },
+    "labels": {
+      "recovered": "Recuperada",
+      "logged": "Registrada",
+      "stockOut": "Ruptura",
+      "sizeGap": "Gap de tamanho"
+    },
+    "summary": {
+      "totalLost": "Perda do ciclo",
+      "recoverable": "Recuperável agora",
+      "actionsLogged": "Fixes registrados"
+    }
+  },
   "decisions": {
     "title": "Decisões prioritárias de hoje",
     "subtitle": "{count} pendentes · {impact} de impacto semanal em jogo",
@@ -68,7 +99,11 @@
     "sizesHeatmap": "Linhas = lojas, colunas = tamanhos. Vermelho = ruptura com demanda, âmbar = apertado, verde = saudável.",
     "forecastChart": "Linha sólida = real, tracejada = previsão, faixa = confiança 80%, cinza pontilhado = ano passado, barras laranja = gasto marketing.",
     "risks": "Aba Riscos: rupturas previstas em 2/4/6 sem. Aba Oportunidades: excedentes para redistribuição.",
-    "categories": "Performance por categoria — visão para a reunião de Merchandise Planning."
+    "categories": "Performance por categoria — visão para a reunião de Merchandise Planning.",
+    "decisionsQueue": "Top decisões abertas ordenadas por impacto absoluto de receita — rupturas, campanhas, gaps de tamanho, desbalanceamentos, superestoque. Aprovar, adiar ou escalar inline.",
+    "products": "SKUs ativos com estoque global, semanas de cobertura (semáforo) e grade de tamanhos por produto. Barras vermelhas = tamanho em ruptura em algum local.",
+    "simulator": "Sliders what-if. Mexer no marketing, lead time e cobertura alvo; os KPIs à direita recalculam em tempo real.",
+    "storeDetail": "Visão de execução de loja. Cores das cards = saúde de cobertura, tabela SKU = gaps de tamanho, coluna direita = POs em chegada."
   },
   "nav": {
     "dashboard": "Painel",

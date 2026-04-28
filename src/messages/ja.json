@@ -4,6 +4,37 @@
     "tagline": "グローバルリテール向けAI支援在庫配分",
     "demo": "デモプロジェクト · On AGとは無関係"
   },
+  "missed": {
+    "title": "失注機会",
+    "subtitle": "失われた売上 — 原因・リカバリー・再発防止",
+    "framework": "診断 → リカバリー → 予防。行をクリックで展開。",
+    "rootCause": "原因",
+    "recoverNow": "今すぐリカバリー",
+    "preventNext": "次回の予防",
+    "owner": "担当",
+    "fixOwners": {
+      "Forecasting": "Forecasting",
+      "Allocation": "Allocation",
+      "Merchandising": "マーチャンダイジング",
+      "Replenishment": "Replenishment"
+    },
+    "actions": {
+      "recover": "リカバリー承認",
+      "prevent": "改善ログへ",
+      "open": "SKUを開く"
+    },
+    "labels": {
+      "recovered": "リカバリー済",
+      "logged": "ログ済",
+      "stockOut": "在庫切れ",
+      "sizeGap": "サイズ欠品"
+    },
+    "summary": {
+      "totalLost": "今期の損失",
+      "recoverable": "今リカバリー可能",
+      "actionsLogged": "改善登録"
+    }
+  },
   "decisions": {
     "title": "今日の優先決定事項",
     "subtitle": "{count}件未対応・週次インパクト{impact}",
@@ -68,7 +99,11 @@
     "sizesHeatmap": "行=店舗、列=サイズ。赤=需要ありで欠品、琥珀=薄い、緑=健全。",
     "forecastChart": "実線=実績、破線=予測、帯=80%信頼、灰色点線=前年、オレンジ棒=マーケ支出。",
     "risks": "リスク:2/4/6週以内の在庫切れ予測。機会:再配分を支える過剰在庫。",
-    "categories": "カテゴリ別パフォーマンス — マーチャンダイズ・プランニング会議用ビュー。"
+    "categories": "カテゴリ別パフォーマンス — マーチャンダイズ・プランニング会議用ビュー。",
+    "decisionsQueue": "在庫切れ・キャンペーン・サイズ欠品・不均衡・過剰在庫の中から、絶対売上インパクト順に並べた最重要案件。インラインで承認・保留・エスカレ可能。",
+    "products": "グローバル在庫・在庫週数(信号機)・サイズグリッド付きのアクティブSKU。赤いバーはどこかで欠品しているサイズ。",
+    "simulator": "What-ifスライダー。マーケ・リードタイム・目標在庫週数を動かすと、右の4枚のKPIが即時更新。",
+    "storeDetail": "店舗実行ビュー。タイル色=在庫健全性、SKUテーブル=サイズ欠品、右列=入荷予定PO。"
   },
   "nav": {
     "dashboard": "ダッシュボード",

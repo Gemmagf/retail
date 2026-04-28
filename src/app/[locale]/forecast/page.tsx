@@ -30,7 +30,11 @@ export default async function ForecastPage({ params }: PageProps<"/[locale]">) {
 
   return (
     <>
-      <PageHeader title={t("forecast.title")} subtitle={t("forecast.subtitle")} />
+      <PageHeader
+        title={t("forecast.title")}
+        subtitle={t("forecast.subtitle")}
+        info={t("info.forecastChart")}
+      />
       <SectionTabs
         tabs={[
           { href: "/forecast", label: t("nav.forecast") },

@@ -4,6 +4,37 @@
     "tagline": "Distribución de stock asistida por IA para retail global",
     "demo": "Proyecto demo · No afiliado a On AG"
   },
+  "missed": {
+    "title": "Oportunidades de venta perdidas",
+    "subtitle": "Ventas perdidas — causa, recuperación, prevención",
+    "framework": "Diagnosticar → Recuperar → Prevenir. Haz clic en una fila para expandirla.",
+    "rootCause": "Por qué pasó",
+    "recoverNow": "Recuperar ahora",
+    "preventNext": "Evitar la próxima vez",
+    "owner": "Responsable",
+    "fixOwners": {
+      "Forecasting": "Forecasting",
+      "Allocation": "Allocation",
+      "Merchandising": "Compras",
+      "Replenishment": "Reposición"
+    },
+    "actions": {
+      "recover": "Aprobar recuperación",
+      "prevent": "Añadir al log",
+      "open": "Abrir SKU"
+    },
+    "labels": {
+      "recovered": "Recuperada",
+      "logged": "Registrada",
+      "stockOut": "Rotura",
+      "sizeGap": "Gap de talla"
+    },
+    "summary": {
+      "totalLost": "Pérdida del ciclo",
+      "recoverable": "Recuperable ahora",
+      "actionsLogged": "Fixes registrados"
+    }
+  },
   "decisions": {
     "title": "Decisiones prioritarias de hoy",
     "subtitle": "{count} pendientes · {impact} de impacto semanal en juego",
@@ -68,7 +99,11 @@
     "sizesHeatmap": "Filas = tiendas, columnas = tallas. Rojo = rotura con demanda, ámbar = ajustado, verde = sano.",
     "forecastChart": "Línea sólida = real, discontinua = previsión, banda = confianza 80%, gris punteado = año anterior, barras naranja = gasto marketing.",
     "risks": "Pestaña Riesgos: roturas previstas en 2/4/6 sem. Oportunidades: sobrestocks para redistribución.",
-    "categories": "Rendimiento por categoría — la vista para la reunión Merchandise Planning."
+    "categories": "Rendimiento por categoría — la vista para la reunión Merchandise Planning.",
+    "decisionsQueue": "Top decisiones abiertas ordenadas por impacto absoluto en ingresos — roturas, campañas, gaps de talla, desbalances, sobrestock. Aprobar, aplazar o escalar inline.",
+    "products": "SKUs activos con stock global, semanas de cobertura (semáforo) y cuadro de tallas por producto. Barras rojas = talla en rotura en algún sitio.",
+    "simulator": "Sliders what-if. Mueve marketing, lead time y cobertura objetivo; los KPIs de la derecha se recalculan en vivo.",
+    "storeDetail": "Vista de ejecución de tienda. Colores = salud de cobertura, tabla SKU = gaps de talla, columna derecha = OCs entrantes."
   },
   "nav": {
     "dashboard": "Dashboard",

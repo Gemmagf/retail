@@ -752,6 +752,150 @@ export function getMissedSales(): MissedSale[] {
   return out;
 }
 
+export type MissedDiagnosis = {
+  rootCause: string;
+  recoverAction: string;
+  recoverUnits?: number;
+  recoverEtaWeeks?: number;
+  preventAction: string;
+  preventOwner: "Forecasting" | "Allocation" | "Merchandising" | "Replenishment";
+};
+
+export type MissedSaleWithDiagnosis = MissedSale & {
+  diagnosis: MissedDiagnosis;
+};
+
+function nearestRegionalWarehouse(region: Region) {
+  const map: Record<Region, string> = {
+    EMEA: "antwerp-dc",
+    AMER: "atlanta-dc",
+    APAC: "yokohama-dc",
+  };
+  return locationById.get(map[region])!;
+}
+
+function recentSpike(productId: string, locationId: string): boolean {
+  const sales = getSales().filter(
+    (s) => s.productId === productId && s.locationId === locationId,
+  );
+  const recent = sales
+    .filter((s) => s.week >= CURRENT_WEEK_INDEX - 1 && s.week <= CURRENT_WEEK_INDEX)
+    .reduce((a, b) => a + b.units, 0);
+  const lookback = sales
+    .filter((s) => s.week >= CURRENT_WEEK_INDEX - 9 && s.week <= CURRENT_WEEK_INDEX - 2)
+    .reduce((a, b) => a + b.units, 0);
+  const recentAvg = recent / 2;
+  const lookbackAvg = lookback / 8;
+  return lookbackAvg > 0 && recentAvg / lookbackAvg > 1.6;
+}
+
+function nearbyStoreWithSurplus(productId: string, region: Region): string | undefined {
+  const candidates = getInventory()
+    .filter(
+      (r) =>
+        r.productId === productId &&
+        locationById.get(r.locationId)!.region === region &&
+        locationById.get(r.locationId)!.channel !== "warehouse" &&
+        r.weeksCover > 10 &&
+        r.units > 30,
+    )
+    .sort((a, b) => b.weeksCover - a.weeksCover);
+  return candidates[0]?.locationId;
+}
+
+let _missedDiag: MissedSaleWithDiagnosis[] | null = null;
+
+export function getMissedSalesWithDiagnosis(): MissedSaleWithDiagnosis[] {
+  if (_missedDiag) return _missedDiag;
+  const out: MissedSaleWithDiagnosis[] = [];
+
+  for (const m of getMissedSales()) {
+    const product = productById.get(m.productId)!;
+    const loc = locationById.get(m.locationId)!;
+    const region = loc.region;
+
+    const upcomingCampaign = CAMPAIGNS.find(
+      (c) =>
+        (c.region === "ALL" || c.region === region) &&
+        (!c.category || c.category === product.category) &&
+        (!c.productId || c.productId === m.productId) &&
+        Math.abs(c.centerWeek - (CURRENT_WEEK_INDEX % 52)) <= 4,
+    );
+
+    const isSpike = recentSpike(m.productId, m.locationId);
+
+    let rootCause: string;
+    let preventAction: string;
+    let preventOwner: MissedDiagnosis["preventOwner"];
+
+    if (m.reason === "fullStockout") {
+      if (upcomingCampaign) {
+        rootCause = `Forecast under-anticipated ${upcomingCampaign.label}: in-store demand lifted ~${Math.round((upcomingCampaign.lift - 1) * 100)}% before stock cover was raised.`;
+        preventAction = `Tag ${upcomingCampaign.label} as a "must-cover" event for ${product.category} in next season's forecast calendar; pre-position +2w of cover at ${loc.city}.`;
+        preventOwner = "Forecasting";
+      } else if (isSpike) {
+        rootCause = `Local demand spiked ~60%+ vs the 8-week baseline before replenishment caught up. The buy plan didn't reserve safety cover for shock weeks.`;
+        preventAction = `Raise safety stock for ${product.name} in top-quartile ${region} stores to 3w cover and tighten the velocity-trigger on the replenishment rule.`;
+        preventOwner = "Replenishment";
+      } else {
+        rootCause = `Replenishment cadence (currently ${product.leadTimeWeeks}w supplier lead time + biweekly DC→store) is slower than the actual sell-through at ${loc.city}.`;
+        preventAction = `Move ${loc.city} from the biweekly to the weekly replenishment cadence for ${product.name}; review every store with sell-through > 8 %.`;
+        preventOwner = "Replenishment";
+      }
+    } else {
+      const sizes = (m.sizeGaps ?? []).slice(0, 4).join(", ");
+      rootCause = `Size curve mismatch: sizes ${sizes} ran to zero while neighbouring sizes are still healthy, suggesting the inbound size mix doesn't match the local demand curve for ${product.gender}.`;
+      preventAction = `Recalibrate the ${product.gender} size curve for ${loc.country} on the next intake; lift sizes ${sizes} by ~${Math.round(15 + Math.random() * 10)} % and trim the long tail.`;
+      preventOwner = "Merchandising";
+    }
+
+    let recoverAction: string;
+    let recoverUnits: number | undefined;
+    let recoverEtaWeeks: number | undefined;
+
+    if (m.reason === "fullStockout") {
+      const wh = nearestRegionalWarehouse(region);
+      const whInv = getInventory().find((r) => r.productId === m.productId && r.locationId === wh.id);
+      if (whInv && whInv.units > 30) {
+        recoverUnits = Math.min(whInv.units, m.missedUnits + 20);
+        recoverEtaWeeks = 1;
+        recoverAction = `Expedite ${recoverUnits} units from ${wh.city} DC (ETA ${recoverEtaWeeks}w). DC has ${whInv.units} on hand for this SKU.`;
+      } else {
+        const sister = nearbyStoreWithSurplus(m.productId, region);
+        if (sister) {
+          const sisterLoc = locationById.get(sister)!;
+          recoverUnits = Math.max(15, Math.round(m.missedUnits * 0.6));
+          recoverEtaWeeks = 1;
+          recoverAction = `Cross-ship ${recoverUnits} units from ${sisterLoc.city} (currently overstocked) within the same region.`;
+        } else {
+          recoverAction = `No regional cover available — escalate to inbound buy team and price-protect the SKU until next intake.`;
+        }
+      }
+    } else {
+      const wh = nearestRegionalWarehouse(region);
+      const sizes = (m.sizeGaps ?? []).slice(0, 4).join(", ");
+      recoverUnits = Math.max(8, m.missedUnits);
+      recoverEtaWeeks = 1;
+      recoverAction = `Pull sizes ${sizes} from ${wh.city} DC (~${recoverUnits} units, ETA ${recoverEtaWeeks}w). Confirm the size mix on the next outbound truck.`;
+    }
+
+    out.push({
+      ...m,
+      diagnosis: {
+        rootCause,
+        recoverAction,
+        recoverUnits,
+        recoverEtaWeeks,
+        preventAction,
+        preventOwner,
+      },
+    });
+  }
+
+  _missedDiag = out;
+  return out;
+}
+
 export type MissedSalesTotals = {
   totalUnits: number;
   totalRevenue: number;

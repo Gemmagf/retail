@@ -4,6 +4,37 @@
     "tagline": "Distribution de stock assistée par IA pour le retail global",
     "demo": "Projet démo · Non affilié à On AG"
   },
+  "missed": {
+    "title": "Opportunités de vente manquées",
+    "subtitle": "Ventes perdues — cause, récupération, prévention",
+    "framework": "Diagnostiquer → Récupérer → Prévenir. Cliquez une ligne pour la déplier.",
+    "rootCause": "Pourquoi c'est arrivé",
+    "recoverNow": "Récupérer maintenant",
+    "preventNext": "Éviter la prochaine fois",
+    "owner": "Responsable",
+    "fixOwners": {
+      "Forecasting": "Forecasting",
+      "Allocation": "Allocation",
+      "Merchandising": "Achats",
+      "Replenishment": "Réassort"
+    },
+    "actions": {
+      "recover": "Approuver la récupération",
+      "prevent": "Ajouter au journal",
+      "open": "Ouvrir le SKU"
+    },
+    "labels": {
+      "recovered": "Récupéré",
+      "logged": "Journalisé",
+      "stockOut": "Rupture",
+      "sizeGap": "Gap de taille"
+    },
+    "summary": {
+      "totalLost": "Perte sur le cycle",
+      "recoverable": "Récupérable maintenant",
+      "actionsLogged": "Fixes journalisés"
+    }
+  },
   "decisions": {
     "title": "Décisions prioritaires du jour",
     "subtitle": "{count} en attente · {impact} d'impact hebdomadaire en jeu",
@@ -68,7 +99,11 @@
     "sizesHeatmap": "Lignes = magasins, colonnes = tailles. Rouge = rupture avec demande, ambre = tendu, vert = sain.",
     "forecastChart": "Ligne pleine = réel, pointillée = prévision, bande = confiance 80%, gris pointillé = N-1, barres oranges = dépense marketing.",
     "risks": "Onglet Risques: ruptures prévues sous 2/4/6 sem. Onglet Opportunités: surstocks qui financent des redistributions.",
-    "categories": "Performance par catégorie — la vue pour la réunion Merchandise Planning."
+    "categories": "Performance par catégorie — la vue pour la réunion Merchandise Planning.",
+    "decisionsQueue": "Top décisions ouvertes classées par impact CA absolu — ruptures, campagnes, gaps de taille, déséquilibres, surstock. Approuver, reporter ou escalader inline.",
+    "products": "SKUs actifs avec stock global, semaines de couverture (feu tricolore) et grille de tailles par produit. Barres rouges = tailles en rupture quelque part.",
+    "simulator": "Sliders what-if. Bouger le marketing, le lead time et la couverture cible; les KPIs à droite se recalculent en direct.",
+    "storeDetail": "Vue exécution magasin. Couleurs des tuiles = santé couverture, table SKU = gaps de taille, colonne droite = POs entrants."
   },
   "nav": {
     "dashboard": "Tableau de bord",

@@ -46,6 +46,7 @@ export default async function StoreDetailPage({ params }: PageProps<"/[locale]/s
       <PageHeader
         title={`${loc.city}${loc.partner ? ` · ${loc.partner}` : ""}`}
         subtitle={`${loc.country} · ${t(`regions.${loc.region}`)} · ${t(`channels.${loc.channel}`)}`}
+        info={t("info.storeDetail")}
       >
         <span
           className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium uppercase"

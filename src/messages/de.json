@@ -4,6 +4,37 @@
     "tagline": "KI-gestützte Warenverteilung für den globalen Handel",
     "demo": "Demo-Projekt · Nicht mit On AG verbunden"
   },
+  "missed": {
+    "title": "Verlorene Verkaufschancen",
+    "subtitle": "Verlorene Verkäufe — Ursache, Recovery, Prävention",
+    "framework": "Diagnose → Recover → Prevent. Zeile anklicken zum Aufklappen.",
+    "rootCause": "Warum es passierte",
+    "recoverNow": "Jetzt zurückholen",
+    "preventNext": "Nächstes Mal verhindern",
+    "owner": "Verantwortung",
+    "fixOwners": {
+      "Forecasting": "Forecasting",
+      "Allocation": "Allocation",
+      "Merchandising": "Einkauf",
+      "Replenishment": "Replenishment"
+    },
+    "actions": {
+      "recover": "Recovery genehmigen",
+      "prevent": "In Fix-Log",
+      "open": "SKU öffnen"
+    },
+    "labels": {
+      "recovered": "Wiederhergestellt",
+      "logged": "Erfasst",
+      "stockOut": "Fehlbestand",
+      "sizeGap": "Grössenlücke"
+    },
+    "summary": {
+      "totalLost": "Verlust diese Runde",
+      "recoverable": "Aktuell wiederherstellbar",
+      "actionsLogged": "Fixes erfasst"
+    }
+  },
   "decisions": {
     "title": "Prioritätsentscheidungen heute",
     "subtitle": "{count} offen · {impact} wöchentliche Auswirkung",
@@ -68,7 +99,11 @@
     "sizesHeatmap": "Zeilen = Stores, Spalten = Grössen. Rot = Fehlbestand mit Nachfrage, Bernstein = dünn, Grün = gesund.",
     "forecastChart": "Durchgezogen = Ist, gestrichelt = Prognose, Band = 80% Konfidenz, grau gepunktet = Vorjahr, orange Balken = Marketing-Spend.",
     "risks": "Risiken-Tab: prognostizierte Fehlbestände in 2/4/6 Wochen. Chancen-Tab: Überbestände, die Umverteilungen finanzieren.",
-    "categories": "Performance je Produktkategorie — die Sicht für das Merchandise-Planning-Meeting."
+    "categories": "Performance je Produktkategorie — die Sicht für das Merchandise-Planning-Meeting.",
+    "decisionsQueue": "Offene Top-Entscheidungen, sortiert nach absolutem Umsatzimpact über Fehlbestände, Kampagnen, Grössenlücken, Imbalances und Überbestände. Inline genehmigen, vertagen oder eskalieren.",
+    "products": "Aktive SKUs mit globalem Bestand, Wochen Reichweite (Ampel) und Grössenraster pro Produkt. Rote Balken markieren Grössen mit Fehlbestand irgendwo im Netzwerk.",
+    "simulator": "What-if-Slider. Marketing-Budget, Lieferzeit und Ziel-Reichweite verändern; die KPI-Karten rechts werden live neu berechnet.",
+    "storeDetail": "Store-Level-Sicht. Kachel-Farben zeigen Reichweite, die SKU-Tabelle markiert Grössenlücken, rechts Eingangs-POs."
   },
   "nav": {
     "dashboard": "Übersicht",

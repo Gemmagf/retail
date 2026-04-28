@@ -19,7 +19,11 @@ export default async function SizesPage({ params }: PageProps<"/[locale]">) {
 
   return (
     <>
-      <PageHeader title={t("sizes.title")} subtitle={t("sizes.subtitle")} />
+      <PageHeader
+        title={t("sizes.title")}
+        subtitle={t("sizes.subtitle")}
+        info={t("info.sizesHeatmap")}
+      />
       <SectionTabs
         tabs={[
           { href: "/products", label: t("nav.products") },

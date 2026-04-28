@@ -33,7 +33,11 @@ export default async function SimulatorPage({ params }: PageProps<"/[locale]">) 
 
   return (
     <>
-      <PageHeader title={t("simulator.title")} subtitle={t("simulator.subtitle")} />
+      <PageHeader
+        title={t("simulator.title")}
+        subtitle={t("simulator.subtitle")}
+        info={t("info.simulator")}
+      />
       <SectionTabs
         tabs={[
           { href: "/forecast", label: t("nav.forecast") },
