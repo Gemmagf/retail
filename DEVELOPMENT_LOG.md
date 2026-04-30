@@ -319,13 +319,83 @@ Nav gains a 10th entry (`About`).
 
 ---
 
-## Open follow-ups
+## Iteration 6 — Decision-led demo: priorities queue, missed-sales post-mortem, info popups
+
+The previous iterations were heavy on analysis — KPIs, charts, lists. A senior allocator doesn't open the tool to *look at numbers*; they open it to *clear a queue*. Reframed the Dashboard around that.
+
+### 6a. "Today's priority decisions" queue
+
+`getTopDecisions()` consolidates four streams — risks, missed-size opportunities, imbalances and overstock — into a single ranked list scored by absolute revenue impact. The new `DecisionsQueue` client renders the top 12 with type badge (Stock-out risk / Campaign uplift / Size gap / Imbalance / Overstock), product, location, financial impact and three primary actions: **Approve**, **Defer**, **Escalate**. Each row also deep-links into the matching page (allocation / risks / sizes). Live tally below the header counts approved / deferred / escalated and shows approved revenue + margin impact.
+
+This sits as the hero section above the KPI grid — when you open the dashboard, the first thing you see is your worklist for the morning.
+
+### 6b. Missed Sales as a Diagnose → Recover → Prevent post-mortem
+
+Replaced the static missed-sales list with `MissedOpportunitiesClient`. Each row is now expandable into a 3-column post-mortem framework:
+
+- **Why it happened** — root cause derived from context: campaign-driven forecast miss, demand spike vs 8-week baseline, replenishment cadence too slow, or size-curve mismatch.
+- **Recover now** — concrete recovery action with unit hint and ETA: expedite from regional DC, cross-ship from a sister store with overcover, or pull specific sizes. Includes an **Approve recovery** button.
+- **Prevent next time** — process fix tagged with an **owner** (Forecasting / Allocation / Merchandising / Replenishment): tag the campaign for next season, raise safety stock, recalibrate the size curve, tighten cadence. Includes an **Add to fix log** button.
+
+Mini summary at the top: lost-this-cycle, recoverable-now, fixes-logged.
+
+This was driven by a clear product brief: *"missed-sales is super important; show why it happened, how to recover and how to stop it from happening again"*. Allocators run exactly this loop; the panel mirrors it.
+
+### 6c. Info popups on every section
+
+`InfoTooltip` is a small `(i)` icon with a popover that opens on hover/focus/click and dismisses on outside click or Escape. `Card`, `KPICard` and `PageHeader` accept an optional `info` prop and render the tooltip alongside the title.
+
+A localised `info.*` block in all 7 locales covers every headline KPI (stock health, sell-through, stock-outs, revenue, margin, in-transit, MAPE, missed revenue, imbalance cost) and every chart / panel (sales-by-region, stock-by-region, top movers, at-risk, missed opportunities, imbalances, POs, forecast chart, size heatmap, risks tabs, categories, decisions queue, simulator, products, store detail).
+
+Also fixed a translation bug in this iteration: `"dashboard.missedOpportunities"` and `"forecast.ly"` had been written as flat keys with literal dots in the names. next-intl resolves dots as a path lookup, so they fell through to the raw string. Moved them into their nested blocks across all 7 locales.
+
+---
+
+## Iteration 7 — In progress: multi-sector pivot
+
+After the On application closed without success, the demo is being repositioned away from a brand-specific portfolio piece toward a **generic AI-assisted allocation tool that any retail vertical can run on synthetic data**. Same engine, swap the SKU set on the way in.
+
+### Decisions made
+
+- **Sectors v1 = footwear, grocery, bookstore, fashion**. Pharmacy and electronics deferred until the v1 wiring is stable. Each sector ships ~18 SKUs (footwear keeps its 25). Categories per sector are sector-native (`produce / dairy / bakery / …` for grocery; `fiction / nonfiction / children / art / cookbooks` for bookstore; `tops / bottoms / dresses / outerwear / accessories` for fashion).
+- **Selection model = cookie + onboarding page**. First visit lands on `/start` with a small two-question form (sector + locale). Selection writes the `as_sector` cookie and redirects to the dashboard. No sticky URL segment — keeps existing routes clean.
+- **Server-side resolution via `cache(cookies)`**. Sector is read once per request via React's `cache` and `next/headers` cookies. Each data function caches its output in a `Map<SectorId, T>` keyed by sector, so all sectors stay deterministic and cacheable.
+- **Per-product `seasonalProfile`**. The previous seasonality function branched on `category` strings hard-coded for footwear (`hike peaks autumn`, etc.). Replaced with `{ amplitude, phaseShift }` per product so each sector defines its own seasonality without rewriting the engine. Holiday-cookbook surge in Q4 and summer-dress lift in Q2 fall out of this naturally.
+- **Brand language scrubbed**. The "On" / "Allocation Studio" branding is being neutralised. Disclaimers, footer links and the `/about` CV page are all coming out — the goal is a sector-agnostic demo any future hiring manager can recognise as their own.
+
+### What's already in `main`
+
+- `src/data/sectors.ts` — full 4-sector dataset with ~80 SKUs total, complete with category strings, gender-specific size curves, COGS, seasonal profiles, region biases and lead times.
+- `src/data/products.ts` — refactored to read the `as_sector` cookie via `cache(cookies)`, with new exports `getActiveSectorId()`, `getProducts()`, `getCategories()`, `getProductMap()`. The old synchronous `products` and `productById` are kept as backwards-compat aliases that point at the default footwear sector, so the rest of the data layer keeps building while it's being migrated.
+
+### What still needs to land before this iteration is shippable
+
+- [ ] **Refactor `src/data/series.ts`** (≈1500 lines): every function — `getSales`, `getInventory`, `getInventoryBySize`, `getMarketingSpend`, `getForecast`, `getForecastWithLY`, `getAllocationRecommendations`, `getMissedSales`, `getMissedSalesWithDiagnosis`, `getStockImbalances`, `getRisks`, `getOpportunities`, `getCategorySummaries`, `getStoreSummaries`, `getStoreDetail`, `getProductSizeMatrix`, `getKPIs`, `getKPIsForRegion`, `getTopDecisions`, `getPurchaseOrders`, etc. — needs to become async, key its caches by `SectorId`, and read product data through `await getProducts()` / `await getProductMap()`. Internal helpers (`recentVelocity`, `aggregatedRegionVelocity`, `seasonality`, `campaignLift`) follow the same pattern.
+- [ ] **Wire seasonality through the per-product profile** instead of hard-coded category branches. Default profile for SKUs without one explicitly set.
+- [ ] **Make campaigns sector-aware**. Universal moments (Black Friday, Boxing Day) stay; the marathon set should only fire for footwear, the holiday-cookbook lift for bookstore, etc.
+- [ ] **Update every server page** (dashboard, products, stores, sizes, allocation, risks, forecast, simulator, categories, store detail) to `await` the data functions.
+- [ ] **`/start` page**: a small form with sector and locale selectors plus a "Launch demo" button. Submits via a server action that sets `as_sector` and redirects to `/{locale}` with the cookie attached.
+- [ ] **Proxy redirect** in `proxy.ts`: if no `as_sector` cookie is set and the URL is not `/start`, redirect to `/start` so first-time visitors always pass through onboarding.
+- [ ] **Translations** for every new sector-specific category across all 7 locales (`products.categories.<key>` for grocery, bookstore and fashion categories), and the `/start` UI strings.
+- [ ] **Sector switch in the header** for visitors who already onboarded — a small dropdown next to the language switcher to reseed the cookie and reload.
+- [ ] **Remove the `/about` page**, the CV PDF download, the Beyond-work photo gallery, the GitHub/LinkedIn footer links and the nav entry. The demo should not carry personal branding now that it's a generic tool.
+- [ ] **Brand sweep**: footer disclaimer, `<Metadata>` title and description, README and DEVELOPMENT_LOG should drop the "On AG" references.
+
+### Trade-offs being accepted
+
+- Pages will move from static-per-locale to dynamic-per-request. The cookie read forces dynamic rendering — acceptable on Vercel free tier given the demo's traffic profile.
+- Some campaigns won't fire for some sectors (e.g. NYC Marathon does nothing in grocery). Will be addressed by the sector-aware campaign filter, but the v1 rollout will accept the silent no-op rather than block on it.
+- Catalan stays out of the locale list — same reasoning as before.
+
+---
+
+## Open follow-ups (post-iteration-7)
 
 - [ ] Add a "Methodology" page explaining how each metric is computed.
 - [ ] Add download-CSV button to the Allocation table (export the approved set).
 - [ ] Add a Map view for the Locations data using react-simple-maps or D3.
 - [ ] Wire a real Prophet forecast (Python service) behind the Forecast page to demonstrate end-to-end ML integration.
-- [ ] Add a screen recording / Loom in the README for hiring managers who don't click through demos.
-- [ ] Add Catalan locale once a Catalan-speaking reviewer is on the panel.
+- [ ] Add a screen recording / Loom in the README explaining the demo flow.
 - [ ] Add a "what changed since last week?" panel to the dashboard (deltas in stock health, MAPE, top movers).
 - [ ] Build a "central ↔ local" toggle so the Allocation page can be reviewed from a local-store perspective vs a central-planner perspective.
+- [ ] Add pharmacy + electronics as additional sectors once v1 wiring is stable.
