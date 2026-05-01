@@ -1,8 +1,31 @@
 {
   "brand": {
     "title": "Allocation Studio",
-    "tagline": "グローバルリテール向けAI支援在庫配分",
-    "demo": "デモプロジェクト · On AGとは無関係"
+    "tagline": "あらゆるリテール業態向けAI支援在庫配分",
+    "demo": "合成データデモ"
+  },
+  "start": {
+    "tag": "デモを設定",
+    "title": "Allocation Studio を設定",
+    "subtitle": "同じエンジン、別の店舗。デモを動かす業態と表示言語を選択してください。後から変更可能です。",
+    "sectorLabel": "業態",
+    "sectorHelp": "各選択により、業態固有のカタログ(約18〜25 SKU)、カテゴリ、季節パターンに切り替わります。拠点とKPIは共通です。",
+    "localeLabel": "言語",
+    "localeHelp": "テキスト、KPI名、ツールチップはすべて翻訳されます。",
+    "note": "シードから生成された合成データ。送信・保存はされません。",
+    "cta": "デモを起動",
+    "sectors": {
+      "footwear": "シューズ",
+      "grocery": "スーパー",
+      "bookstore": "書店",
+      "fashion": "ファッション"
+    },
+    "sectorDescriptions": {
+      "footwear": "ランニング、トレイル、ライフスタイル、トレーニング、ハイキング",
+      "grocery": "青果、乳製品、ベーカリー、日用品",
+      "bookstore": "小説、ノンフィクション、児童書、料理本",
+      "fashion": "トップス、ボトムス、ワンピース、アウター"
+    }
   },
   "missed": {
     "title": "失注機会",
@@ -287,7 +310,25 @@
       "trail": "トレイル",
       "training": "トレーニング",
       "lifestyle": "ライフスタイル",
-      "hike": "ハイキング"
+      "hike": "ハイキング",
+      "produce": "青果",
+      "dairy": "乳製品",
+      "bakery": "ベーカリー",
+      "meatfish": "精肉・魚",
+      "beverages": "飲料",
+      "pantry": "食品",
+      "frozen": "冷凍",
+      "household": "日用品",
+      "fiction": "小説",
+      "nonfiction": "ノンフィクション",
+      "children": "児童書",
+      "art": "アート・デザイン",
+      "cookbooks": "料理本",
+      "tops": "トップス",
+      "bottoms": "ボトムス",
+      "dresses": "ワンピース",
+      "outerwear": "アウター",
+      "accessories": "アクセサリー"
     }
   },
   "allocation": {
@@ -355,7 +396,8 @@
     "recommendedTransfer": "推奨転送"
   },
   "footer": {
-    "disclaimer": "ポートフォリオデモプロジェクト。製品名およびブランドは © On AG であり、非商用デモのみに使用しています。全データは合成です。",
-    "stack": "Next.js、next-intl、Recharts、Tailwindで構築"
+    "disclaimer": "AI支援アロケーションツールのポートフォリオデモ。製品・拠点・販売・在庫を含む全データはシードから決定論的に生成された合成データです。ブランドおよび製品名はリアルなカタログを連想させるためのプレースホルダーで、各権利者に帰属します。本サイトはいずれの権利者とも無関係です。",
+    "stack": "Next.js、next-intl、Recharts、Tailwindで構築",
+    "reset": "デモをリセット"
   }
 }

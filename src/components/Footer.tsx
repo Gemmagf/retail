@@ -1,4 +1,9 @@
+"use client";
+
 import { useTranslations } from "next-intl";
+import { useTransition } from "react";
+import { RotateCcw } from "lucide-react";
+import { resetSetup } from "@/app/[locale]/start/actions";
 
 function GithubIcon({ className }: { className?: string }) {
   return (
@@ -14,22 +19,10 @@ function GithubIcon({ className }: { className?: string }) {
   );
 }
 
-function LinkedinIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      aria-hidden
-    >
-      <path d="M20.447 20.452H16.89V14.88c0-1.33-.025-3.04-1.853-3.04-1.855 0-2.14 1.45-2.14 2.95v5.662H9.34V9h3.414v1.561h.05c.476-.9 1.636-1.85 3.367-1.85 3.6 0 4.266 2.368 4.266 5.452v6.289ZM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125ZM7.116 20.452H3.558V9h3.558v11.452ZM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003Z" />
-    </svg>
-  );
-}
-
 export function Footer() {
   const t = useTranslations();
+  const [pending, startTransition] = useTransition();
+
   return (
     <footer className="mt-16 border-t border-border">
       <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-8 text-xs text-muted-foreground sm:flex-row sm:items-start sm:justify-between">
@@ -37,7 +30,16 @@ export function Footer() {
           <p>{t("footer.disclaimer")}</p>
           <p>{t("footer.stack")}</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            disabled={pending}
+            onClick={() => startTransition(() => resetSetup())}
+            className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-50"
+          >
+            <RotateCcw className="h-3.5 w-3.5" />
+            {t("footer.reset")}
+          </button>
           <a
             href="https://github.com/Gemmagf/retail"
             target="_blank"
@@ -46,15 +48,6 @@ export function Footer() {
           >
             <GithubIcon className="h-3.5 w-3.5" />
             GitHub
-          </a>
-          <a
-            href="https://www.linkedin.com/in/gemma-garcia-de-la-fuente-062079109/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted"
-          >
-            <LinkedinIcon className="h-3.5 w-3.5" />
-            LinkedIn
           </a>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PageHeader } from "@/components/PageHeader";
 import { SectionTabs } from "@/components/SectionTabs";
-import { products } from "@/data/products";
+import { getProducts } from "@/data/products";
 import { getForecastWithLY, getMarketingSpend } from "@/data/series";
 import type { Region } from "@/data/locations";
 import { ForecastClient } from "./forecast-client";
@@ -13,14 +13,16 @@ export default async function ForecastPage({ params }: PageProps<"/[locale]">) {
   setRequestLocale(locale);
   const t = await getTranslations();
 
-  const forecastByKey: Record<string, ReturnType<typeof getForecastWithLY>> = {};
+  const products = await getProducts();
+
+  const forecastByKey: Record<string, Awaited<ReturnType<typeof getForecastWithLY>>> = {};
   for (const p of products) {
     for (const r of REGION_KEYS) {
-      forecastByKey[`${p.id}|${r}`] = getForecastWithLY(p.id, r);
+      forecastByKey[`${p.id}|${r}`] = await getForecastWithLY(p.id, r);
     }
   }
 
-  const spendRows = getMarketingSpend();
+  const spendRows = await getMarketingSpend();
   const spendByRegion: Record<string, { week: number; spend: number }[]> = {};
   for (const r of ["EMEA", "AMER", "APAC"] as Region[]) {
     spendByRegion[r] = spendRows

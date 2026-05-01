@@ -26,7 +26,7 @@ export default async function CategoriesPage({ params }: PageProps<"/[locale]">)
   setRequestLocale(locale);
   const t = await getTranslations();
 
-  const summaries = getCategorySummaries().sort((a, b) => b.weeklyRevenue - a.weeklyRevenue);
+  const summaries = (await getCategorySummaries()).sort((a, b) => b.weeklyRevenue - a.weeklyRevenue);
 
   return (
     <>

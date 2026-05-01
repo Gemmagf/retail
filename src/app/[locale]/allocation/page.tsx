@@ -3,7 +3,7 @@ import { Zap } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { SectionTabs } from "@/components/SectionTabs";
 import { InfoTooltip } from "@/components/InfoTooltip";
-import { products } from "@/data/products";
+import { getProducts } from "@/data/products";
 import { locations } from "@/data/locations";
 import { getAllocationRecommendations } from "@/data/series";
 import { AllocationClient } from "./allocation-client";
@@ -13,7 +13,8 @@ export default async function AllocationPage({ params }: PageProps<"/[locale]">)
   setRequestLocale(locale);
   const t = await getTranslations();
 
-  const recommendations = getAllocationRecommendations().slice(0, 60);
+  const products = await getProducts();
+  const recommendations = (await getAllocationRecommendations()).slice(0, 60);
   const productsById = Object.fromEntries(products.map((p) => [p.id, p]));
   const locationsById = Object.fromEntries(locations.map((l) => [l.id, l]));
 

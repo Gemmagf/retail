@@ -1,7 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PageHeader } from "@/components/PageHeader";
 import { SectionTabs } from "@/components/SectionTabs";
-import { products, SIZE_GRID } from "@/data/products";
+import { getProducts, SIZE_GRID } from "@/data/products";
 import { locations } from "@/data/locations";
 import { getProductSizeMatrix } from "@/data/series";
 import { SizesClient } from "./sizes-client";
@@ -11,10 +11,11 @@ export default async function SizesPage({ params }: PageProps<"/[locale]">) {
   setRequestLocale(locale);
   const t = await getTranslations();
 
+  const products = await getProducts();
   const sellingLocations = locations.filter((l) => l.channel !== "warehouse");
-  const matricesByProduct: Record<string, ReturnType<typeof getProductSizeMatrix>> = {};
+  const matricesByProduct: Record<string, Awaited<ReturnType<typeof getProductSizeMatrix>>> = {};
   for (const p of products) {
-    matricesByProduct[p.id] = getProductSizeMatrix(p.id);
+    matricesByProduct[p.id] = await getProductSizeMatrix(p.id);
   }
 
   return (

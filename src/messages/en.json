@@ -1,8 +1,31 @@
 {
   "brand": {
     "title": "Allocation Studio",
-    "tagline": "AI-assisted stock distribution for global retail",
-    "demo": "Demo project · Not affiliated with On AG"
+    "tagline": "AI-assisted stock distribution for any retail vertical",
+    "demo": "Synthetic-data demo"
+  },
+  "start": {
+    "tag": "Set up your demo",
+    "title": "Configure the Allocation Studio",
+    "subtitle": "Same engine, different store. Pick the kind of business you'd like to see the demo run on, and the language you want the interface in. You can change either later.",
+    "sectorLabel": "Business",
+    "sectorHelp": "Each pick swaps in a sector-specific catalog (~18–25 SKUs), categories and seasonal patterns. Locations and KPIs stay the same.",
+    "localeLabel": "Language",
+    "localeHelp": "All copy, KPI names and tooltips are localised.",
+    "note": "Synthetic data, deterministic from a seed. Nothing is sent or stored.",
+    "cta": "Launch demo",
+    "sectors": {
+      "footwear": "Footwear",
+      "grocery": "Supermarket",
+      "bookstore": "Bookstore",
+      "fashion": "Fashion"
+    },
+    "sectorDescriptions": {
+      "footwear": "Running, trail, lifestyle, training, hike",
+      "grocery": "Produce, dairy, bakery, household",
+      "bookstore": "Fiction, non-fiction, kids, cookbooks",
+      "fashion": "Tops, bottoms, dresses, outerwear"
+    }
   },
   "missed": {
     "title": "Missed sales opportunities",
@@ -287,7 +310,25 @@
       "trail": "Trail",
       "training": "Training",
       "lifestyle": "Lifestyle",
-      "hike": "Hike"
+      "hike": "Hike",
+      "produce": "Produce",
+      "dairy": "Dairy",
+      "bakery": "Bakery",
+      "meatfish": "Meat & fish",
+      "beverages": "Beverages",
+      "pantry": "Pantry",
+      "frozen": "Frozen",
+      "household": "Household",
+      "fiction": "Fiction",
+      "nonfiction": "Non-fiction",
+      "children": "Children",
+      "art": "Art & design",
+      "cookbooks": "Cookbooks",
+      "tops": "Tops",
+      "bottoms": "Bottoms",
+      "dresses": "Dresses",
+      "outerwear": "Outerwear",
+      "accessories": "Accessories"
     }
   },
   "allocation": {
@@ -355,7 +396,8 @@
     "recommendedTransfer": "Recommended transfer"
   },
   "footer": {
-    "disclaimer": "Demo portfolio project. Product names and brand are © On AG, used for non-commercial demonstration only. All data is synthetic.",
-    "stack": "Built with Next.js, next-intl, Recharts and Tailwind"
+    "disclaimer": "Portfolio demo of an AI-assisted allocation tool. All data — products, locations, sales, inventory — is synthetic and deterministically generated from a seed. Brand and product names are placeholders chosen to evoke a realistic catalog and are © their respective owners; this site is not affiliated with any of them.",
+    "stack": "Built with Next.js, next-intl, Recharts and Tailwind",
+    "reset": "Restart demo"
   }
 }

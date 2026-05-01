@@ -1,7 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PageHeader } from "@/components/PageHeader";
 import { SectionTabs } from "@/components/SectionTabs";
-import { products } from "@/data/products";
+import { getProducts } from "@/data/products";
 import { locations } from "@/data/locations";
 import { getRisks, getOpportunities } from "@/data/series";
 import { RisksClient } from "./risks-client";
@@ -11,8 +11,9 @@ export default async function RisksPage({ params }: PageProps<"/[locale]">) {
   setRequestLocale(locale);
   const t = await getTranslations();
 
-  const risks = getRisks();
-  const opportunities = getOpportunities();
+  const products = await getProducts();
+  const risks = await getRisks();
+  const opportunities = await getOpportunities();
   const productsById = Object.fromEntries(products.map((p) => [p.id, p]));
   const locationsById = Object.fromEntries(locations.map((l) => [l.id, l]));
 

@@ -8,7 +8,7 @@ import { Link } from "@/i18n/navigation";
 import { ArrowLeft, Truck } from "lucide-react";
 import { locations, locationById, channelMeta } from "@/data/locations";
 import { getStoreDetail, getPurchaseOrders } from "@/data/series";
-import { productById } from "@/data/products";
+import { getProductMap } from "@/data/products";
 import { cn, formatCurrency, formatNumber } from "@/lib/utils";
 
 export function generateStaticParams() {
@@ -22,11 +22,13 @@ export default async function StoreDetailPage({ params }: PageProps<"/[locale]/s
   setRequestLocale(locale);
   const t = await getTranslations();
 
-  const detail = getStoreDetail(storeId);
+  const detail = await getStoreDetail(storeId);
   if (!detail) notFound();
   const loc = locationById.get(storeId)!;
+  const productById = await getProductMap();
 
-  const incomingPOs = getPurchaseOrders()
+  const allPOs = await getPurchaseOrders();
+  const incomingPOs = allPOs
     .filter((p) => p.toLocationId === storeId)
     .sort((a, b) => a.etaWeeks - b.etaWeeks);
 

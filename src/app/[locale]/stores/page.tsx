@@ -12,7 +12,7 @@ export default async function StoresPage({ params }: PageProps<"/[locale]">) {
   setRequestLocale(locale);
   const t = await getTranslations();
 
-  const summaries = getStoreSummaries().sort((a, b) => b.missedRevenue - a.missedRevenue);
+  const summaries = (await getStoreSummaries()).sort((a, b) => b.missedRevenue - a.missedRevenue);
 
   return (
     <>

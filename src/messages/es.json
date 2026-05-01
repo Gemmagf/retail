@@ -1,8 +1,31 @@
 {
   "brand": {
     "title": "Allocation Studio",
-    "tagline": "Distribución de stock asistida por IA para retail global",
-    "demo": "Proyecto demo · No afiliado a On AG"
+    "tagline": "Distribución de stock asistida por IA para cualquier sector retail",
+    "demo": "Demo con datos sintéticos"
+  },
+  "start": {
+    "tag": "Configura la demo",
+    "title": "Configura el Allocation Studio",
+    "subtitle": "Mismo motor, otra tienda. Elige el tipo de negocio en el que ejecutar la demo y el idioma de la interfaz. Cambiable después.",
+    "sectorLabel": "Negocio",
+    "sectorHelp": "Cada selección carga un catálogo específico (~18–25 SKU), categorías y patrones estacionales. Ubicaciones y KPIs se mantienen.",
+    "localeLabel": "Idioma",
+    "localeHelp": "Todos los textos, KPIs y tooltips están localizados.",
+    "note": "Datos sintéticos, deterministas desde una semilla. Nada se envía ni guarda.",
+    "cta": "Iniciar demo",
+    "sectors": {
+      "footwear": "Calzado",
+      "grocery": "Supermercado",
+      "bookstore": "Librería",
+      "fashion": "Moda"
+    },
+    "sectorDescriptions": {
+      "footwear": "Running, trail, lifestyle, training, senderismo",
+      "grocery": "Frutas, lácteos, panadería, hogar",
+      "bookstore": "Ficción, no ficción, infantil, cocina",
+      "fashion": "Tops, pantalones, vestidos, abrigos"
+    }
   },
   "missed": {
     "title": "Oportunidades de venta perdidas",
@@ -287,7 +310,25 @@
       "trail": "Trail",
       "training": "Training",
       "lifestyle": "Lifestyle",
-      "hike": "Senderismo"
+      "hike": "Senderismo",
+      "produce": "Frutas y verduras",
+      "dairy": "Lácteos",
+      "bakery": "Panadería",
+      "meatfish": "Carne y pescado",
+      "beverages": "Bebidas",
+      "pantry": "Despensa",
+      "frozen": "Congelados",
+      "household": "Hogar",
+      "fiction": "Ficción",
+      "nonfiction": "No ficción",
+      "children": "Infantil",
+      "art": "Arte y diseño",
+      "cookbooks": "Cocina",
+      "tops": "Tops",
+      "bottoms": "Pantalones",
+      "dresses": "Vestidos",
+      "outerwear": "Abrigos",
+      "accessories": "Accesorios"
     }
   },
   "allocation": {
@@ -355,7 +396,8 @@
     "recommendedTransfer": "Transferencia recomendada"
   },
   "footer": {
-    "disclaimer": "Proyecto portfolio demo. Nombres de productos y marca son © On AG, usados solo para demostración no comercial. Todos los datos son sintéticos.",
-    "stack": "Construido con Next.js, next-intl, Recharts y Tailwind"
+    "disclaimer": "Demo portfolio de una herramienta de allocation asistida por IA. Todos los datos — productos, ubicaciones, ventas, stock — son sintéticos y deterministas desde una semilla. Nombres de marca y productos son placeholders y © de sus respectivos propietarios; este sitio no está afiliado a ninguno.",
+    "stack": "Construido con Next.js, next-intl, Recharts y Tailwind",
+    "reset": "Reiniciar demo"
   }
 }

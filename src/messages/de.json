@@ -1,8 +1,31 @@
 {
   "brand": {
     "title": "Allocation Studio",
-    "tagline": "KI-gestützte Warenverteilung für den globalen Handel",
-    "demo": "Demo-Projekt · Nicht mit On AG verbunden"
+    "tagline": "KI-gestützte Warenverteilung für jeden Handelssektor",
+    "demo": "Demo mit synthetischen Daten"
+  },
+  "start": {
+    "tag": "Demo einrichten",
+    "title": "Allocation Studio konfigurieren",
+    "subtitle": "Gleiche Engine, andere Filiale. Wählen Sie die Art von Geschäft, in dem die Demo laufen soll, und die Sprache der Oberfläche. Beides lässt sich später ändern.",
+    "sectorLabel": "Geschäftsart",
+    "sectorHelp": "Jede Auswahl tauscht den Katalog (~18–25 SKUs), Kategorien und Saisonmuster aus. Standorte und KPIs bleiben gleich.",
+    "localeLabel": "Sprache",
+    "localeHelp": "Alle Texte, KPI-Namen und Tooltips sind lokalisiert.",
+    "note": "Synthetische Daten, deterministisch aus einem Seed. Nichts wird gespeichert oder versendet.",
+    "cta": "Demo starten",
+    "sectors": {
+      "footwear": "Schuhe",
+      "grocery": "Supermarkt",
+      "bookstore": "Buchhandlung",
+      "fashion": "Mode"
+    },
+    "sectorDescriptions": {
+      "footwear": "Running, Trail, Lifestyle, Training, Wandern",
+      "grocery": "Obst, Milchprodukte, Bäckerei, Haushalt",
+      "bookstore": "Belletristik, Sachbuch, Kinder, Kochen",
+      "fashion": "Oberteile, Hosen, Kleider, Jacken"
+    }
   },
   "missed": {
     "title": "Verlorene Verkaufschancen",
@@ -287,7 +310,25 @@
       "trail": "Trail",
       "training": "Training",
       "lifestyle": "Lifestyle",
-      "hike": "Wandern"
+      "hike": "Wandern",
+      "produce": "Obst & Gemüse",
+      "dairy": "Milchprodukte",
+      "bakery": "Bäckerei",
+      "meatfish": "Fleisch & Fisch",
+      "beverages": "Getränke",
+      "pantry": "Vorrat",
+      "frozen": "Tiefkühl",
+      "household": "Haushalt",
+      "fiction": "Belletristik",
+      "nonfiction": "Sachbuch",
+      "children": "Kinderbücher",
+      "art": "Kunst & Design",
+      "cookbooks": "Kochbücher",
+      "tops": "Oberteile",
+      "bottoms": "Hosen",
+      "dresses": "Kleider",
+      "outerwear": "Jacken",
+      "accessories": "Accessoires"
     }
   },
   "allocation": {
@@ -355,7 +396,8 @@
     "recommendedTransfer": "Empfohlener Transfer"
   },
   "footer": {
-    "disclaimer": "Demo-Portfolio-Projekt. Produktnamen und Marke sind © On AG, nur zur nicht-kommerziellen Demonstration verwendet. Alle Daten sind synthetisch.",
-    "stack": "Gebaut mit Next.js, next-intl, Recharts und Tailwind"
+    "disclaimer": "Portfolio-Demo eines KI-gestützten Allocation-Tools. Alle Daten — Produkte, Standorte, Verkäufe, Bestand — sind synthetisch und deterministisch aus einem Seed generiert. Marken- und Produktnamen sind Platzhalter und © ihrer jeweiligen Inhaber; diese Seite steht in keiner Verbindung zu ihnen.",
+    "stack": "Gebaut mit Next.js, next-intl, Recharts und Tailwind",
+    "reset": "Demo neu starten"
   }
 }

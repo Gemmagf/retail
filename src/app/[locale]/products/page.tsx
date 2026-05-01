@@ -4,7 +4,7 @@ import { ShoeMark } from "@/components/ShoeMark";
 import { SizeGrid } from "@/components/SizeGrid";
 import { SectionTabs } from "@/components/SectionTabs";
 import { Sparkles } from "lucide-react";
-import { products, SIZE_GRID } from "@/data/products";
+import { getProducts, SIZE_GRID } from "@/data/products";
 import { getInventory, getProductSizeBreakdown } from "@/data/series";
 import { locationById } from "@/data/locations";
 import { formatCurrency, formatNumber } from "@/lib/utils";
@@ -14,7 +14,8 @@ export default async function ProductsPage({ params }: PageProps<"/[locale]">) {
   setRequestLocale(locale);
   const t = await getTranslations();
 
-  const inv = getInventory();
+  const products = await getProducts();
+  const inv = await getInventory();
   const summary = new Map<string, { units: number; cover: number; n: number }>();
   for (const r of inv) {
     if (locationById.get(r.locationId)!.channel === "warehouse") continue;
@@ -24,6 +25,11 @@ export default async function ProductsPage({ params }: PageProps<"/[locale]">) {
     s.n += 1;
     summary.set(r.productId, s);
   }
+  const sizeBreakdowns = new Map(
+    await Promise.all(
+      products.map(async (p) => [p.id, await getProductSizeBreakdown(p.id)] as const),
+    ),
+  );
 
   return (
     <>
@@ -46,7 +52,7 @@ export default async function ProductsPage({ params }: PageProps<"/[locale]">) {
           const cover = s.cover / s.n;
           const accent =
             cover < 2 ? "text-rose-600" : cover > 10 ? "text-amber-600" : "text-emerald-600";
-          const sizeBreakdown = getProductSizeBreakdown(p.id);
+          const sizeBreakdown = sizeBreakdowns.get(p.id) ?? [];
           const buckets = SIZE_GRID.map((sz) => {
             const row = sizeBreakdown.find((b) => b.size === sz)!;
             return {

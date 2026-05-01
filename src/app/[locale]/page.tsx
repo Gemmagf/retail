@@ -23,7 +23,7 @@ import {
   getTopDecisions,
   regionColor,
 } from "@/data/series";
-import { productById, products } from "@/data/products";
+import { getProducts } from "@/data/products";
 import { locationById, locations, type Region } from "@/data/locations";
 import { DecisionsQueue } from "./decisions-queue";
 import { MissedOpportunitiesClient } from "./missed-opportunities-client";
@@ -36,14 +36,18 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
   setRequestLocale(locale);
   const t = await getTranslations();
 
-  const kpisAll = getKPIs();
-  const kpisByRegion = {
-    EMEA: getKPIsForRegion("EMEA") as ReturnType<typeof getKPIsForRegion> & { missedRevenueTotal: number },
-    AMER: getKPIsForRegion("AMER") as ReturnType<typeof getKPIsForRegion> & { missedRevenueTotal: number },
-    APAC: getKPIsForRegion("APAC") as ReturnType<typeof getKPIsForRegion> & { missedRevenueTotal: number },
-  };
-  const weekly = getWeeklyByRegion(26);
+  const products = await getProducts();
+  const productById = new Map(products.map((p) => [p.id, p]));
 
+  const [kpisAll, kpisEMEA, kpisAMER, kpisAPAC] = await Promise.all([
+    getKPIs(),
+    getKPIsForRegion("EMEA"),
+    getKPIsForRegion("AMER"),
+    getKPIsForRegion("APAC"),
+  ]);
+  const kpisByRegion = { EMEA: kpisEMEA, AMER: kpisAMER, APAC: kpisAPAC };
+
+  const weekly = await getWeeklyByRegion(26);
   const weeksSet = Array.from(new Set(weekly.map((w) => w.week))).sort((a, b) => a - b);
   const chartData = weeksSet.map((w) => {
     const row: Record<string, number | string> = { week: w };
@@ -53,7 +57,7 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
     return row;
   });
 
-  const inv = getInventory();
+  const inv = await getInventory();
   const stockByRegion = REGIONS.map((r) => {
     const rows = inv.filter(
       (row) =>
@@ -70,32 +74,40 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
     APAC: regionColor("APAC"),
   };
 
-  const topMovers = getTopMovers(5);
-  const atRisk = getAtRisk(8);
-  const upcomingPOs = getPurchaseOrders()
+  const [topMovers, atRisk, purchaseOrders, missedSales, missedTotals, missedDiag, yoy, imbalances, imbalanceCost, decisions] =
+    await Promise.all([
+      getTopMovers(5),
+      getAtRisk(8),
+      getPurchaseOrders(),
+      getMissedSales(),
+      getMissedSalesTotals(),
+      getMissedSalesWithDiagnosis(),
+      getYoYComparison(),
+      getStockImbalances(),
+      getTotalImbalanceCost(),
+      getTopDecisions(12),
+    ]);
+
+  const upcomingPOs = purchaseOrders
     .filter((po) => po.etaWeeks <= 3)
     .sort((a, b) => a.etaWeeks - b.etaWeeks)
     .slice(0, 6);
-  const missed = getMissedSales().slice(0, 8);
-  const missedTotals = getMissedSalesTotals();
-  const missedDiag = getMissedSalesWithDiagnosis().slice(0, 8);
-  const yoy = getYoYComparison();
-  const imbalances = getStockImbalances().slice(0, 6);
-  const imbalanceCost = getTotalImbalanceCost();
+  const missed = missedSales.slice(0, 8);
+  const missedDiagTop = missedDiag.slice(0, 8);
+  const imbalancesTop = imbalances.slice(0, 6);
 
   const missedByRegion = {
-    EMEA: getMissedSales()
+    EMEA: missedSales
       .filter((m) => locationById.get(m.locationId)!.region === "EMEA")
       .reduce((a, b) => a + b.missedRevenue, 0),
-    AMER: getMissedSales()
+    AMER: missedSales
       .filter((m) => locationById.get(m.locationId)!.region === "AMER")
       .reduce((a, b) => a + b.missedRevenue, 0),
-    APAC: getMissedSales()
+    APAC: missedSales
       .filter((m) => locationById.get(m.locationId)!.region === "APAC")
       .reduce((a, b) => a + b.missedRevenue, 0),
   };
 
-  const decisions = getTopDecisions(12);
   const productsById = Object.fromEntries(products.map((p) => [p.id, p]));
   const locationsById = Object.fromEntries(locations.map((l) => [l.id, l]));
 
@@ -183,7 +195,10 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
               const p = productById.get(r.productId)!;
               const loc = locationById.get(r.locationId)!;
               return (
-                <li key={`${r.productId}-${r.locationId}`} className="flex items-center gap-4 py-3 first:pt-0 last:pb-0">
+                <li
+                  key={`${r.productId}-${r.locationId}`}
+                  className="flex items-center gap-4 py-3 first:pt-0 last:pb-0"
+                >
                   <div className="h-2 w-2 shrink-0 rounded-full bg-rose-500" />
                   <div className="min-w-0 flex-1">
                     <div className="truncate text-sm font-medium">{p.name}</div>
@@ -214,7 +229,7 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
           info={t("info.imbalances")}
         >
           <ul className="divide-y divide-border">
-            {imbalances.map((im) => {
+            {imbalancesTop.map((im) => {
               const p = productById.get(im.productId)!;
               const low = locationById.get(im.lowestLocationId)!;
               const high = locationById.get(im.highestLocationId)!;
@@ -250,7 +265,7 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
         </Card>
 
         <MissedOpportunitiesClient
-          items={missedDiag}
+          items={missedDiagTop}
           productsById={productsById}
           locationsById={locationsById}
         />
@@ -267,10 +282,7 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]">) 
                   : locationById.get(po.fromLocationId)!;
               const to = locationById.get(po.toLocationId)!;
               return (
-                <li
-                  key={po.id}
-                  className="flex items-center gap-4 py-3 first:pt-0 last:pb-0"
-                >
+                <li key={po.id} className="flex items-center gap-4 py-3 first:pt-0 last:pb-0">
                   <Truck className="h-5 w-5 shrink-0 text-muted-foreground" aria-hidden />
                   <div className="min-w-0 flex-1">
                     <div className="truncate text-sm font-medium">

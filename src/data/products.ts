@@ -46,12 +46,6 @@ export const getProductMap = cache(async (): Promise<Map<string, Product>> => {
   return new Map(ps.map((p) => [p.id, p]));
 });
 
-// TEMP: while series.ts is being refactored to be sector-aware,
-// re-export the default sector's products synchronously so the
-// existing data layer keeps building.
-export const products: Product[] = SECTORS[DEFAULT_SECTOR].products;
-export const productById: Map<string, Product> = new Map(products.map((p) => [p.id, p]));
-
 export const SIZE_GRID = ["36", "37", "38", "39", "40", "41", "42", "43", "44", "45"] as const;
 export type Size = (typeof SIZE_GRID)[number];
 
