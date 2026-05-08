@@ -2,9 +2,9 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PageHeader } from "@/components/PageHeader";
 import { SectionTabs } from "@/components/SectionTabs";
 import { getProducts } from "@/data/products";
-import { getForecastWithLY, getMarketingSpend } from "@/data/series";
+import { getForecastsByMethod, getHierarchicalForecast } from "@/data/series";
 import type { Region } from "@/data/locations";
-import { ForecastClient } from "./forecast-client";
+import { ForecastLabClient } from "./forecast-lab-client";
 
 const REGION_KEYS: ("ALL" | Region)[] = ["ALL", "EMEA", "AMER", "APAC"];
 
@@ -14,39 +14,35 @@ export default async function ForecastPage({ params }: PageProps<"/[locale]">) {
   const t = await getTranslations();
 
   const products = await getProducts();
+  const subset = products.slice(0, 8);
 
-  const forecastByKey: Record<string, Awaited<ReturnType<typeof getForecastWithLY>>> = {};
-  for (const p of products) {
+  const methodsByKey: Record<string, Awaited<ReturnType<typeof getForecastsByMethod>>> = {};
+  for (const p of subset) {
     for (const r of REGION_KEYS) {
-      forecastByKey[`${p.id}|${r}`] = await getForecastWithLY(p.id, r);
+      methodsByKey[`${p.id}|${r}`] = await getForecastsByMethod(p.id, r);
     }
   }
 
-  const spendRows = await getMarketingSpend();
-  const spendByRegion: Record<string, { week: number; spend: number }[]> = {};
-  for (const r of ["EMEA", "AMER", "APAC"] as Region[]) {
-    spendByRegion[r] = spendRows
-      .filter((s) => s.region === r)
-      .map(({ week, spend }) => ({ week, spend }));
-  }
+  const hierarchical = await getHierarchicalForecast();
 
   return (
     <>
       <PageHeader
-        title={t("forecast.title")}
-        subtitle={t("forecast.subtitle")}
+        title={t("forecastLab.pageTitle")}
+        subtitle={t("forecastLab.pageSubtitle")}
         info={t("info.forecastChart")}
       />
       <SectionTabs
         tabs={[
           { href: "/forecast", label: t("nav.forecast") },
+          { href: "/lab", label: t("nav.lab") },
           { href: "/simulator", label: t("nav.simulator") },
         ]}
       />
-      <ForecastClient
-        products={products}
-        forecastByKey={forecastByKey}
-        spendByRegion={spendByRegion}
+      <ForecastLabClient
+        products={subset}
+        methodsByKey={methodsByKey}
+        hierarchical={hierarchical}
       />
     </>
   );

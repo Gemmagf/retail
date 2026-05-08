@@ -1,8 +1,8 @@
 {
   "brand": {
     "title": "Allocation Studio",
-    "tagline": "KI-gestützte Warenverteilung für jeden Handelssektor",
-    "demo": "Demo mit synthetischen Daten"
+    "tagline": "Multi-Level-Nachfrageprognose + agentic Decisions für Retail Supply Chains",
+    "demo": "Synthetic-Data-Demo · gebaut mit Claude Code"
   },
   "start": {
     "tag": "Demo einrichten",
@@ -126,7 +126,13 @@
     "decisionsQueue": "Offene Top-Entscheidungen, sortiert nach absolutem Umsatzimpact über Fehlbestände, Kampagnen, Grössenlücken, Imbalances und Überbestände. Inline genehmigen, vertagen oder eskalieren.",
     "products": "Aktive SKUs mit globalem Bestand, Wochen Reichweite (Ampel) und Grössenraster pro Produkt. Rote Balken markieren Grössen mit Fehlbestand irgendwo im Netzwerk.",
     "simulator": "What-if-Slider. Marketing-Budget, Lieferzeit und Ziel-Reichweite verändern; die KPI-Karten rechts werden live neu berechnet.",
-    "storeDetail": "Store-Level-Sicht. Kachel-Farben zeigen Reichweite, die SKU-Tabelle markiert Grössenlücken, rechts Eingangs-POs."
+    "storeDetail": "Store-Level-Sicht. Kachel-Farben zeigen Reichweite, die SKU-Tabelle markiert Grössenlücken, rechts Eingangs-POs.",
+    "forecastCompare": "Backtested MAPE je Horizont. Niedriger = besser. Champion läuft heute in der Supply Chain; Challenger sind TSFMs in Evaluation.",
+    "hierarchical": "Bottom-up vs. MinT-reconciled. Δ über ±3% triggert Reconciliation-Review.",
+    "labPage": "Engineering-Seite der Prognose — Registry, Schedule, Drift, agentic Auto-Experimente.",
+    "modelRegistry": "Modelle in Produktion mit MAPE und Abstand zur Baseline (Prophet). Champion läuft, Challenger werden nach 3 besseren Runs auto-promoted.",
+    "drift": "Serien, deren letztes Muster vom Training abweicht. Score >0.7 triggert Retrain; >0.85 leitet zu TSFM (Chronos / TimesFM) um.",
+    "pipelineRuns": "Jeder Run trainiert 5–6 Modelle, backtest, MAPE Δ vs. Vorlauf. Geplant, drift-getriggert, manuell oder agentic (LLM-Agent schlägt nächstes Experiment vor)."
   },
   "nav": {
     "dashboard": "Übersicht",
@@ -137,8 +143,94 @@
     "allocation": "Allocation",
     "risks": "Risiken",
     "forecast": "Prognose",
+    "lab": "ML Lab",
     "simulator": "Simulator",
     "about": "Über"
+  },
+  "forecastLab": {
+    "pageTitle": "Forecasting Lab",
+    "pageSubtitle": "Multi-Modell-Nachfrageprognose mit Time Series Foundation Models, klassischen Baselines und einem Ensemble-Champion.",
+    "compareTitle": "Methodenvergleich",
+    "compareSubtitle": "Backtested MAPE je Horizont. Champion läuft heute in der Supply Chain.",
+    "hierTitle": "Hierarchische Reconciliation",
+    "hierSubtitle": "Bottom-up Summen vs. MinT-reconciled. Δ zeigt, wo die Hierarchie inkonsistent ist.",
+    "hierFooter": "Reconciled-Werte nutzen MinT-Reconciliation über Netzwerk → Region → Store. Δ über ±3% löst Review aus.",
+    "method": "Methode",
+    "family": "Familie",
+    "bias": "Bias",
+    "status": "Status",
+    "champion": "Champion",
+    "challenger": "Challenger",
+    "production": "Production",
+    "showChallengers": "Challenger anzeigen",
+    "bandP10": "P10",
+    "bandP90": "P90",
+    "level": "Level",
+    "scope": "Scope",
+    "bottomUp4w": "Bottom-up 4W",
+    "reconciled4w": "Reconciled 4W",
+    "bottomUp8w": "Bottom-up 8W",
+    "reconciled8w": "Reconciled 8W",
+    "levels": {
+      "network": "Netzwerk",
+      "region": "Region",
+      "store": "Store",
+      "sku": "SKU"
+    }
+  },
+  "lab": {
+    "title": "ML Lab",
+    "subtitle": "Model Registry, Training-Pipelines und Drift-Erkennung — die Engineering-Seite der Prognose.",
+    "summary": {
+      "champion": "Champion-Modell",
+      "challengers": "Aktive Challenger",
+      "challengersHelp": "TSFM + ML-Kandidaten",
+      "lastRun": "Letzter Trainingslauf",
+      "drift": "Drift-Watchlist",
+      "driftHelp": "Zur Retrain markiert"
+    },
+    "registryTitle": "Model Registry",
+    "registrySubtitle": "Alle Modelle in Produktion, mit MAPE und Abstand zur Baseline.",
+    "cols": {
+      "model": "Modell",
+      "family": "Familie",
+      "version": "Version",
+      "baseline": "Baseline",
+      "lastTrained": "Trainiert",
+      "status": "Status"
+    },
+    "today": "heute",
+    "driftTitle": "Drift-Watchlist",
+    "driftSubtitle": "Serien, deren aktuelles Muster vom Training abweicht — nach Drift-Score sortiert.",
+    "driftScore": "Drift-Score",
+    "patterns": {
+      "trend-shift": "Trend-Shift",
+      "level-shift": "Level-Shift",
+      "variance-shift": "Varianz-Shift",
+      "campaign-effect": "Kampagneneffekt"
+    },
+    "actions": {
+      "retrain": "Auf neuen Daten retrain",
+      "investigate": "Manuell prüfen",
+      "promote-tsfm": "TSFM-Modell promoten"
+    },
+    "runsTitle": "Letzte Pipeline-Runs",
+    "runsSubtitle": "Täglich geplant plus drift-getriggert und agentic Auto-Experimente.",
+    "triggers": {
+      "scheduled": "Geplant",
+      "drift": "Drift-Trigger",
+      "manual": "Manuell",
+      "agentic": "Agentic"
+    },
+    "runs": {
+      "mapeDelta": "MAPE Δ",
+      "running": "Läuft",
+      "failed": "Fehler"
+    },
+    "statuses": {
+      "production": "Production",
+      "deprecated": "Deprecated"
+    }
   },
   "about": {
     "title": "Über diese Demo",

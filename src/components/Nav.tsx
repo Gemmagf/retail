@@ -4,7 +4,7 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { cn } from "@/lib/utils";
-import { LayoutGrid, Package, Store, Boxes, LineChart } from "lucide-react";
+import { LayoutGrid, Package, Store, Boxes, LineChart, Cpu } from "lucide-react";
 
 const items = [
   { href: "/", key: "dashboard", Icon: LayoutGrid, alsoActiveOn: [] as string[] },
@@ -12,6 +12,7 @@ const items = [
   { href: "/stores", key: "stores", Icon: Store, alsoActiveOn: [] as string[] },
   { href: "/allocation", key: "allocation", Icon: Boxes, alsoActiveOn: ["/risks"] },
   { href: "/forecast", key: "forecast", Icon: LineChart, alsoActiveOn: ["/simulator"] },
+  { href: "/lab", key: "lab", Icon: Cpu, alsoActiveOn: [] as string[] },
 ] as const;
 
 function isActive(pathname: string, href: string, alsoActiveOn: readonly string[]): boolean {

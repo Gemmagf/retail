@@ -389,13 +389,72 @@ After the On application closed without success, the demo is being repositioned 
 
 ---
 
-## Open follow-ups (post-iteration-7)
+## Iteration 8 — Forecasting Lab (Lead Data Scientist · Supply Chain Forecasting)
 
+The role I'm now applying to is **Lead Data Scientist (Supply Chain Forecasting)** at On — a step deeper into the ML stack than the allocator role. The mission is forecast-accuracy + scalable ML pipelines + Time Series Foundation Models + agentic decisioning. The demo had to grow accordingly. The allocation/missed-sales/risks pages stay (they're how forecasts land in the business); two new pages model the forecasting science and the engineering around it.
+
+### 8a. Data layer additions
+
+- `getForecastsByMethod()` — six forecasting methods generated against the same actuals with method-specific MAPE characteristics:
+    - **Seasonal Naive** (~18% MAPE, deprecated baseline)
+    - **ETS** (~14%)
+    - **Prophet** (~11%, current Production legacy)
+    - **Chronos** (~9%, Time Series Foundation Model challenger)
+    - **TimesFM** (~9%, second TSFM challenger)
+    - **Ensemble** (~7.6%, current Champion)
+  Each returns 26 weeks of actuals plus 8 forecast weeks with **P10 / P90 quantile bands** and per-horizon MAPE (1w / 4w / 8w / 13w) plus bias.
+- `getHierarchicalForecast()` — bottom-up and MinT-reconciled forecasts at network → region → store levels with reconciliation deltas.
+- `getModelRegistry()` — every model with version, status (Champion / Challenger / Production / Deprecated), MAPE, gap to the legacy baseline, drift score, last-trained, next-retrain.
+- `getPipelineRuns()` — recent training runs with trigger (Scheduled / Drift / Manual / Agentic), duration, models trained, MAPE Δ vs the previous run.
+- `getDriftWatchlist()` — series whose recent pattern diverges from training, with pattern type (trend-shift / level-shift / variance-shift / campaign-effect) and a recommended action (retrain / investigate / promote-tsfm).
+
+### 8b. /forecast → Forecasting Lab
+
+The page that used to show one forecast line now shows **the entire model evaluation surface**:
+
+1. Composed chart with the **champion** forecast as the lead line, p10–p90 confidence band shaded, **challenger** TSFMs (Chronos, TimesFM) as dashed lines for visual comparison. Toggle to hide challengers.
+2. **Method comparison table**: backtested MAPE per horizon for each model, bias, family badge (Classic / ML / TSFM / Ensemble) and a status pill (Champion ⭐ / Challenger / Production).
+3. **Hierarchical reconciliation table**: bottom-up sums against MinT-reconciled values at network / region / top-store levels with Δ% — flags rows above ±3% as needing review.
+
+This directly mirrors the JD's "drive impact on Forecast accuracy" + "multi-level forecasting frameworks" + "Time Series Foundation Models (e.g. Chronos, TimesFM)".
+
+### 8c. New /lab page — model registry, pipelines, drift
+
+The engineering side of the forecast:
+
+- 4 summary tiles at top: **Champion model**, **Active challengers**, **Last training run**, **Drift watchlist size**.
+- **Model registry** table: each model with family badge, version (semver), MAPE, Δ-vs-baseline (in percentage points, green when negative), last-trained age, status badge.
+- **Pipeline runs** list (last ~10): each run shows id, trigger (Scheduled / Drift / Manual / **Agentic**), duration, # models trained, MAPE Δ. The most recent run is currently `running` and was triggered by an LLM agent ("Agent suggested Chronos retrain at finer granularity").
+- **Drift watchlist**: SKU-locations with the highest drift scores, each tagged with the detected pattern and a recommended action — **promote-tsfm** (route to Chronos / TimesFM) when drift > 0.85, **retrain** above 0.7, **investigate** below.
+
+This directly mirrors "Build Scalable Solutions: design and deploy end-to-end ML pipelines autonomously, utilising agentic coding tools" + "Harness New Architectures: pair forecasting algorithms with agentic decision-making tools".
+
+### 8d. Brand sweep
+
+- Tagline updated to *"Multi-level demand forecasting + agentic decisions for retail supply chains"* across all 7 locales — leans into the JD's vocabulary.
+- Demo strapline now ends *"… built with Claude Code"* — the JD calls out "agentic coding tools to accelerate prototyping". The fact that this codebase was built with one is a concrete proof point.
+- Default sector remains **footwear** with realistic Cloud-style product names so the On-relevance is immediate when opened cold.
+
+### 8e. Translations
+
+7 locales updated end-to-end with the new `forecastLab.*`, `lab.*` and `info.*` blocks (champion/challenger/production status, family badges, drift patterns, run triggers, hierarchical level labels, pipeline run states).
+
+### Trade-offs
+
+- The forecasts are still synthetic — each method has a fixed noise envelope based on its archetypal MAPE rather than running an actual Chronos / TimesFM. The point of the demo is to show I know **what the comparison surface looks like**, not to run inference live; a real role would call HuggingFace endpoints or a hosted TSFM service.
+- The /lab page is read-only — no "Retrain now" button is wired up to a backend. The next step there is hooking the agentic auto-experiment trigger into a server action (logged but not implemented in this iteration).
+
+---
+
+## Open follow-ups (post-iteration-8)
+
+- [ ] Wire a live Chronos / TimesFM endpoint behind the Forecast Lab so one of the challenger lines is real inference rather than synthesised.
+- [ ] Add a "Promote challenger to champion" action on /lab that actually flips the registry status (server action + cookie or in-memory store).
+- [ ] Add a "Retrain now" agentic-action button on each drift item that creates a synthetic run record and prepends it to the pipeline list.
+- [ ] Add a small "Forecast vs Actual diagnostic" page that decomposes residuals into bias / variance / outlier components per SKU.
+- [ ] Add quantile loss (pinball) as a second metric alongside MAPE so the demo speaks to optimisation-metric design.
 - [ ] Add a "Methodology" page explaining how each metric is computed.
 - [ ] Add download-CSV button to the Allocation table (export the approved set).
 - [ ] Add a Map view for the Locations data using react-simple-maps or D3.
-- [ ] Wire a real Prophet forecast (Python service) behind the Forecast page to demonstrate end-to-end ML integration.
 - [ ] Add a screen recording / Loom in the README explaining the demo flow.
-- [ ] Add a "what changed since last week?" panel to the dashboard (deltas in stock health, MAPE, top movers).
-- [ ] Build a "central ↔ local" toggle so the Allocation page can be reviewed from a local-store perspective vs a central-planner perspective.
 - [ ] Add pharmacy + electronics as additional sectors once v1 wiring is stable.

@@ -1,8 +1,8 @@
 {
   "brand": {
     "title": "Allocation Studio",
-    "tagline": "Distribution de stock assistée par IA pour tout secteur retail",
-    "demo": "Démo en données synthétiques"
+    "tagline": "Prévision multi-niveaux + décisions agentiques pour les supply chains retail",
+    "demo": "Démo en données synthétiques · construit avec Claude Code"
   },
   "start": {
     "tag": "Configurer la démo",
@@ -126,7 +126,13 @@
     "decisionsQueue": "Top décisions ouvertes classées par impact CA absolu — ruptures, campagnes, gaps de taille, déséquilibres, surstock. Approuver, reporter ou escalader inline.",
     "products": "SKUs actifs avec stock global, semaines de couverture (feu tricolore) et grille de tailles par produit. Barres rouges = tailles en rupture quelque part.",
     "simulator": "Sliders what-if. Bouger le marketing, le lead time et la couverture cible; les KPIs à droite se recalculent en direct.",
-    "storeDetail": "Vue exécution magasin. Couleurs des tuiles = santé couverture, table SKU = gaps de taille, colonne droite = POs entrants."
+    "storeDetail": "Vue exécution magasin. Couleurs des tuiles = santé couverture, table SKU = gaps de taille, colonne droite = POs entrants.",
+    "forecastCompare": "MAPE backtest par horizon. Plus bas = meilleur. Champion en prod, challengers en évaluation.",
+    "hierarchical": "Bottom-up vs MinT-réconcilié. Δ > ±3% déclenche un review.",
+    "labPage": "Côté ingénierie de la prévision — registre, planning, drift, expériences agentiques.",
+    "modelRegistry": "Modèles en production avec MAPE et écart à la baseline (Prophet). Champion sert le trafic, challengers auto-promus après 3 runs gagnants.",
+    "drift": "Séries divergeant du training. Score >0.7 retrain auto ; >0.85 route vers TSFM.",
+    "pipelineRuns": "Chaque run entraîne 5–6 modèles, backtest, ΔMAPE. Planifié, drift, manuel ou agentic (un agent LLM propose la prochaine expérience)."
   },
   "nav": {
     "dashboard": "Tableau de bord",
@@ -137,8 +143,94 @@
     "allocation": "Allocation",
     "risks": "Risques",
     "forecast": "Prévision",
+    "lab": "ML Lab",
     "simulator": "Simulateur",
     "about": "À propos"
+  },
+  "forecastLab": {
+    "pageTitle": "Forecasting Lab",
+    "pageSubtitle": "Prévision de demande multi-modèle avec Time Series Foundation Models, baselines classiques et ensemble champion.",
+    "compareTitle": "Comparaison des méthodes",
+    "compareSubtitle": "MAPE backtest par horizon. Le champion tourne en production aujourd'hui.",
+    "hierTitle": "Réconciliation hiérarchique",
+    "hierSubtitle": "Sommes bottom-up vs MinT. Δ montre où la hiérarchie diverge.",
+    "hierFooter": "Réconciliation MinT sur réseau → région → magasin. Δ au-delà de ±3% déclenche un review.",
+    "method": "Méthode",
+    "family": "Famille",
+    "bias": "Biais",
+    "status": "Statut",
+    "champion": "Champion",
+    "challenger": "Challenger",
+    "production": "Production",
+    "showChallengers": "Afficher challengers",
+    "bandP10": "P10",
+    "bandP90": "P90",
+    "level": "Niveau",
+    "scope": "Scope",
+    "bottomUp4w": "Bottom-up 4s",
+    "reconciled4w": "Réconcilié 4s",
+    "bottomUp8w": "Bottom-up 8s",
+    "reconciled8w": "Réconcilié 8s",
+    "levels": {
+      "network": "Réseau",
+      "region": "Région",
+      "store": "Magasin",
+      "sku": "SKU"
+    }
+  },
+  "lab": {
+    "title": "ML Lab",
+    "subtitle": "Registre des modèles, pipelines d'entraînement et drift — le côté ingénierie de la prévision.",
+    "summary": {
+      "champion": "Modèle champion",
+      "challengers": "Challengers actifs",
+      "challengersHelp": "Candidats TSFM + ML",
+      "lastRun": "Dernier run",
+      "drift": "Drift watchlist",
+      "driftHelp": "Séries à réentraîner"
+    },
+    "registryTitle": "Registre des modèles",
+    "registrySubtitle": "Modèles en production, MAPE et écart à la baseline.",
+    "cols": {
+      "model": "Modèle",
+      "family": "Famille",
+      "version": "Version",
+      "baseline": "baseline",
+      "lastTrained": "Entraîné",
+      "status": "Statut"
+    },
+    "today": "aujourd'hui",
+    "driftTitle": "Drift watchlist",
+    "driftSubtitle": "Séries dont le pattern diverge — triées par score.",
+    "driftScore": "Score drift",
+    "patterns": {
+      "trend-shift": "Changement de tendance",
+      "level-shift": "Changement de niveau",
+      "variance-shift": "Variance",
+      "campaign-effect": "Effet campagne"
+    },
+    "actions": {
+      "retrain": "Réentraîner sur dernière fenêtre",
+      "investigate": "Investiguer manuellement",
+      "promote-tsfm": "Promouvoir un TSFM"
+    },
+    "runsTitle": "Runs récents",
+    "runsSubtitle": "Planning quotidien + drift-trigger + auto-expériences agentiques.",
+    "triggers": {
+      "scheduled": "Planifié",
+      "drift": "Drift",
+      "manual": "Manuel",
+      "agentic": "Agentic"
+    },
+    "runs": {
+      "mapeDelta": "MAPE Δ",
+      "running": "En cours",
+      "failed": "Échec"
+    },
+    "statuses": {
+      "production": "Production",
+      "deprecated": "Déprécié"
+    }
   },
   "about": {
     "title": "À propos de cette démo",

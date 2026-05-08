@@ -1,8 +1,8 @@
 {
   "brand": {
     "title": "Allocation Studio",
-    "tagline": "あらゆるリテール業態向けAI支援在庫配分",
-    "demo": "合成データデモ"
+    "tagline": "リテール・サプライチェーン向けマルチレベル予測+エージェント意思決定",
+    "demo": "合成データデモ · Claude Codeで構築"
   },
   "start": {
     "tag": "デモを設定",
@@ -126,7 +126,13 @@
     "decisionsQueue": "在庫切れ・キャンペーン・サイズ欠品・不均衡・過剰在庫の中から、絶対売上インパクト順に並べた最重要案件。インラインで承認・保留・エスカレ可能。",
     "products": "グローバル在庫・在庫週数(信号機)・サイズグリッド付きのアクティブSKU。赤いバーはどこかで欠品しているサイズ。",
     "simulator": "What-ifスライダー。マーケ・リードタイム・目標在庫週数を動かすと、右の4枚のKPIが即時更新。",
-    "storeDetail": "店舗実行ビュー。タイル色=在庫健全性、SKUテーブル=サイズ欠品、右列=入荷予定PO。"
+    "storeDetail": "店舗実行ビュー。タイル色=在庫健全性、SKUテーブル=サイズ欠品、右列=入荷予定PO。",
+    "forecastCompare": "ホライズン別バックテストMAPE。低い=良い。Championは本番、ChallengerはTSFM評価中。",
+    "hierarchical": "ボトムアップ vs MinT再調整。Δが±3%超でレビュー発動。",
+    "labPage": "予測のエンジニアリング側 — レジストリ、スケジュール、ドリフト、エージェント実験。",
+    "modelRegistry": "本番モデルとMAPE、ベースライン(Prophet)との差。Championが稼働、3連勝でChallengerが自動昇格。",
+    "drift": "学習分布から逸脱した系列。スコア>0.7で自動再学習、>0.85でTSFMへルーティング。",
+    "pipelineRuns": "各ランで5–6モデルを学習・バックテストし、前回比MAPE Δを記録。スケジュール/ドリフト/手動/エージェント駆動。"
   },
   "nav": {
     "dashboard": "ダッシュボード",
@@ -137,8 +143,94 @@
     "allocation": "アロケーション",
     "risks": "リスク",
     "forecast": "需要予測",
+    "lab": "ML Lab",
     "simulator": "シミュレーター",
     "about": "プロフィール"
+  },
+  "forecastLab": {
+    "pageTitle": "Forecasting Lab",
+    "pageSubtitle": "TSFM、古典手法、アンサンブルの多モデル需要予測。",
+    "compareTitle": "手法比較",
+    "compareSubtitle": "ホライズン別バックテストMAPE。本番で稼働中のモデルがチャンピオン。",
+    "hierTitle": "階層リコンシリエーション",
+    "hierSubtitle": "ボトムアップ vs MinT。Δは階層の不整合を表す。",
+    "hierFooter": "ネットワーク → 地域 → 店舗のMinT再調整。Δが±3%を超えるとレビュー発動。",
+    "method": "手法",
+    "family": "種別",
+    "bias": "バイアス",
+    "status": "ステータス",
+    "champion": "Champion",
+    "challenger": "Challenger",
+    "production": "Production",
+    "showChallengers": "Challengerを表示",
+    "bandP10": "P10",
+    "bandP90": "P90",
+    "level": "レベル",
+    "scope": "範囲",
+    "bottomUp4w": "ボトムアップ4週",
+    "reconciled4w": "再調整4週",
+    "bottomUp8w": "ボトムアップ8週",
+    "reconciled8w": "再調整8週",
+    "levels": {
+      "network": "ネットワーク",
+      "region": "地域",
+      "store": "店舗",
+      "sku": "SKU"
+    }
+  },
+  "lab": {
+    "title": "ML Lab",
+    "subtitle": "モデルレジストリ、トレーニングパイプライン、ドリフト監視 — 予測のエンジニアリング側。",
+    "summary": {
+      "champion": "Championモデル",
+      "challengers": "稼働中Challenger",
+      "challengersHelp": "TSFM + ML候補",
+      "lastRun": "直近の学習ラン",
+      "drift": "ドリフト監視",
+      "driftHelp": "再学習対象"
+    },
+    "registryTitle": "モデルレジストリ",
+    "registrySubtitle": "本番のモデル一覧、MAPEとベースラインとの差分。",
+    "cols": {
+      "model": "モデル",
+      "family": "種別",
+      "version": "バージョン",
+      "baseline": "ベースライン",
+      "lastTrained": "学習日",
+      "status": "ステータス"
+    },
+    "today": "本日",
+    "driftTitle": "ドリフト監視",
+    "driftSubtitle": "学習データから乖離した系列をスコア順に表示。",
+    "driftScore": "ドリフトスコア",
+    "patterns": {
+      "trend-shift": "トレンド変化",
+      "level-shift": "水準変化",
+      "variance-shift": "分散変化",
+      "campaign-effect": "キャンペーン影響"
+    },
+    "actions": {
+      "retrain": "最新データで再学習",
+      "investigate": "手動で調査",
+      "promote-tsfm": "TSFMモデルへ昇格"
+    },
+    "runsTitle": "直近のパイプラインラン",
+    "runsSubtitle": "スケジュール+ドリフト発火+エージェント自動実験。",
+    "triggers": {
+      "scheduled": "定期",
+      "drift": "ドリフト",
+      "manual": "手動",
+      "agentic": "Agentic"
+    },
+    "runs": {
+      "mapeDelta": "MAPE Δ",
+      "running": "実行中",
+      "failed": "失敗"
+    },
+    "statuses": {
+      "production": "本番",
+      "deprecated": "廃止"
+    }
   },
   "about": {
     "title": "このデモについて",

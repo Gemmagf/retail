@@ -1631,6 +1631,426 @@ export async function getDecisionTotals(): Promise<DecisionTotals> {
   return { totalImpact, totalMargin, byType };
 }
 
+export type ForecastMethod =
+  | "seasonal-naive"
+  | "ets"
+  | "prophet"
+  | "chronos"
+  | "timesfm"
+  | "ensemble";
+
+export const FORECAST_METHODS: ForecastMethod[] = [
+  "seasonal-naive",
+  "ets",
+  "prophet",
+  "chronos",
+  "timesfm",
+  "ensemble",
+];
+
+export const METHOD_FAMILY: Record<ForecastMethod, "classic" | "ml" | "tsfm" | "ensemble"> = {
+  "seasonal-naive": "classic",
+  ets: "classic",
+  prophet: "ml",
+  chronos: "tsfm",
+  timesfm: "tsfm",
+  ensemble: "ensemble",
+};
+
+const METHOD_BASELINE_MAPE: Record<ForecastMethod, number> = {
+  "seasonal-naive": 0.182,
+  ets: 0.142,
+  prophet: 0.112,
+  chronos: 0.087,
+  timesfm: 0.092,
+  ensemble: 0.076,
+};
+
+const METHOD_BIAS: Record<ForecastMethod, number> = {
+  "seasonal-naive": 1.5,
+  ets: -0.6,
+  prophet: 0.4,
+  chronos: -0.1,
+  timesfm: 0.2,
+  ensemble: 0.0,
+};
+
+export type ForecastBandPoint = {
+  week: number;
+  actual?: number;
+  forecast?: number;
+  p10?: number;
+  p90?: number;
+};
+
+export type MethodForecast = {
+  method: ForecastMethod;
+  family: (typeof METHOD_FAMILY)[ForecastMethod];
+  points: ForecastBandPoint[];
+  mapeByHorizon: { 1: number; 4: number; 8: number; 13: number };
+  bias: number;
+  isChampion: boolean;
+};
+
+function methodMapeMultiplier(method: ForecastMethod, horizon: number): number {
+  const base = METHOD_BASELINE_MAPE[method];
+  return base * (0.85 + (horizon / 13) * 0.55);
+}
+
+export async function getForecastsByMethod(
+  productId?: string,
+  region?: Region | "ALL",
+): Promise<MethodForecast[]> {
+  const ctx = await getCtx();
+  const sales = ctx.sales.filter(
+    (s) =>
+      (!productId || s.productId === productId) &&
+      (!region || region === "ALL" || s.region === region),
+  );
+  const byWeek = new Map<number, number>();
+  for (const s of sales) byWeek.set(s.week, (byWeek.get(s.week) ?? 0) + s.units);
+
+  const recentAvg =
+    Array.from({ length: 8 }, (_, i) => byWeek.get(CURRENT_WEEK_INDEX - i) ?? 0).reduce(
+      (a, b) => a + b,
+      0,
+    ) / 8;
+
+  const out: MethodForecast[] = FORECAST_METHODS.map((method) => {
+    const rand = mulberry32(hashSeed("fc-method", method, productId ?? "all", region ?? "all"));
+    const points: ForecastBandPoint[] = [];
+    for (let w = Math.max(0, CURRENT_WEEK_INDEX - 25); w <= CURRENT_WEEK_INDEX; w++) {
+      points.push({ week: w, actual: byWeek.get(w) ?? 0 });
+    }
+    for (let i = 1; i <= FORECAST_WEEKS; i++) {
+      const w = CURRENT_WEEK_INDEX + i;
+      const product = productId ? ctx.productById.get(productId) : null;
+      const seasonal = seasonality(w % 52, product?.seasonalProfile);
+      const campaign =
+        region && region !== "ALL" && product
+          ? campaignLift(ctx.sectorId, region, w, product)
+          : 1.05;
+      const center = recentAvg * seasonal * campaign;
+      const noiseShare = METHOD_BASELINE_MAPE[method];
+      const drift = (rand() - 0.5) * 2 * noiseShare * 0.4;
+      const skew = (METHOD_BIAS[method] / 100) * center;
+      const forecast = Math.max(0, center * (1 + drift) + skew);
+      const band = forecast * (noiseShare * 0.9 + i * 0.015);
+      points.push({
+        week: w,
+        forecast: Math.round(forecast),
+        p10: Math.max(0, Math.round(forecast - band)),
+        p90: Math.round(forecast + band),
+      });
+    }
+    return {
+      method,
+      family: METHOD_FAMILY[method],
+      points,
+      mapeByHorizon: {
+        1: methodMapeMultiplier(method, 1) * 100,
+        4: methodMapeMultiplier(method, 4) * 100,
+        8: methodMapeMultiplier(method, 8) * 100,
+        13: methodMapeMultiplier(method, 13) * 100,
+      },
+      bias: METHOD_BIAS[method],
+      isChampion: method === "ensemble",
+    };
+  });
+
+  return out;
+}
+
+export type HierarchicalLevel = "network" | "region" | "store" | "sku";
+
+export type HierarchicalRow = {
+  level: HierarchicalLevel;
+  key: string;
+  label: string;
+  bottomUp4w: number;
+  reconciled4w: number;
+  bottomUp8w: number;
+  reconciled8w: number;
+  delta4wPct: number;
+  delta8wPct: number;
+};
+
+export async function getHierarchicalForecast(): Promise<HierarchicalRow[]> {
+  const ctx = await getCtx();
+  const out: HierarchicalRow[] = [];
+  const horizon4 = 4;
+  const horizon8 = 8;
+
+  const recentNetwork =
+    ctx.sales
+      .filter((s) => s.week >= CURRENT_WEEK_INDEX - 7 && s.week <= CURRENT_WEEK_INDEX)
+      .reduce((a, b) => a + b.units, 0) / 8;
+
+  const network4 = Math.round(recentNetwork * horizon4 * 1.04);
+  const network8 = Math.round(recentNetwork * horizon8 * 1.06);
+  const networkRecon4 = Math.round(network4 * 0.985);
+  const networkRecon8 = Math.round(network8 * 0.99);
+  out.push({
+    level: "network",
+    key: "all",
+    label: "Global network",
+    bottomUp4w: network4,
+    reconciled4w: networkRecon4,
+    bottomUp8w: network8,
+    reconciled8w: networkRecon8,
+    delta4wPct: ((networkRecon4 - network4) / Math.max(1, network4)) * 100,
+    delta8wPct: ((networkRecon8 - network8) / Math.max(1, network8)) * 100,
+  });
+
+  const regions: Region[] = ["EMEA", "AMER", "APAC"];
+  for (const r of regions) {
+    const recent =
+      ctx.sales
+        .filter(
+          (s) =>
+            s.region === r && s.week >= CURRENT_WEEK_INDEX - 7 && s.week <= CURRENT_WEEK_INDEX,
+        )
+        .reduce((a, b) => a + b.units, 0) / 8;
+    const bu4 = Math.round(recent * horizon4 * 1.04);
+    const bu8 = Math.round(recent * horizon8 * 1.06);
+    const rand = mulberry32(hashSeed("hier-region", r, ctx.sectorId));
+    const adj4 = 0.97 + rand() * 0.06;
+    const adj8 = 0.96 + rand() * 0.07;
+    const re4 = Math.round(bu4 * adj4);
+    const re8 = Math.round(bu8 * adj8);
+    out.push({
+      level: "region",
+      key: r,
+      label: r,
+      bottomUp4w: bu4,
+      reconciled4w: re4,
+      bottomUp8w: bu8,
+      reconciled8w: re8,
+      delta4wPct: ((re4 - bu4) / Math.max(1, bu4)) * 100,
+      delta8wPct: ((re8 - bu8) / Math.max(1, bu8)) * 100,
+    });
+  }
+
+  const topStores = locations
+    .filter((l) => l.channel !== "warehouse")
+    .map((l) => {
+      const recent =
+        ctx.sales
+          .filter(
+            (s) =>
+              s.locationId === l.id &&
+              s.week >= CURRENT_WEEK_INDEX - 7 &&
+              s.week <= CURRENT_WEEK_INDEX,
+          )
+          .reduce((a, b) => a + b.units, 0) / 8;
+      return { l, recent };
+    })
+    .sort((a, b) => b.recent - a.recent)
+    .slice(0, 5);
+  for (const { l, recent } of topStores) {
+    const bu4 = Math.round(recent * horizon4 * 1.04);
+    const bu8 = Math.round(recent * horizon8 * 1.06);
+    const rand = mulberry32(hashSeed("hier-store", l.id, ctx.sectorId));
+    const adj4 = 0.94 + rand() * 0.1;
+    const adj8 = 0.93 + rand() * 0.12;
+    const re4 = Math.round(bu4 * adj4);
+    const re8 = Math.round(bu8 * adj8);
+    out.push({
+      level: "store",
+      key: l.id,
+      label: `${l.city}${l.partner ? " · " + l.partner : ""}`,
+      bottomUp4w: bu4,
+      reconciled4w: re4,
+      bottomUp8w: bu8,
+      reconciled8w: re8,
+      delta4wPct: ((re4 - bu4) / Math.max(1, bu4)) * 100,
+      delta8wPct: ((re8 - bu8) / Math.max(1, bu8)) * 100,
+    });
+  }
+
+  return out;
+}
+
+export type ModelStatus = "champion" | "challenger" | "production" | "training" | "deprecated";
+
+export type ModelRecord = {
+  id: string;
+  name: string;
+  family: (typeof METHOD_FAMILY)[ForecastMethod];
+  method: ForecastMethod;
+  version: string;
+  scope: string;
+  scopeKey: string;
+  status: ModelStatus;
+  mape: number;
+  baselineMape: number;
+  deltaPp: number;
+  driftScore: number;
+  lastTrainedDaysAgo: number;
+  nextRetrainDays: number;
+  trainsPerWeek: number;
+};
+
+export async function getModelRegistry(): Promise<ModelRecord[]> {
+  const ctx = await getCtx();
+  const baseline = METHOD_BASELINE_MAPE.prophet;
+  const versions: Record<ForecastMethod, string> = {
+    "seasonal-naive": "1.0.0",
+    ets: "0.9.4",
+    prophet: "0.8.5",
+    chronos: "1.4.2",
+    timesfm: "1.0.3",
+    ensemble: "2.3.1",
+  };
+  const out: ModelRecord[] = [];
+  let counter = 0;
+  for (const method of FORECAST_METHODS) {
+    const rand = mulberry32(hashSeed("reg", method, ctx.sectorId));
+    const mape = METHOD_BASELINE_MAPE[method] * 100 * (0.95 + rand() * 0.1);
+    const baselinePct = baseline * 100;
+    const status: ModelStatus =
+      method === "ensemble"
+        ? "champion"
+        : method === "chronos" || method === "timesfm"
+          ? "challenger"
+          : method === "seasonal-naive"
+            ? "deprecated"
+            : "production";
+    out.push({
+      id: `mdl-${++counter}`,
+      name: prettyMethodName(method),
+      family: METHOD_FAMILY[method],
+      method,
+      version: versions[method],
+      scope: "All sectors · All regions",
+      scopeKey: "global",
+      status,
+      mape,
+      baselineMape: baselinePct,
+      deltaPp: mape - baselinePct,
+      driftScore: 0.05 + rand() * 0.6,
+      lastTrainedDaysAgo: Math.floor(rand() * 14),
+      nextRetrainDays: Math.max(1, 7 - Math.floor(rand() * 7)),
+      trainsPerWeek: method === "seasonal-naive" ? 0 : 1,
+    });
+  }
+  return out;
+}
+
+function prettyMethodName(m: ForecastMethod): string {
+  if (m === "seasonal-naive") return "Seasonal Naive";
+  if (m === "ets") return "ETS";
+  if (m === "prophet") return "Prophet";
+  if (m === "chronos") return "Chronos";
+  if (m === "timesfm") return "TimesFM";
+  return "Ensemble";
+}
+
+export type PipelineRun = {
+  id: string;
+  startedDaysAgo: number;
+  startedHoursAgo: number;
+  durationMinutes: number;
+  modelsTrained: number;
+  status: "succeeded" | "failed" | "running";
+  mapeDeltaPp: number;
+  notes?: string;
+  trigger: "scheduled" | "drift" | "manual" | "agentic";
+};
+
+export async function getPipelineRuns(limit = 12): Promise<PipelineRun[]> {
+  const ctx = await getCtx();
+  const out: PipelineRun[] = [];
+  const rand = mulberry32(hashSeed("pipe", ctx.sectorId));
+  for (let i = 0; i < limit; i++) {
+    const hoursAgo = Math.round(i * 11 + rand() * 5);
+    const days = Math.floor(hoursAgo / 24);
+    const trigger: PipelineRun["trigger"] =
+      i === 0 ? "agentic" : rand() < 0.2 ? "drift" : rand() < 0.85 ? "scheduled" : "manual";
+    const status: PipelineRun["status"] = i === 0 ? "running" : rand() < 0.92 ? "succeeded" : "failed";
+    const mapeDelta = status === "succeeded" ? -0.6 + rand() * 1.0 : 0;
+    const notes =
+      trigger === "drift"
+        ? "Auto-triggered after drift threshold breach"
+        : trigger === "agentic"
+          ? "Agent suggested Chronos retrain at finer granularity"
+          : i === 1
+            ? "Weekly schedule"
+            : undefined;
+    out.push({
+      id: `run-${(200 - i).toString().padStart(3, "0")}`,
+      startedDaysAgo: days,
+      startedHoursAgo: hoursAgo,
+      durationMinutes: 8 + Math.round(rand() * 25),
+      modelsTrained: 5 + Math.floor(rand() * 2),
+      status,
+      mapeDeltaPp: Math.round(mapeDelta * 10) / 10,
+      notes,
+      trigger,
+    });
+  }
+  return out;
+}
+
+export type DriftItem = {
+  id: string;
+  productId: string;
+  scope: string;
+  driftScore: number;
+  pattern: "trend-shift" | "level-shift" | "variance-shift" | "campaign-effect";
+  recommendedAction: "retrain" | "investigate" | "promote-tsfm";
+  recommendedModel: ForecastMethod;
+};
+
+export async function getDriftWatchlist(limit = 8): Promise<DriftItem[]> {
+  const ctx = await getCtx();
+  const out: DriftItem[] = [];
+  const inv = ctx.inventory;
+  const candidates = inv
+    .filter((r) => locationById.get(r.locationId)!.channel !== "warehouse")
+    .map((r) => ({
+      r,
+      vel: recentVelocity(ctx.sales, r.productId, r.locationId),
+    }))
+    .sort((a, b) => b.vel - a.vel)
+    .slice(0, 30);
+
+  for (const { r } of candidates.slice(0, limit)) {
+    const product = ctx.productById.get(r.productId);
+    if (!product) continue;
+    const loc = locationById.get(r.locationId)!;
+    const rand = mulberry32(hashSeed("drift", r.productId, r.locationId, ctx.sectorId));
+    const driftScore = 0.55 + rand() * 0.4;
+    const patterns: DriftItem["pattern"][] = [
+      "trend-shift",
+      "level-shift",
+      "variance-shift",
+      "campaign-effect",
+    ];
+    const pattern = patterns[Math.floor(rand() * patterns.length)];
+    const recommendedAction: DriftItem["recommendedAction"] =
+      driftScore > 0.85
+        ? "promote-tsfm"
+        : driftScore > 0.7
+          ? "retrain"
+          : "investigate";
+    const recommendedModel: ForecastMethod =
+      recommendedAction === "promote-tsfm" ? "chronos" : "ensemble";
+    out.push({
+      id: `drift-${r.productId}-${r.locationId}`,
+      productId: r.productId,
+      scope: `${product.name} @ ${loc.city}`,
+      driftScore,
+      pattern,
+      recommendedAction,
+      recommendedModel,
+    });
+  }
+
+  out.sort((a, b) => b.driftScore - a.driftScore);
+  return out;
+}
+
 export type SizeMatrixCell = {
   locationId: string;
   size: Size;

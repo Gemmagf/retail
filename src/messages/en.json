@@ -1,8 +1,8 @@
 {
   "brand": {
     "title": "Allocation Studio",
-    "tagline": "AI-assisted stock distribution for any retail vertical",
-    "demo": "Synthetic-data demo"
+    "tagline": "Multi-level demand forecasting + agentic decisions for retail supply chains",
+    "demo": "Synthetic-data demo · built with Claude Code"
   },
   "start": {
     "tag": "Set up your demo",
@@ -126,7 +126,13 @@
     "decisionsQueue": "Top open decisions ranked by absolute revenue impact across stock-outs, campaign signals, size gaps, imbalances and overstock. Approve, defer or escalate inline.",
     "products": "Active SKUs with global stock, weeks-of-cover (traffic-light) and a per-product size grid. Red bars in the size grid mark sizes that are out of stock somewhere.",
     "simulator": "What-if sliders. Move marketing spend, lead time and target cover; the four KPI cards on the right recompute live so you can defend the trade-off before approving a campaign-driven transfer.",
-    "storeDetail": "Store-level execution view. Tile colours show cover health, the SKU table flags size gaps, and the right column lists incoming POs."
+    "storeDetail": "Store-level execution view. Tile colours show cover health, the SKU table flags size gaps, and the right column lists incoming POs.",
+    "forecastCompare": "Backtested MAPE per horizon for every method. Lower is better. The champion is the model the supply chain runs on today; challengers are TSFMs being evaluated for promotion.",
+    "hierarchical": "Bottom-up sums multiplied from store level vs MinT-reconciled values. Δ above ±3% means the hierarchy disagrees and a reconciliation review is triggered.",
+    "labPage": "Engineering side of the forecast — model registry, training schedule, drift detection and agentic auto-experiments.",
+    "modelRegistry": "Every model currently registered with backtested MAPE and the gap to the legacy baseline (Prophet). Champion runs in production; challengers are auto-promoted when they beat the champion for 3 consecutive runs.",
+    "drift": "Series whose recent pattern (last 4 weeks) diverges from the training distribution. Score above 0.7 triggers an automatic retrain; above 0.85 routes the series to a TSFM (Chronos / TimesFM) which handles regime shifts better.",
+    "pipelineRuns": "Each run trains 5–6 models on fresh data, backtests them and records MAPE Δ vs the previous run. Runs are scheduled, drift-triggered, manual or agentic (an LLM agent proposes the next experiment based on the registry state)."
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -137,8 +143,94 @@
     "allocation": "Allocation",
     "risks": "Risks",
     "forecast": "Forecast",
+    "lab": "ML Lab",
     "simulator": "Simulator",
     "about": "About"
+  },
+  "forecastLab": {
+    "pageTitle": "Forecasting Lab",
+    "pageSubtitle": "Multi-model demand forecasting with Time Series Foundation Models, classical baselines and an ensemble champion. Backtest by horizon, reconcile across the hierarchy.",
+    "compareTitle": "Method comparison",
+    "compareSubtitle": "Backtested MAPE per horizon, sector-wide. The champion is the model the supply chain runs on today.",
+    "hierTitle": "Hierarchical reconciliation",
+    "hierSubtitle": "Bottom-up sums against MinT-style reconciled forecasts. Δ shows where the hierarchy disagrees with itself.",
+    "hierFooter": "Reconciled values use minimum-trace (MinT) reconciliation across the network → region → store hierarchy. Δ above ±3% triggers a reconciliation review.",
+    "method": "Method",
+    "family": "Family",
+    "bias": "Bias",
+    "status": "Status",
+    "champion": "Champion",
+    "challenger": "Challenger",
+    "production": "Production",
+    "showChallengers": "Show challengers",
+    "bandP10": "P10 band",
+    "bandP90": "P90 band",
+    "level": "Level",
+    "scope": "Scope",
+    "bottomUp4w": "Bottom-up 4w",
+    "reconciled4w": "Reconciled 4w",
+    "bottomUp8w": "Bottom-up 8w",
+    "reconciled8w": "Reconciled 8w",
+    "levels": {
+      "network": "Network",
+      "region": "Region",
+      "store": "Store",
+      "sku": "SKU"
+    }
+  },
+  "lab": {
+    "title": "ML Lab",
+    "subtitle": "Model registry, training pipelines and drift watch — the engineering side of the forecast.",
+    "summary": {
+      "champion": "Champion model",
+      "challengers": "Active challengers",
+      "challengersHelp": "TSFM + ML candidates",
+      "lastRun": "Last training run",
+      "drift": "Drift watchlist",
+      "driftHelp": "Series flagged for retrain"
+    },
+    "registryTitle": "Model registry",
+    "registrySubtitle": "All models in production, with backtested MAPE and the gap to the legacy baseline.",
+    "cols": {
+      "model": "Model",
+      "family": "Family",
+      "version": "Version",
+      "baseline": "baseline",
+      "lastTrained": "Last trained",
+      "status": "Status"
+    },
+    "today": "today",
+    "driftTitle": "Drift watchlist",
+    "driftSubtitle": "Series whose recent pattern diverges from training data — sorted by drift score.",
+    "driftScore": "Drift score",
+    "patterns": {
+      "trend-shift": "Trend shift",
+      "level-shift": "Level shift",
+      "variance-shift": "Variance shift",
+      "campaign-effect": "Campaign effect"
+    },
+    "actions": {
+      "retrain": "Retrain on latest data",
+      "investigate": "Investigate manually",
+      "promote-tsfm": "Promote TSFM model"
+    },
+    "runsTitle": "Recent pipeline runs",
+    "runsSubtitle": "Daily training schedule plus drift-triggered and agentic auto-experiments.",
+    "triggers": {
+      "scheduled": "Scheduled",
+      "drift": "Drift trigger",
+      "manual": "Manual",
+      "agentic": "Agentic"
+    },
+    "runs": {
+      "mapeDelta": "MAPE Δ",
+      "running": "Running",
+      "failed": "Failed"
+    },
+    "statuses": {
+      "production": "Production",
+      "deprecated": "Deprecated"
+    }
   },
   "about": {
     "title": "About this demo",

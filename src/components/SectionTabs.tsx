@@ -4,7 +4,7 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
 type Tab = {
-  href: "/products" | "/categories" | "/sizes" | "/allocation" | "/risks" | "/forecast" | "/simulator";
+  href: "/products" | "/categories" | "/sizes" | "/allocation" | "/risks" | "/forecast" | "/simulator" | "/lab";
   label: string;
 };
 
