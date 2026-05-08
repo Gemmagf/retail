@@ -79,7 +79,7 @@ export default async function StartPage({ params }: PageProps<"/[locale]">) {
           <select
             id="locale"
             name="locale"
-            defaultValue={locale}
+            defaultValue="en"
             className="mt-3 w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:border-foreground focus:outline-none"
           >
             {routing.locales.map((l) => (
